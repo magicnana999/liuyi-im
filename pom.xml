@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.6.RELEASE</version>
+    </parent>
+
+    <groupId>com.creolophus</groupId>
+    <artifactId>liuyi-im</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <modules>
+        <module>liuyi-im-common</module>
+        <module>liuyi-im-netty</module>
+        <module>liuyi-im-backend</module>
+        <module>liuyi-im-gateway</module>
+        <module>liuyi-im-gateway-sk</module>
+        <module>liuyi-im-gateway-ws</module>
+        <module>liuyi-im-id</module>
+    </modules>
+
+    <properties>
+        <dockerfile-plugin-version>1.4.6</dockerfile-plugin-version>
+        <docker-aliyun.registry>registry.cn-beijing.aliyuncs.com/xiasimuou</docker-aliyun.registry>
+
+    </properties>
+
+
+
+    <profiles>
+        <profile>
+            <id>demo</id>
+            <properties>
+                <resource.dir>demo</resource.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <resource.dir>dev</resource.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <resource.dir>test</resource.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <resource.dir>prod</resource.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>local</id>
+            <properties>
+                <resource.dir>local</resource.dir>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!--
+                    <excludes>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.xml</exclude>
+                        <exclude>elasticsearch/</exclude>
+                        <exclude>sql/</exclude>
+                    </excludes>
+                    -->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal><!-- 类似执行mvn source:jar -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources/common</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/sql</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/${resource.dir}</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
+
+    </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Magicnana999 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/113082-release-yMedJF/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/113082-snapshot-Or5h46/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

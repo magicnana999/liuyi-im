@@ -59,12 +59,13 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         this.requestProcessor = requestProcessor;
         this.channelEventListener = channelEventListener;
 
-        this.bossGroup = new NioEventLoopGroup(1); // (1)
         this.bootstrap = new ServerBootstrap(); // (2)
 
         if(useEpoll()) {
+            this.bossGroup = new EpollEventLoopGroup(1);
             this.workerGroup = new EpollEventLoopGroup(nettyServerConfig.getServerSelectorThreads());
         } else {
+            this.bossGroup = new NioEventLoopGroup(1); // (1)
             this.workerGroup = new NioEventLoopGroup(nettyServerConfig.getServerSelectorThreads());
         }
     }

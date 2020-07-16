@@ -37,7 +37,7 @@ public class AuthController extends BaseController {
     public ApiResult getToken(
             @RequestParam("userId") Long userId) {
         UserSecurity user = authService.createToken(userId);
-        return new ApiResult(user);
+        return new ApiResult(user.getToken());
     }
 
 

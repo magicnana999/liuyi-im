@@ -1,7 +1,7 @@
 package com.creolophus.liuyi.processor;
 
 import com.creolophus.liuyi.io.LoginInput;
-import com.creolophus.liuyi.io.SendMessageIn;
+import com.creolophus.liuyi.io.SendMessageInput;
 import com.creolophus.liuyi.netty.core.RequestProcessor;
 import com.creolophus.liuyi.netty.protocol.Auth;
 import com.creolophus.liuyi.netty.protocol.Command;
@@ -48,7 +48,7 @@ public class RequestProcessorImpl implements RequestProcessor {
             case CONNECT:
                 return userClientProcessor.connect(commandSerializer.bodyFromObject(request.getBody(), LoginInput.class));
             case SEND_MESSAGE:
-                return messageService.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageIn.class));
+                return messageService.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageInput.class));
             default:
                 break;
         }

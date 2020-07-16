@@ -11,7 +11,7 @@ import java.util.Date;
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class SendMessageIn extends AbstractVo {
+public class SendMessageInput extends AbstractVo {
 
     private Integer messageType;
     private Long targetId;

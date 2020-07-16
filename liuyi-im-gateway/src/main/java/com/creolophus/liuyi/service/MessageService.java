@@ -2,7 +2,7 @@ package com.creolophus.liuyi.service;
 
 import com.creolophus.liuyi.common.config.LiuyiSetting;
 import com.creolophus.liuyi.feign.BackendFeign;
-import com.creolophus.liuyi.io.SendMessageIn;
+import com.creolophus.liuyi.io.SendMessageInput;
 import com.creolophus.liuyi.processor.UserClientProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class MessageService extends NettyBaseService {
     }
 
 
-    public Long sendMessage(SendMessageIn m) {
+    public Long sendMessage(SendMessageInput m) {
         SimpleDateFormat format = new SimpleDateFormat(LiuyiSetting.MESSAGE_SEND_TIME_PATTERN);
         String sendTime = format.format(new Date());
         return backendFeign.sendMessage(getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());

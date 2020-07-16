@@ -28,7 +28,7 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ApiResult createUser(
             @RequestParam("name") String name,
             @RequestParam(value = "portrait",required = false) String portrait,

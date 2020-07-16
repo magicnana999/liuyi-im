@@ -200,16 +200,16 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             Command response;
             try {
                 final Object requestReturn = requestProcessor.processRequest(cmd);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getCode(), requestReturn);
+                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(), requestReturn);
             }catch (NettyCommandWithResException e){
                 logger.error(e.getMessage(),e);
                 response = e.getResponse();
             } catch (NettyCommandException e) {
                 logger.error(e.getMessage(),e);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getCode(), e.getNettyError());
+                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(), e.getNettyError());
             } catch (Throwable e) {
                 logger.error(e.getMessage(),e);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getCode(),NettyError.E_ERROR);
+                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(),NettyError.E_ERROR);
             }
             return response;
         }

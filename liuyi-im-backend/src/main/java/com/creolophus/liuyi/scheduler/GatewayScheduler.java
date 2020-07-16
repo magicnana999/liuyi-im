@@ -18,7 +18,7 @@ public class GatewayScheduler {
     private GatewayService gatewayService;
 
     @Entry
-    @Scheduled(fixedRate = 60 * 1000)
+    @Scheduled(fixedRate = 30 * 1000)
     public void gatewayCheck(){
         gatewayService.findGetewayListAndCheck();
     }

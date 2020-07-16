@@ -44,7 +44,7 @@ public class RequestProcessorImpl implements RequestProcessor {
 
     @Override
     public Object processRequest(Command request) {
-        switch (CommandType.valueOf(request.getHeader().getCode())) {
+        switch (CommandType.valueOf(request.getHeader().getType())) {
             case CONNECT:
                 return userClientProcessor.connect(commandSerializer.bodyFromObject(request.getBody(), LoginInput.class));
             case SEND_MESSAGE:

@@ -44,6 +44,9 @@ public class GatewayService extends BaseService {
             if(!validateGateway(addr)){
                 unregisterGateway(addr.getIp(),addr.getPort());
                 logger.info("Gateway 下线 {}", ipAndPort);
+            }else{
+                gatewayStorage.registerGateway(addr.getIp(), addr.getPort());
+                logger.info("Gateway 在线 {}", ipAndPort);
             }
         }
     }

@@ -1,6 +1,9 @@
 package com.creolophus.liuyi.common.base;
 
 import com.creolophus.liuyi.common.api.ApiContext;
+import com.creolophus.liuyi.common.api.LiuYiApiContextValidator;
+
+import javax.annotation.Resource;
 
 /**
  * @author magicnana
@@ -13,5 +16,11 @@ public class BaseController extends AbstractController {
     }
 
     protected Long currentUserId(){ return ApiContext.getContext().getUserId();}
+
+    @Resource
+    private LiuYiApiContextValidator liuYiApiContextValidator;
+    protected String currentAppKey(){
+        return liuYiApiContextValidator.getAppKeyByContext();
+    }
 
 }

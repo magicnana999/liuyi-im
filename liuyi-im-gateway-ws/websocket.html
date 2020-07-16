@@ -15,7 +15,7 @@
             //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
             //等同于socket = new WebSocket("ws://localhost:8888/xxxx/im/25");
             //var socketUrl="${request.contextPath}/im/"+$("#userId").val();
-            var socketUrl="http://localhost:33008/liuyi/gateway/ws";
+            var socketUrl="http://47.99.173.26:33008/liuyi/gateway/ws";
             socketUrl=socketUrl.replace("https","ws").replace("http","ws");
             console.log(socketUrl);
             if(socket!=null){
@@ -53,7 +53,7 @@
         }
     }
 
-    loginZhangwuji = "{\"body\":{\"deviceLabel\":\"iPhone 7 Plus\",\"sdkName\":\"liuyi-im-sdk\",\"sdkVersion\":\"1.0.0\"},\"header\":{\"code\":101,\"opaque\":\"5f0e6f32c7a1552890000001\",\"result\":0,\"type\":1},\"token\":\"e912782f1ee0612220c17214aaeb2892\"}";
+    loginZhangwuji = "{\"body\":{\"deviceLabel\":\"iPhone 7 Plus\",\"sdkName\":\"liuyi-im-sdk\",\"sdkVersion\":\"1.0.0\"},\"header\":{\"code\":101,\"opaque\":\"5f0e6f32c7a1552890000001\",\"result\":0,\"type\":1},\"token\":\"0cf86510d860b6db152708a79b1e02ea\"}";
     loginZhaomin = "{\"body\":{\"deviceLabel\":\"iPhone 8 Plus\",\"sdkName\":\"liuyi-im-sdk\",\"sdkVersion\":\"1.0.0\"},\"header\":{\"code\":101,\"opaque\":\"5f0e6f33c7a1552890000002\",\"result\":0,\"type\":1},\"token\":\"15907024f9ecb4b4a5f088f94d25ce26\"}";
 
     msgZhangwuji2Zhaomin = "{\"body\":{\"messageBody\":\"Hello,ZhaoMin(1000)\",\"messageType\":1,\"targetId\":12},\"header\":{\"code\":105,\"opaque\":\"5f0e6f33c7a1552890000005\",\"result\":0,\"type\":1},\"token\":\"e912782f1ee0612220c17214aaeb2892\"}";

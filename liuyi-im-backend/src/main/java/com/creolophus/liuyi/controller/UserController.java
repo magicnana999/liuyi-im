@@ -34,7 +34,7 @@ public class UserController extends BaseController {
             @RequestParam(value = "portrait",required = false) String portrait,
             @RequestParam("outerId") Long outerId
             ) {
-        Long userId = userService.createUser(name,portrait,outerId);
+        Long userId = userService.createUser(name,portrait,outerId,currentAppKey());
         return new ApiResult(userId);
     }
 }

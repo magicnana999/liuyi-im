@@ -1,8 +1,12 @@
 package com.creolophus.liuyi.websocket;
 
+import com.alibaba.fastjson.JSON;
+import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.liuyi.netty.core.AbstractWebSocketServer;
+import com.creolophus.liuyi.netty.exception.NettyError;
 import com.creolophus.liuyi.netty.protocol.Command;
 import com.creolophus.liuyi.netty.sleuth.SleuthNettyAdapter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -41,11 +45,35 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
     public void onError(Session session, Throwable error) {
         SleuthNettyAdapter.getInstance().begin(tracerUtil, "onError");
         logger.error("{}", session.getId(), error);
+
+
+        Command request = contextProcessor.getRequest();
+        Command response = Command.newResponse(request.getOpaque(),request.getType(),NettyError.E_ERROR);
+        response(session,response);
         if(sessionEventListener != null) sessionEventListener.onError(session, error);
         SleuthNettyAdapter.getInstance().cleanContext();
         contextProcessor.clearContext();
 
     }
+
+    private String getErrorMessage(Throwable e){
+        String msg  = e.getMessage();
+        if(StringUtils.isBlank(msg)){
+            return "未知异常,没有消息";
+        }
+
+        try{
+            ApiResult apiResult = JSON.parseObject(msg,ApiResult.class);
+            if(apiResult==null || StringUtils.isBlank(apiResult.getMessage())){
+                return "未知错误,木有消息";
+            }else{
+                return apiResult.getMessage();
+            }
+        }catch (Throwable throwable){
+            return msg;
+        }
+    }
+
 
     @OnMessage
     public void onMessage(Session session, String message) {

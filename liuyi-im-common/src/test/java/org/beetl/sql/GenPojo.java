@@ -30,14 +30,7 @@ public class GenPojo {
         config.setOutputPackage("com.creolophus.liuyi.common.entity");
         config.preferBigDecimal(true);
         try {
-            sqlManager.genPojoCode("app",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("user",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("user_device",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("group",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("group_member",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("message_id_section",config.getOutputPackage(),config);
-            sqlManager.genPojoCode("message_id_section_user",config.getOutputPackage(),config);
-
+            sqlManager.genPojoCode("app_notify",config.getOutputPackage(),config);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

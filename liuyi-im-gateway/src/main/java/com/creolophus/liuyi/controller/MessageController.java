@@ -2,7 +2,6 @@ package com.creolophus.liuyi.controller;
 
 import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.liuyi.common.base.BaseController;
-import com.creolophus.liuyi.service.MessageService;
 import com.creolophus.liuyi.processor.UserClientProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

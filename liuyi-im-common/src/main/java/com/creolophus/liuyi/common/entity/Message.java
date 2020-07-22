@@ -24,6 +24,7 @@ public class Message extends AbstractEntity {
     private Date createTime;
     private Date sendTime;
     private Long senderId;
+    private String appKey;
 
     public Date getCreateTime() {
         return createTime;
@@ -79,6 +80,13 @@ public class Message extends AbstractEntity {
     }
     public void setReceiverId(Long receiverId) {
         this.receiverId = receiverId;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
     public enum MessageType {

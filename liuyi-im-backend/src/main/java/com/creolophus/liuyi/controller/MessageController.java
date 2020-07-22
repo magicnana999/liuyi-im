@@ -32,22 +32,32 @@ public class MessageController extends BaseController {
 
     @RequestMapping(value = "/unread", method = RequestMethod.GET)
     public ApiResult getUnread(
-            @RequestParam("senderId") Long senderId,
-            @RequestParam("targetId") Long targetId,
-            @RequestParam("messageType") Integer messageType,
+            @RequestParam("receiverId") Long receiverId,
             @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId) {
-        List<Message> list = messageService.findUnreadMessageList(senderId, targetId, messageType, messageId);
+        List<Message> list = messageService.findUnreadMessageList(receiverId, messageId);
         return new ApiResult(list);
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ApiResult getList(
+            @RequestParam("receiverId") Long receiverId,
+            @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId,
+            @RequestParam(value = "pageNo",required = false,defaultValue = "1") Integer pageNo,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer pageSize) {
+        List<Message> list = messageService.findMessageList(receiverId, messageId,pageNo,pageSize);
+        return new ApiResult(list);
+    }
+
+
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ApiResult sendMessage(
+            @RequestParam("appKey") String appKey,
             @RequestParam("senderId") Long senderId,
             @RequestParam("messageType") Integer messageType,
             @RequestParam("targetId") Long targetId,
             @DateTimeFormat(pattern = LiuyiSetting.MESSAGE_SEND_TIME_PATTERN) @RequestParam("sendTime") Date sendTime,
             @RequestParam("messageBody") String messageBody) {
-        Long messageId = messageService.sendMessage(senderId, targetId, messageType, messageBody, sendTime);
+        Long messageId = messageService.sendMessage(senderId, targetId, messageType, messageBody, sendTime,appKey);
         return new ApiResult(messageId);
     }
 }

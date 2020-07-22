@@ -18,9 +18,7 @@ public interface MessageDao extends BaseMapper<Message> {
     @Sql("select message_id from message where receiver_id = ? order by message_id desc limit 0,1")
     Long selectMaxMessageId(Long receiverId);
 
-    @Sql("select * from message where receiver_id=? and message_id >? and message_type=? and sender_id=?")
-    List<Message> selectMessageList(Long targetId, Long messageId, Integer messageType, Long senderId);
+    @Sql("select * from message where receiver_id=? and message_id >?")
+    List<Message> selectMessageList(Long receiverId, Long messageId);
 
-    @Sql("select * from message where receiver_id=? and message_id >? and message_type=?")
-    List<Message> selectMessageList(Long targetId, Long messageId, Integer messageType);
 }

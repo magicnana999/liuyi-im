@@ -8,7 +8,6 @@ import com.creolophus.liuyi.netty.protocol.Command;
 import com.creolophus.liuyi.netty.protocol.CommandType;
 import com.creolophus.liuyi.netty.serializer.CommandSerializer;
 import com.creolophus.liuyi.service.AuthService;
-import com.creolophus.liuyi.service.MessageService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -27,7 +26,7 @@ public class RequestProcessorImpl implements RequestProcessor {
     private CommandSerializer commandSerializer;
 
     @Resource
-    private MessageService messageService;
+    private MessageProcessor messageProcessor;
 
     @Resource
     private AuthService authService;
@@ -48,7 +47,7 @@ public class RequestProcessorImpl implements RequestProcessor {
             case CONNECT:
                 return userClientProcessor.connect(commandSerializer.bodyFromObject(request.getBody(), LoginInput.class));
             case SEND_MESSAGE:
-                return messageService.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageInput.class));
+                return messageProcessor.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageInput.class));
             default:
                 break;
         }

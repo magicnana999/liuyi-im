@@ -46,12 +46,16 @@ public class MessageService extends BaseService implements Shutdown {
         return messageStorage.asyncMessage(message);
     }
 
-    public List<Message> findUnreadMessageList(Long senderId,Long targetId, Integer messageType, Long messageId) {
-        if(messageType == Message.MessageType.SINGLE.getValue()){
-            return messageDao.selectMessageList(targetId,messageId,messageType,senderId);
-        }else{
-            return messageDao.selectMessageList(targetId,messageId,messageType);
-        }
+    public List<Message> findMessageList(Long receiverId, Long messageId, Integer pageNo, Integer pageSize) {
+        return messageDao.createLambdaQuery()
+                .andEq(Message::getReceiverId,receiverId)
+                .andGreat(Message::getMessageId,messageId)
+                .asc(Message::getMessageId)
+                .page(pageNo, pageSize).getList();
+    }
+
+    public List<Message> findUnreadMessageList(Long receiverId,Long messageId) {
+        return messageDao.selectMessageList(receiverId,messageId);
     }
 
 
@@ -73,7 +77,7 @@ public class MessageService extends BaseService implements Shutdown {
     }
 
     public Long sendMessage(
-            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime) {
+            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime,String appKey) {
         if(messageType == Message.MessageType.SINGLE.getValue()) {
             Message message = new Message();
             message.setMessageId(idSimpleService.nextMessageId(targetId));
@@ -83,6 +87,7 @@ public class MessageService extends BaseService implements Shutdown {
             message.setSenderId(senderId);
             message.setSendTime(sendTime);
             message.setReceiverId(targetId);
+            message.setAppKey(appKey);
             asyncMessage(message);
             return message.getMessageId();
         } else {
@@ -98,6 +103,7 @@ public class MessageService extends BaseService implements Shutdown {
                 message.setSenderId(senderId);
                 message.setSendTime(sendTime);
                 message.setReceiverId(member);
+                message.setAppKey(appKey);
                 asyncMessage(message);
 
                 if(member.equals(senderId)) {

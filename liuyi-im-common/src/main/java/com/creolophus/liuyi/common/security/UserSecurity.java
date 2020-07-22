@@ -16,7 +16,6 @@ public class UserSecurity {
     private Long timestamp;
     private String appKey;
     private List<String> roles = new ArrayList();
-
     public UserSecurity(){}
 
     public UserSecurity(User user, String token){
@@ -65,4 +64,5 @@ public class UserSecurity {
     public void setAppKey(String appKey) {
         this.appKey = appKey;
     }
+
 }

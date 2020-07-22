@@ -39,6 +39,7 @@ public interface BackendFeign {
 
     @RequestMapping(value = "/liuyi/backend/message/send", method = RequestMethod.POST)
     Long sendMessage(
+            @RequestParam("appKey") String appKey,
             @RequestParam("senderId") Long senderId,
             @RequestParam("messageType") Integer messageType,
             @RequestParam("targetId") Long targetId,

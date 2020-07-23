@@ -12,7 +12,7 @@ spring:
 beetl-beetlsql:
   dev: true
 beetlsql:
-  basePackage: com.creolophus.liuyi.dao
+  basePackage: com.creolophus.im.dao
 
 k8s:
   liuyi-im-backend: "127.0.0.1:33011"

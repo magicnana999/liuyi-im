@@ -56,7 +56,7 @@ k8s:
 beetl-beetlsql:
   dev: true
 beetlsql:
-  basePackage: com.creolophus.liuyi.dao
+  basePackage: com.creolophus.im.dao
 
 logging:
   pattern:

@@ -1,11 +1,11 @@
-import com.creolophus.liuyi.common.entity.Message;
+import com.creolophus.im.common.entity.Message;
 import com.creolophus.liuyi.common.id.ObjectID;
 import com.creolophus.liuyi.common.util.JUnitPrint;
-import com.creolophus.liuyi.io.LoginInput;
-import com.creolophus.liuyi.io.SendMessageInput;
-import com.creolophus.liuyi.netty.protocol.Command;
-import com.creolophus.liuyi.netty.protocol.CommandType;
-import com.creolophus.liuyi.netty.serializer.FastJSONSerializer;
+import com.creolophus.im.io.LoginInput;
+import com.creolophus.im.io.SendMessageInput;
+import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.netty.protocol.CommandType;
+import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import org.junit.Test;
 
 /**

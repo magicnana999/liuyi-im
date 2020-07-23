@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.exception;
 
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 
 /**
  * 朝辞白帝彩云间 千行代码一日还

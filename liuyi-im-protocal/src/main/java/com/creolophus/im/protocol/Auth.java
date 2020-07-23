@@ -1,4 +1,4 @@
-package com.creolophus.im.netty.protocol;
+package com.creolophus.im.protocol;
 
 /**
  * @author magicnana

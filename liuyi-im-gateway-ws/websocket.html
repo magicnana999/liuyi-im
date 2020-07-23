@@ -9,82 +9,135 @@
     var socket;
     function openSocket() {
         if(typeof(WebSocket) == "undefined") {
-            console.log("您的浏览器不支持WebSocket");
+            log(operations.notify,"此浏览器不支持 WebSocket")
         }else{
-            console.log("您的浏览器支持WebSocket");
-            //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-            //等同于socket = new WebSocket("ws://localhost:8888/xxxx/im/25");
-            //var socketUrl="${request.contextPath}/im/"+$("#userId").val();
-            var socketUrl="http://47.99.173.26:33008/liuyi/gateway/ws";
+            log(operations.notify,"此浏览器支持 WebSocket")
+            var socketUrl="http://127.0.0.1:33008/liuyi/gateway/ws";
             socketUrl=socketUrl.replace("https","ws").replace("http","ws");
-            console.log(socketUrl);
             if(socket!=null){
                 socket.close();
                 socket=null;
             }
             socket = new WebSocket(socketUrl);
-            //打开事件
             socket.onopen = function() {
-                console.log("websocket已打开");
-                //socket.send("这是来自客户端的消息" + location.href + new Date());
+                log(operations.notify,"WebSocket 已打开")
             };
-            //获得消息事件
             socket.onmessage = function(msg) {
-                console.log("receive:"+msg.data);
-                //发现消息进入    开始处理前端触发逻辑
+                log(operations.receive,JSON.parse(msg.data))
             };
-            //关闭事件
             socket.onclose = function() {
-                console.log("websocket已关闭");
+                log(operations.notify,"WebSocket 已关闭")
             };
-            //发生了错误事件
             socket.onerror = function() {
-                console.log("websocket发生了错误");
+                log(operations.notify,"WebSocket 发生错误")
             }
         }
     }
     function sendMessage(str) {
         if(typeof(WebSocket) == "undefined") {
-            console.log("您的浏览器不支持WebSocket");
+            log(operations.notify,"此浏览器不支持 WebSocket,无法发送消息")
         }else {
-            console.log("您的浏览器支持WebSocket");
-            console.log("send:"+str);
             socket.send(str);
+            log(operations.sent,str)
         }
     }
 
-    loginZhangwuji = "{\"body\":{\"deviceLabel\":\"iPhone 7 Plus\",\"sdkName\":\"liuyi-im-sdk\",\"sdkVersion\":\"1.0.0\"},\"header\":{\"code\":101,\"opaque\":\"5f0e6f32c7a1552890000001\",\"result\":0,\"type\":1},\"token\":\"0cf86510d860b6db152708a79b1e02ea\"}";
-    loginZhaomin = "{\"body\":{\"deviceLabel\":\"iPhone 8 Plus\",\"sdkName\":\"liuyi-im-sdk\",\"sdkVersion\":\"1.0.0\"},\"header\":{\"code\":101,\"opaque\":\"5f0e6f33c7a1552890000002\",\"result\":0,\"type\":1},\"token\":\"15907024f9ecb4b4a5f088f94d25ce26\"}";
-
-    msgZhangwuji2Zhaomin = "{\"body\":{\"messageBody\":\"Hello,ZhaoMin(1000)\",\"messageType\":1,\"targetId\":12},\"header\":{\"code\":105,\"opaque\":\"5f0e6f33c7a1552890000005\",\"result\":0,\"type\":1},\"token\":\"e912782f1ee0612220c17214aaeb2892\"}";
-
-    msgZhaomin2Zhangwuji = "{\"body\":{\"messageBody\":\"Hello,Zhangwuji(1001)\",\"messageType\":1,\"targetId\":11},\"header\":{\"code\":105,\"opaque\":\"5f0e6f33c7a1552890000006\",\"result\":0,\"type\":1},\"token\":\"15907024f9ecb4b4a5f088f94d25ce26\"}";
-    function login(username) {
-        if (username == '张无忌'){
-            sendMessage(loginZhangwuji)
-        }
-
-        if(username == '赵敏'){
-            sendMessage(loginZhaomin)
-        }
+    var operations = {
+        login:'登录',
+        loginFail:'登录失败',
+        loginSuccess: '登录成功',
+        reportConnect:'报告连接',
+        reportConnectFail:'报告连接失败',
+        reportConnectSuccess: '报告连接成功',
+        clean:'清空',
+        newCommandFail:'构建Command失败',
+        notify:'提示',
+        receive:'收到消息',
+        sent:'发送消息',
     }
 
-    function send(username){
-        if (username == '张无忌'){
-            sendMessage(msgZhangwuji2Zhaomin)
-        }
+    var loginCommand = {
+        body:{
+            deviceLabel:"iPhone 100",
+            sdkName:"liuyi-im-jssdk",
+            sdkVersion:"1.0.0"
+        },
+        header:{
+            code:0,
+            seq:"5f1945c84f7a391dfb000001",
+            type:101
+        },
+        token:"xx"
+    }
 
-        if(username == '赵敏'){
-            sendMessage(msgZhaomin2Zhangwuji)
-        }
+    var sendCommand = {
+        body:{
+            messageBody:"xx",
+            messageType:1,
+            targetId:0
+        },
+        header:{
+            code:0,
+            seq:"5f1945c84f7a391dfb000005",
+            type:105
+        },
+        token:"xx"
+    }
+
+    function log(operation, msg) {
+        console.log(operation,msg);
+    }
+
+    function login2Im(token){
+        loginCommand.token = token;
+        sendMessage(JSON.stringify(loginCommand))
+    }
+
+    function send(token,target,message){
+        sendCommand.body.messageBody=message;
+        sendCommand.body.targetId = target;
+        sendCommand.token = token;
+        sendMessage(JSON.stringify(sendCommand))
     }
 
 </script>
 <body>
-<p>【userId】：<div><input id="userName" name="userId" type="text" value="张无忌"></div>
-<p>【操作】：<a onclick="openSocket()">开启socket</a>
-<p>【操作】：<a onclick="login($('#userName').val())">登录</a>
-<p>【操作】：<a onclick="send($('#userName').val())">发送消息</a>
+
+
+<div>
+    <table>
+        <tr>
+            <td>登录:</td>
+            <td>
+                <select id="user" style="width: 100%">
+                    <option value="e912782f1ee0612220c17214aaeb2892" selected="selected">张无忌</option>
+                    <option value="15907024f9ecb4b4a5f088f94d25ce26">赵敏</option>
+                    <option value="7be9166d6072cbeec51af0b618896fe3">周芷若</option>
+                    <option value="054449cf09cdc407f558e2d64d4df595">小昭</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="openSocket()">打开Socket</button>
+                <button onclick="login2Im($('#user').val())">登录到Socket</button>
+            </td>
+        </tr>
+            <td>目标:</td>
+            <td>
+                <select id="target" style="width: 100%">
+                    <option value="100" selected="selected">张无忌</option>
+                    <option value="101">赵敏</option>
+                    <option value="102">周芷若</option>
+                    <option value="103">小昭</option>
+                </select>
+            </td><td><input id="message"/><button onclick="send($('#user').val(),$('#target').val(),$('#message').val())">发送</button></td></tr>
+    </table>
+
+    </table>
+    <table id="im">
+    </table>
+</div>
+
+
 </body>
 
 </html>

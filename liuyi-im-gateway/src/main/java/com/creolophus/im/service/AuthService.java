@@ -1,10 +1,11 @@
 package com.creolophus.im.service;
 
 import com.creolophus.im.common.base.BaseService;
-import com.creolophus.liuyi.common.exception.UnauthorizedException;
 import com.creolophus.im.common.security.UserSecurity;
+import com.creolophus.im.domain.UserTest;
 import com.creolophus.im.feign.BackendFeign;
-import com.creolophus.im.netty.protocol.Auth;
+import com.creolophus.im.protocol.Auth;
+import com.creolophus.liuyi.common.exception.UnauthorizedException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,9 +20,28 @@ public class AuthService extends BaseService {
     @Resource
     private BackendFeign backendFeign;
 
+    private UserSecurity prod(String token) {
+        return backendFeign.verifyToken(token);
+    }
+
+    private UserSecurity test(String token) {
+        UserSecurity us = new UserSecurity();
+        us.setAppKey(UserTest.appKey);
+        if(token.equals(UserTest.张无忌.token)) {
+            us.setUserId(UserTest.张无忌.userId);
+        } else if(token.equals(UserTest.周芷若.token)) {
+            us.setUserId(UserTest.周芷若.userId);
+        } else if(token.equals(UserTest.赵敏.token)) {
+            us.setUserId(UserTest.赵敏.userId);
+        } else {
+            us.setUserId(UserTest.小昭.userId);
+        }
+        return us;
+    }
+
     public Auth verify(String token) {
 
-        UserSecurity us = backendFeign.verifyToken(token);
+        UserSecurity us = test(token);
         if(us == null) {
             throw new UnauthorizedException("无法取得 token 信息");
         }

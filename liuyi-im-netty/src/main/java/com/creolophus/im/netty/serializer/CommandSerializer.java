@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.serializer;
 
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 
 import java.util.List;
 

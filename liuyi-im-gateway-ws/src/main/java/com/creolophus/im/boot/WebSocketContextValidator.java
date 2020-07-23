@@ -1,6 +1,7 @@
 package com.creolophus.im.boot;
 
 import com.alibaba.fastjson.JSON;
+import com.creolophus.im.netty.core.AbstractContextProcessor;
 import com.creolophus.liuyi.common.api.ApiContext;
 import com.creolophus.liuyi.common.api.GlobalSetting;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
@@ -8,7 +9,7 @@ import com.creolophus.liuyi.common.api.MdcUtil;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.netty.exception.NettyCommandWithResException;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import javax.websocket.Session;
  * @date 2020/7/15 上午11:23
  */
 
-public class WebSocketContextValidator extends LiuYiApiContextValidator implements ContextProcessor {
+public class WebSocketContextValidator extends AbstractContextProcessor implements ContextProcessor {
 
     private static final String SESSION = "SESSION";
     private static final String REQUEST = "REQUEST";
@@ -41,15 +42,6 @@ public class WebSocketContextValidator extends LiuYiApiContextValidator implemen
 
     @Override
     public void initContext(Session session, Command command) {
-        if(command == null) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_NULL);
-        }
-
-        if(command.isEmpty()) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_NULL);
-        }
-
-
         setSession(session);
         setRequest(command);
 
@@ -63,42 +55,6 @@ public class WebSocketContextValidator extends LiuYiApiContextValidator implemen
         }
     }
 
-
-    public void throwRemotingCommandWithResException(NettyError remoteError) {
-        Command response = Command.newResponse("0", 0, remoteError);
-        throw new NettyCommandWithResException(response);
-    }
-
-    @Override
-    public void validateCommand(Command request) {
-        if(StringUtils.isBlank(request.getToken())) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_VALIDATE_ERROR.format("非法Token"));
-        } else {
-            setToken(request.getToken());
-        }
-
-        if(StringUtils.isBlank(request.getOpaque())) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_VALIDATE_ERROR.format("非法Opaque"));
-        }
-
-        if(request.getHeader().getType() == 0) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_VALIDATE_ERROR.format("非法Type"));
-        }
-
-    }
-
-    @Override
-    public void validateUserId(Command request) {
-        Long userId = request.getAuth().getUserId();
-        if(userId == null || userId <= 0) {
-            throwRemotingCommandWithResException(NettyError.E_REQUEST_BODY_AUTH_ERROR);
-        } else {
-            setUserId(userId);
-            setToken(request.getToken());
-            setAppKey(request.getAuth().getAppKey());
-            MdcUtil.setExt(""+userId);
-        }
-    }
 
     @Override
     public void clearContext() {

@@ -4,9 +4,9 @@ import com.creolophus.im.io.LoginInput;
 import com.creolophus.im.service.AuthService;
 import com.creolophus.im.io.SendMessageInput;
 import com.creolophus.im.netty.core.RequestProcessor;
-import com.creolophus.im.netty.protocol.Auth;
-import com.creolophus.im.netty.protocol.Command;
-import com.creolophus.im.netty.protocol.CommandType;
+import com.creolophus.im.protocol.Auth;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.netty.serializer.CommandSerializer;
 import org.springframework.stereotype.Component;
 

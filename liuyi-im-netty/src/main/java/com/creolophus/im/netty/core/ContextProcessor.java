@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import io.netty.channel.Channel;
 
 import javax.websocket.Session;
@@ -14,7 +14,7 @@ public interface ContextProcessor {
     void initContext(Channel channel, Command command);
     void initContext(Session session, Command command);
     void validateCommand(Command command);
-    void validateUserId(Command command);
+    void validateAfterVerify(Command command);
 
     void clearContext();
 

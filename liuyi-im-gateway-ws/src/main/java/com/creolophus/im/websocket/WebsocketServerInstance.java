@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.im.netty.core.AbstractWebSocketServer;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
 
 
         Command request = contextProcessor.getRequest();
-        Command response = Command.newResponse(request.getOpaque(),request.getType(),NettyError.E_ERROR);
+        Command response = Command.newResponse(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_ERROR);
         response(session,response);
         if(sessionEventListener != null) sessionEventListener.onError(session, error);
         SleuthNettyAdapter.getInstance().cleanContext();
@@ -82,7 +82,7 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
         Command request = decode(message);
         contextProcessor.initContext(session, request);
         verify(session, request);
-        contextProcessor.validateUserId(request);
+        contextProcessor.validateAfterVerify(request);
         if(sessionEventListener != null) sessionEventListener.onMessage(session, message);
         Command response = process(session, request);
         flush(session, message, response);

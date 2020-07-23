@@ -3,7 +3,7 @@ package com.creolophus.im.websocket;
 import com.creolophus.im.service.UserSessionHolder;
 import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.netty.core.SessionEventListener;
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

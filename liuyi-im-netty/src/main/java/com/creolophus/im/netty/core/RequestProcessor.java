@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 
 /**
  * @author magicnana

@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

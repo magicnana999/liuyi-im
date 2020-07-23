@@ -7,7 +7,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 //import com.creolophus.liuyi.netty.context.RemoteContext;
 import com.creolophus.im.netty.exception.NettyCommandException;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class FastJSONSerializer implements CommandSerializer {
         try{
             return JSON.parseObject(json, Command.class);
         }catch(Throwable e){
-            throw new NettyCommandException(NettyError.E_REQUEST_BODY_VALIDATE_ERROR.format(json));
+            throw new NettyCommandException(NettyError.E_REQUEST_VALIDATE_ERROR.format(json));
         }
     }
 

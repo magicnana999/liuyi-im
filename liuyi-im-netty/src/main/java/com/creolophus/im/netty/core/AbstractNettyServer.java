@@ -9,7 +9,7 @@ import com.creolophus.im.netty.config.NettyServerConfig;
 import com.creolophus.im.netty.exception.NettyCommandException;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.netty.exception.NettyException;
-import com.creolophus.im.netty.protocol.Command;
+import com.creolophus.im.protocol.Command;
 import com.creolophus.im.netty.utils.OS;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -163,7 +163,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
                 response = Command.newResponse(
                         "0",
                         0,
-                        NettyError.E_REQUEST_BODY_DECODE_ERROR);
+                        NettyError.E_REQUEST_DECODE_FAIL);
             }
 
             else{
@@ -186,7 +186,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
 //            remoteContextValidator.initContext(ctx.channel(), command);
             contextProcessor.initContext(ctx.channel(), command);
             requestProcessor.verify(command);
-            contextProcessor.validateUserId(command);
+            contextProcessor.validateAfterVerify(command);
             super.channelRead(ctx, msg);
         }
 
@@ -200,16 +200,16 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             Command response;
             try {
                 final Object requestReturn = requestProcessor.processRequest(cmd);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(), requestReturn);
+                response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
             }catch (NettyCommandWithResException e){
                 logger.error(e.getMessage(),e);
                 response = e.getResponse();
             } catch (NettyCommandException e) {
                 logger.error(e.getMessage(),e);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(), e.getNettyError());
+                response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), e.getNettyError());
             } catch (Throwable e) {
                 logger.error(e.getMessage(),e);
-                response = Command.newResponse(cmd.getOpaque(), cmd.getHeader().getType(),NettyError.E_ERROR);
+                response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(),NettyError.E_ERROR);
             }
             return response;
         }

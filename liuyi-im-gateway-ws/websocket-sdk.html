@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>websocket通讯</title>
+</head>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- 某些情况下需要自备梯子 -->
+<script type="text/javascript" src="jssdk.js"></script>
+<script>
+
+
+    function send(target,message){
+        liuyiImJsSdk.sendMessage(target,1,message)
+    }
+
+    function openSocket() {
+        liuyiImJsSdk.init(true,function () {
+            liuyiImJsSdk.login($('#user').val())
+        }).connect()
+    }
+
+    function shutdownSocket() {
+        liuyiImJsSdk.shutdown()
+    }
+
+</script>
+<body>
+
+
+<div>
+    <table>
+        <tr>
+            <td>登录:</td>
+            <td>
+                <select id="user" style="width: 100%">
+                    <option value="e912782f1ee0612220c17214aaeb2892" selected="selected">张无忌</option>
+                    <option value="15907024f9ecb4b4a5f088f94d25ce26">赵敏</option>
+                    <option value="7be9166d6072cbeec51af0b618896fe3">周芷若</option>
+                    <option value="054449cf09cdc407f558e2d64d4df595">小昭</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="openSocket()">打开Socket</button>
+                <button onclick="login2Im($('#user').val())">登录到Socket</button>
+                <button onclick="shutdownSocket()">关闭Socket</button>
+            </td>
+        </tr>
+            <td>目标:</td>
+            <td>
+                <select id="target" style="width: 100%">
+                    <option value="100" selected="selected">张无忌</option>
+                    <option value="101">赵敏</option>
+                    <option value="102">周芷若</option>
+                    <option value="103">小昭</option>
+                </select>
+            </td><td><input id="message"/><button onclick="send($('#target').val(),$('#message').val())">发送</button></td></tr>
+    </table>
+
+    </table>
+    <table id="im">
+    </table>
+</div>
+
+
+</body>
+
+</html>

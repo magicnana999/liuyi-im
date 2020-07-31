@@ -2,11 +2,7 @@ package com.creolophus.im.service;
 
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
-import com.creolophus.im.io.LoginInput;
-import com.creolophus.im.io.LoginOutput;
-import com.creolophus.im.io.PushMessageOutput;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.protocol.*;
 import com.creolophus.im.processor.UserClientProcessor;
 import com.creolophus.im.feign.BackendFeign;
 import io.netty.channel.ChannelFutureListener;
@@ -77,7 +73,7 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
 
     @Override
     public Long pushMessage(Long messageId, Integer messageType, String messageBody, Long receiverId, Long groupId, Long senderId){
-        Command response = Command.newResponse(CommandType.PUSH_MESSAGE.getValue(), new PushMessageOutput(messageId, messageType, groupId, messageBody, receiverId, senderId));
+        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), new PushMessageOutput(messageId, messageType, groupId, messageBody, receiverId, senderId));
 
         pushMessage(receiverId, response);
         return messageId;

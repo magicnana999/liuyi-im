@@ -7,8 +7,8 @@ package com.creolophus.im.protocol;
 public class Header {
 
 
-    private static final int REQUEST = 0;
-    private static final int SUCCESS = 200;
+    private static final int SEND = 0;
+    private static final int ACK_OK = 200;
     private String seq;
     private int type;
     private int code;
@@ -57,14 +57,14 @@ public class Header {
      * 客户端发送的
      */
     public static Header newRequest(int commandType) {
-        return newHeader(commandType, REQUEST);
+        return newHeader(commandType, SEND);
     }
 
     /**
      * 服务端主动推送给客户端的
      */
     public static Header newResponse(int commandType) {
-        return newHeader(commandType, SUCCESS);
+        return newHeader(commandType, ACK_OK);
     }
 
     /**
@@ -86,7 +86,7 @@ public class Header {
         Header header = new Header();
         header.setSeq(sequence);
         header.setType(commandType);
-        header.setCode(SUCCESS);
+        header.setCode(ACK_OK);
         return header;
     }
 

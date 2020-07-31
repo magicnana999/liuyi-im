@@ -2,9 +2,9 @@ package com.creolophus.im.service;
 
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.common.security.UserSecurity;
-import com.creolophus.im.domain.UserTest;
 import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.protocol.Auth;
+import com.creolophus.im.protocol.UserTest;
 import com.creolophus.liuyi.common.exception.UnauthorizedException;
 import org.springframework.stereotype.Service;
 

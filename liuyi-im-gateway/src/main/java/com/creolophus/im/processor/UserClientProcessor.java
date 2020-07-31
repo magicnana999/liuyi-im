@@ -1,7 +1,7 @@
 package com.creolophus.im.processor;
 
 import com.creolophus.im.domain.UserClient;
-import com.creolophus.im.io.LoginInput;
+import com.creolophus.im.protocol.LoginInput;
 
 /**
  * @author magicnana

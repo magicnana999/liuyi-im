@@ -1,14 +1,11 @@
-package com.creolophus.im.io;
-
-import com.creolophus.liuyi.common.base.AbstractVo;
-
+package com.creolophus.im.protocol;
 
 /**
 * @author magicnana
 * @date 2020-01-11
 */
 
-public class LoginOutput extends AbstractVo {
+public class LoginOutput {
 
 	private String appKey ;
 	private String token ;
@@ -37,5 +34,15 @@ public class LoginOutput extends AbstractVo {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("{");
+		sb.append("\"appKey\":\"").append(appKey).append('\"');
+		sb.append(",\"token\":\"").append(token).append('\"');
+		sb.append(",\"userId\":").append(userId);
+		sb.append('}');
+		return sb.toString();
 	}
 }

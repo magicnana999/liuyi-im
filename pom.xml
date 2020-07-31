@@ -25,6 +25,9 @@
         <module>liuyi-im-gateway-ws</module>
         <module>liuyi-im-id</module>
         <module>liuyi-im-protocal</module>
+        <module>liuyi-im-javasdk</module>
+        <module>liuyi-im-demo-server</module>
+        <module>liuyi-im-demo-javaclient</module>
     </modules>
 
     <properties>
@@ -187,6 +190,10 @@
             <id>github</id>
             <name>GitHub Magicnana999 Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 

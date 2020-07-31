@@ -1,4 +1,4 @@
-package com.creolophus.im.io;
+package com.creolophus.im.protocol;
 
 /**
  * @author magicnana
@@ -65,4 +65,17 @@ public class PushMessageOutput {
     }
 
     public PushMessageOutput(){}
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"messageId\":").append(messageId);
+        sb.append(",\"messageType\":").append(messageType);
+        sb.append(",\"groupId\":").append(groupId);
+        sb.append(",\"messageBody\":\"").append(messageBody).append('\"');
+        sb.append(",\"receiverId\":").append(receiverId);
+        sb.append(",\"senderId\":").append(senderId);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -43,6 +43,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
     protected TracerUtil tracerUtil;
     protected ContextProcessor contextProcessor;
     private RequestProcessor requestProcessor;
+    private ResponseProcessor responseProcessor;
     private ChannelEventListener channelEventListener;
 
 
@@ -51,13 +52,15 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             TracerUtil tracerUtil,
             ContextProcessor contextProcessor,
             RequestProcessor requestProcessor,
-            ChannelEventListener channelEventListener) {
+            ChannelEventListener channelEventListener,
+            ResponseProcessor responseProcessor) {
 
         this.nettyServerConfig= nettyServerConfig;
         this.tracerUtil = tracerUtil;
         this.contextProcessor = contextProcessor;
         this.requestProcessor = requestProcessor;
         this.channelEventListener = channelEventListener;
+        this.responseProcessor = responseProcessor;
 
         this.bootstrap = new ServerBootstrap(); // (2)
 
@@ -192,8 +195,22 @@ public class AbstractNettyServer extends AbstractNettyInstance {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Command msg) {
-            Command response = process(ctx, msg);
+            if(msg.getHeader().getCode()==0){
+                processRequestCommand(ctx,msg);
+            }else{
+                processResponseCommand(ctx,msg);
+            }
+        }
+
+        protected void processRequestCommand(ChannelHandlerContext ctx,Command command){
+            Command response = process(ctx, command);
             response(ctx, response);
+        }
+
+        protected void processResponseCommand(ChannelHandlerContext ctx,Command command){
+            if(responseProcessor!=null){
+                responseProcessor.processResponse(command);
+            }
         }
 
         protected Command process(ChannelHandlerContext ctx,Command cmd){

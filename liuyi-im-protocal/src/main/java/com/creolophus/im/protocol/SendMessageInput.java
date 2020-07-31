@@ -1,12 +1,11 @@
-package com.creolophus.im.io;
+package com.creolophus.im.protocol;
 
-import com.creolophus.liuyi.common.base.AbstractVo;
 
 /**
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class SendMessageInput extends AbstractVo {
+public class SendMessageInput {
 
     private Integer messageType;
     private Long targetId;
@@ -34,5 +33,15 @@ public class SendMessageInput extends AbstractVo {
 
     public void setMessageBody(String messageBody) {
         this.messageBody = messageBody;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"messageType\":").append(messageType);
+        sb.append(",\"targetId\":").append(targetId);
+        sb.append(",\"messageBody\":\"").append(messageBody).append('\"');
+        sb.append('}');
+        return sb.toString();
     }
 }

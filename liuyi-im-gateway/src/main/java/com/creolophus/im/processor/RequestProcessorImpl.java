@@ -1,12 +1,8 @@
 package com.creolophus.im.processor;
 
-import com.creolophus.im.io.LoginInput;
+import com.creolophus.im.protocol.*;
 import com.creolophus.im.service.AuthService;
-import com.creolophus.im.io.SendMessageInput;
 import com.creolophus.im.netty.core.RequestProcessor;
-import com.creolophus.im.protocol.Auth;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.netty.serializer.CommandSerializer;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +40,7 @@ public class RequestProcessorImpl implements RequestProcessor {
     @Override
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
-            case CONNECT:
+            case LOGIN:
                 return userClientProcessor.connect(commandSerializer.bodyFromObject(request.getBody(), LoginInput.class));
             case SEND_MESSAGE:
                 return messageProcessor.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageInput.class));

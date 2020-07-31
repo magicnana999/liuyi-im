@@ -1,11 +1,7 @@
 import com.creolophus.im.common.entity.Message;
-import com.creolophus.im.domain.UserTest;
+import com.creolophus.im.protocol.*;
 import com.creolophus.liuyi.common.id.ObjectID;
 import com.creolophus.liuyi.common.util.JUnitPrint;
-import com.creolophus.im.io.LoginInput;
-import com.creolophus.im.io.SendMessageInput;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import org.junit.Test;
 
@@ -16,7 +12,7 @@ import org.junit.Test;
 public class TestCommand {
 
     @Test
-    public void requestConnect() {
+    public void commands() {
 
         FastJSONSerializer fastJSONSerializer = new FastJSONSerializer();
 
@@ -27,25 +23,25 @@ public class TestCommand {
 
         {
             //张无忌
-            Command request = Command.newRequest(CommandType.CONNECT.getValue(), client).withToken(UserTest.张无忌.token);
+            Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.张无忌.token);
             System.out.println(new String(fastJSONSerializer.encode(request)));
         }
 
         {
             //赵敏
-            Command request = Command.newRequest(CommandType.CONNECT.getValue(), client).withToken(UserTest.赵敏.token);
+            Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.赵敏.token);
             System.out.println(new String(fastJSONSerializer.encode(request)));
         }
 
         {
             //周芷若
-            Command request = Command.newRequest(CommandType.CONNECT.getValue(), client).withToken(UserTest.周芷若.token);
+            Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.周芷若.token);
             System.out.println(new String(fastJSONSerializer.encode(request)));
         }
 
         {
             //小昭
-            Command request = Command.newRequest(CommandType.CONNECT.getValue(), client).withToken(UserTest.小昭.token);
+            Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.小昭.token);
             System.out.println(new String(fastJSONSerializer.encode(request)));
         }
 

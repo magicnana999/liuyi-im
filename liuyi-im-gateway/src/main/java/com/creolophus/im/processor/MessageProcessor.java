@@ -1,6 +1,6 @@
 package com.creolophus.im.processor;
 
-import com.creolophus.im.io.SendMessageInput;
+import com.creolophus.im.protocol.SendMessageInput;
 
 /**
  * @author magicnana

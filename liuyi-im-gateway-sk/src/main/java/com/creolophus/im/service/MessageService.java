@@ -1,10 +1,10 @@
 package com.creolophus.im.service;
 
 import com.creolophus.im.common.config.LiuyiSetting;
+import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.processor.MessageProcessor;
 import com.creolophus.im.processor.UserClientProcessor;
-import com.creolophus.im.feign.BackendFeign;
-import com.creolophus.im.io.SendMessageInput;
+import com.creolophus.im.protocol.SendMessageInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

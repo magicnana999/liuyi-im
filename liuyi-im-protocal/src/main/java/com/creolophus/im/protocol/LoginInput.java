@@ -1,18 +1,11 @@
-package com.creolophus.im.io;
-
-import com.creolophus.liuyi.common.base.AbstractEntity;
-import com.creolophus.liuyi.common.base.AbstractVo;
-import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Date;
-
+package com.creolophus.im.protocol;
 
 /**
 * @author magicnana
 * @date 2020-01-11
 */
 
-public class LoginInput extends AbstractVo {
+public class LoginInput {
 
 	private String deviceLabel ;
 	private String sdkName ;
@@ -41,5 +34,15 @@ public class LoginInput extends AbstractVo {
 
 	public void setSdkVersion(String sdkVersion) {
 		this.sdkVersion = sdkVersion;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("{");
+		sb.append("\"deviceLabel\":\"").append(deviceLabel).append('\"');
+		sb.append(",\"sdkName\":\"").append(sdkName).append('\"');
+		sb.append(",\"sdkVersion\":\"").append(sdkVersion).append('\"');
+		sb.append('}');
+		return sb.toString();
 	}
 }

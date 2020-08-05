@@ -2,7 +2,6 @@ package com.creolophus.im.sdk;
 
 import com.alibaba.fastjson.JSON;
 import com.creolophus.im.protocol.Command;
-import sun.swing.StringUIClientPropertyKey;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -27,7 +26,6 @@ public class SocketClient {
     private static final LinkedBlockingQueue<Command> commandQueue = new LinkedBlockingQueue<>(128);
 
     private volatile int writeSize = 0;
-    private volatile int readSize = 0;
 
     protected Configration configration;
 
@@ -46,7 +44,7 @@ public class SocketClient {
         channel.close();
     }
 
-    SocketClient(Configration configration,PushProcessor pushProcessor) {
+    public SocketClient(Configration configration,PushProcessor pushProcessor) {
         try {
             this.configration = configration;
             this.pushProcessor = pushProcessor;

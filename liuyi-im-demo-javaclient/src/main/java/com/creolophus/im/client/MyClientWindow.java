@@ -67,7 +67,7 @@ public class MyClientWindow extends JFrame implements PushProcessor {
                 currentUser = (UserTest.狗男女)currentUserBox.getSelectedItem();
                 System.out.println(currentUser.userId);
 
-                liuyiImClient = ImClientFactory.getInstance(new Configration(),MyClientWindow.this);
+                liuyiImClient = ImClientFactory.getSocketImClient(new Configration(),MyClientWindow.this);
                 liuyiImClient.login(currentUser.token);
 
                 btnConnect.setText("点击断开连接,左侧变成消息接收人");

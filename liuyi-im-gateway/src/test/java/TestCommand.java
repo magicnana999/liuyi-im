@@ -18,7 +18,7 @@ public class TestCommand {
 
         LoginInput client = new LoginInput();
         client.setDeviceLabel("iPhone 7 Plus");
-        client.setSdkName("liuyi-im-sdk");
+        client.setSdkName("liuyi-im-nettysdk");
         client.setSdkVersion("1.0.0");
 
         {

@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.creolophus</groupId>
-            <artifactId>liuyi-im-protocal</artifactId>
+            <artifactId>liuyi-im-netty</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

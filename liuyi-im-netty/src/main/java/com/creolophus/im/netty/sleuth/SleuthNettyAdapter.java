@@ -21,7 +21,7 @@ public class SleuthNettyAdapter {
     }
 
     public void begin(TracerUtil tracerUtil,String methodName) {
-        if(getSpan() == null) {
+        if(getSpan() == null && tracerUtil!=null) {
             Tracer.SpanInScope span = tracerUtil.begin(SleuthNettyAdapter.class.getSimpleName(), methodName);
             setSpan(span);
         }

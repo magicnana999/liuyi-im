@@ -8,17 +8,9 @@ import com.creolophus.im.protocol.Command;
  */
 public interface LiuyiImClient {
 
-    boolean isConnected();
-    boolean isLogin();
-    boolean isConnectedAndLogin();
+    Command buildAckCommand(Command command);
 
     void login(String token);
+    long sendMessage(int messageType, String messageBody, long targetId);
     void close();
-    long sendMessage(int messageType,String messageBody,long targetId);
-    Command buildLoginCommand(String token);
-    Command buildSendMessageCommand(int messageType, String messageBody, long targetId);
-    Command buildAckCommand(Command request);
-
-
-
 }

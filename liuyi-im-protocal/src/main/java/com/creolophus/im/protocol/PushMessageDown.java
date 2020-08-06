@@ -1,10 +1,11 @@
 package com.creolophus.im.protocol;
 
 /**
+ * Server -> Client
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class PushMessageOutput {
+public class PushMessageDown {
 
     private Long messageId;
     private Integer messageType;
@@ -55,7 +56,7 @@ public class PushMessageOutput {
         this.senderId = senderId;
     }
 
-    public PushMessageOutput(Long messageId, Integer messageType, Long groupId, String messageBody, Long receiverId, Long senderId) {
+    public PushMessageDown(Long messageId, Integer messageType, Long groupId, String messageBody, Long receiverId, Long senderId) {
         this.messageId = messageId;
         this.messageType = messageType;
         this.groupId = groupId;
@@ -64,7 +65,7 @@ public class PushMessageOutput {
         this.senderId = senderId;
     }
 
-    public PushMessageOutput(){}
+    public PushMessageDown(){}
 
     @Override
     public String toString() {

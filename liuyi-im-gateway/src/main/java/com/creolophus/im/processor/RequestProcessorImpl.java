@@ -41,9 +41,9 @@ public class RequestProcessorImpl implements RequestProcessor {
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
             case LOGIN:
-                return userClientProcessor.connect(commandSerializer.bodyFromObject(request.getBody(), LoginInput.class));
+                return userClientProcessor.login(commandSerializer.bodyFromObject(request.getBody(), LoginUp.class));
             case SEND_MESSAGE:
-                return messageProcessor.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageInput.class));
+                return messageProcessor.sendMessage(commandSerializer.bodyFromObject(request.getBody(), SendMessageUp.class));
             default:
                 break;
         }

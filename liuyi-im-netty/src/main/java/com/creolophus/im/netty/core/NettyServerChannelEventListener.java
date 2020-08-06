@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author magicnana
  * @date 2020/6/30 下午2:48
  */
-public interface ChannelEventListener {
+public interface NettyServerChannelEventListener {
     void onChannelActive(ChannelHandlerContext ctx);
 
     void onChannelInactive(ChannelHandlerContext ctx);

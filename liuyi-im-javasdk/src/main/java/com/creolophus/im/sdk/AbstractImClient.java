@@ -1,10 +1,8 @@
 package com.creolophus.im.sdk;
 
 import com.alibaba.fastjson.JSON;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
-import com.creolophus.im.protocol.LoginInput;
-import com.creolophus.im.protocol.SendMessageInput;
+import com.alibaba.fastjson.JSONObject;
+import com.creolophus.im.protocol.*;
 
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
@@ -24,6 +22,7 @@ public abstract class AbstractImClient implements LiuyiImClient {
     }
 
     public abstract void sendMessage(Command request,BiConsumer<Command,Command> consumer);
+    public abstract Command sendMessage(Command reqeust);
 
     @Override
     public void login(String token) {
@@ -36,10 +35,14 @@ public abstract class AbstractImClient implements LiuyiImClient {
                 context.setToken(token);
                 Command request = buildLoginCommand(token);
                 try {
-                    sendMessage(request, (request1, ack) -> {
-                        System.out.println(JSON.toJSONString(request1));
-                        System.out.println(JSON.toJSONString(ack));
-                    });
+//                    sendMessage(request, (request1, ack) -> {
+//                        System.out.println(JSON.toJSONString(request1));
+//                        System.out.println(JSON.toJSONString(ack));
+//                    });
+                    Command response = sendMessage(request);
+                    LoginDown loginDown = ((JSONObject)response.getBody()).toJavaObject(LoginDown.class);
+                    context.setAppKey(loginDown.getAppKey());
+                    context.setUserId(loginDown.getUserId());
                     isLogin=true;
                 } catch (Throwable e) {
                     throw new RuntimeException("无法登录",e);
@@ -66,7 +69,7 @@ public abstract class AbstractImClient implements LiuyiImClient {
 
 
     public Command buildLoginCommand(String token){
-        LoginInput client = new LoginInput();
+        LoginUp client = new LoginUp();
         client.setDeviceLabel(System.getProperty("os.name"));
         client.setSdkName("liuyi-im-nettysdk");
         client.setSdkVersion("1.0.0");
@@ -76,7 +79,7 @@ public abstract class AbstractImClient implements LiuyiImClient {
     }
 
     public Command buildSendMessageCommand(int messageType, String messageBody, long targetId){
-        SendMessageInput input = new SendMessageInput();
+        SendMessageUp input = new SendMessageUp();
         input.setMessageBody(messageBody);
         input.setMessageType(messageType);
         input.setTargetId(targetId);

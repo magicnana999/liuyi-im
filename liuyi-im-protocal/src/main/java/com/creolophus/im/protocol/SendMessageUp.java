@@ -5,7 +5,7 @@ package com.creolophus.im.protocol;
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class SendMessageInput {
+public class SendMessageUp {
 
     private Integer messageType;
     private Long targetId;

@@ -72,11 +72,16 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
     }
 
     @Override
-    public Long pushMessage(Long messageId, Integer messageType, String messageBody, Long receiverId, Long groupId, Long senderId){
-        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), new PushMessageOutput(messageId, messageType, groupId, messageBody, receiverId, senderId));
+    public PushMessageDown pushMessage(PushMessageDown pushMessageDown){
+        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
 
-        pushMessage(receiverId, response);
-        return messageId;
+        pushMessage(pushMessageDown.getReceiverId(), response);
+        return pushMessageDown;
+    }
+
+    @Override
+    public void pushMessageAck(PushMessageUp pushMessageUp) {
+        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(),pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
     }
 
 
@@ -97,7 +102,7 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
     }
 
     @Override
-    public LoginOutput connect(LoginInput input) {
+    public LoginDown login(LoginUp input) {
         UserChannel client = new UserChannel();
         client.setChannel(getChannel());
         client.setUserId(getUserId());
@@ -106,10 +111,13 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         registerUserClient(client);
         backendFeign.registerUserClient("127.0.0.1",33010,client.getUserId());
 
-        LoginOutput ret = new LoginOutput();
+        LoginDown ret = new LoginDown();
         ret.setAppKey(getAppKey());
         ret.setToken(getToken());
         ret.setUserId(getUserId());
+
+        logger.debug("用户登录 成功 {}.{}", ret.getAppKey(),ret.getUserId());
+
         return ret;
     }
 

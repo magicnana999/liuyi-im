@@ -1,7 +1,10 @@
 package com.creolophus.im.processor;
 
 import com.creolophus.im.domain.UserClient;
-import com.creolophus.im.protocol.LoginInput;
+import com.creolophus.im.protocol.LoginDown;
+import com.creolophus.im.protocol.LoginUp;
+import com.creolophus.im.protocol.PushMessageDown;
+import com.creolophus.im.protocol.PushMessageUp;
 
 /**
  * @author magicnana
@@ -9,9 +12,11 @@ import com.creolophus.im.protocol.LoginInput;
  */
 public interface UserClientProcessor {
 
-    Object connect(LoginInput bodyFromObject);
+    LoginDown login(LoginUp loginUp);
 
-    Long pushMessage(Long messageId, Integer messageType, String messageBody, Long receiverId, Long groupId, Long senderId);
+    PushMessageDown pushMessage(PushMessageDown pushMessageDown);
+
+    void pushMessageAck(PushMessageUp pushMessageUp);
 
     void registerUserClient(UserClient client);
 }

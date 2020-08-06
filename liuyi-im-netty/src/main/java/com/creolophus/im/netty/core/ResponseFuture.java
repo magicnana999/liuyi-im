@@ -21,7 +21,6 @@ import io.netty.channel.Channel;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public class ResponseFuture {
@@ -34,7 +33,6 @@ public class ResponseFuture {
 
     private final SemaphoreReleaseOnlyOnce once;
 
-    private final AtomicBoolean executeCallbackOnlyOnce = new AtomicBoolean(false);
     private volatile Command request;
     private volatile Command response;
     private volatile boolean sendOk = true;
@@ -42,12 +40,13 @@ public class ResponseFuture {
 
     public ResponseFuture(
             Channel channel, String commandSeq, long timeoutMillis, BiConsumer<Command/*request*/,Command/*ack*/> consumer,
-            SemaphoreReleaseOnlyOnce once) {
+            SemaphoreReleaseOnlyOnce once,Command request) {
         this.commandSeq = commandSeq;
         this.processChannel = channel;
         this.timeoutMillis = timeoutMillis;
         this.consumer = consumer;
         this.once = once;
+        this.request = request;
     }
 
     public void release() {
@@ -84,8 +83,22 @@ public class ResponseFuture {
 
     public void putResponse(final Command response) {
         this.response = response;
-        this.countDownLatch.countDown();
+        if(this.consumer!=null){
+            this.consumer.accept(request,response);
+        }else{
+            this.countDownLatch.countDown();
+        }
     }
 
+    public String getCommandSeq() {
+        return commandSeq;
+    }
 
+    public Channel getProcessChannel() {
+        return processChannel;
+    }
+
+    public BiConsumer<Command, Command> getConsumer() {
+        return consumer;
+    }
 }

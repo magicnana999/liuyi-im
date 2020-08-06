@@ -16,10 +16,8 @@ import io.netty.handler.codec.MessageToByteEncoder;
 public class NettyEncoder extends MessageToByteEncoder<Command> {
 
 
-    private FastJSONSerializer serializer = new FastJSONSerializer();
-
     @Override
     public void encode(ChannelHandlerContext ctx, Command nettyCommand, ByteBuf out) {
-        out.writeBytes(serializer.encode(nettyCommand));
+        out.writeBytes(nettyCommand.encode());
     }
 }

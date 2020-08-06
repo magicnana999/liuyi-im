@@ -31,9 +31,9 @@ public class NettyServerInstance extends AbstractNettyServer {
             TracerUtil tracerUtil,
             ContextProcessor contextProcessor,
             RequestProcessor requestProcessor,
-            ChannelEventListener channelEventListener,
+            NettyServerChannelEventListener nettyServerChannelEventListener,
             ResponseProcessor responseProcessor) {
-        super(nettyServerConfig, tracerUtil, contextProcessor,requestProcessor,channelEventListener,responseProcessor);
+        super(nettyServerConfig, tracerUtil, contextProcessor,requestProcessor, nettyServerChannelEventListener,responseProcessor);
     }
 
 

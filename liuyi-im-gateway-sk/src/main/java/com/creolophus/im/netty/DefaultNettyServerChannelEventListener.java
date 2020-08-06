@@ -1,7 +1,7 @@
 package com.creolophus.im.netty;
 
 import com.creolophus.im.domain.UserChannel;
-import com.creolophus.im.netty.core.ChannelEventListener;
+import com.creolophus.im.netty.core.NettyServerChannelEventListener;
 import com.creolophus.im.service.UserChannelHolder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date 2020/6/30 下午2:59
  */
 @Service
-public class DefaultChannelEventListener implements ChannelEventListener {
+public class DefaultNettyServerChannelEventListener implements NettyServerChannelEventListener {
 
     @Resource
     private UserChannelHolder userChannelHolder;

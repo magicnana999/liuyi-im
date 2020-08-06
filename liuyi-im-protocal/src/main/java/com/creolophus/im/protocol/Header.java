@@ -90,4 +90,15 @@ public class Header {
         return header;
     }
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"seq\":\"").append(seq).append('\"');
+        sb.append(",\"type\":").append(type);
+        sb.append(",\"code\":").append(code);
+        sb.append(",\"error\":\"").append(error).append('\"');
+        sb.append('}');
+        return sb.toString();
+    }
 }

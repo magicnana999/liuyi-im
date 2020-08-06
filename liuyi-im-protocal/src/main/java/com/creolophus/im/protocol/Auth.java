@@ -26,4 +26,12 @@ public class Auth {
     }
 
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"appKey\":\"").append(appKey).append('\"');
+        sb.append(",\"userId\":").append(userId);
+        sb.append('}');
+        return sb.toString();
+    }
 }

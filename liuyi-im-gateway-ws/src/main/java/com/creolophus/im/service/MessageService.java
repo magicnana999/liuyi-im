@@ -4,7 +4,8 @@ import com.creolophus.im.common.config.LiuyiSetting;
 import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.processor.MessageProcessor;
 import com.creolophus.im.processor.UserClientProcessor;
-import com.creolophus.im.protocol.SendMessageInput;
+import com.creolophus.im.protocol.SendMessageDown;
+import com.creolophus.im.protocol.SendMessageUp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,20 +26,12 @@ public class MessageService extends SessionBaseService implements MessageProcess
     @Resource
     private BackendFeign backendFeign;
 
-    @Resource
-    private UserClientProcessor userClientProcessor;
-
-    public Long pushMessage(
-            Long messageId, Integer messageType, String messageBody, Long receiverId, Long groupId, Long senderId) {
-
-       return userClientProcessor.pushMessage(messageId, messageType, messageBody, receiverId, groupId, senderId);
-    }
-
 
     @Override
-    public Long sendMessage(SendMessageInput m) {
+    public SendMessageDown sendMessage(SendMessageUp m) {
         SimpleDateFormat format = new SimpleDateFormat(LiuyiSetting.MESSAGE_SEND_TIME_PATTERN);
         String sendTime = format.format(new Date());
-        return backendFeign.sendMessage(getAppKey(),getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
+        Long messageId =  backendFeign.sendMessage(getAppKey(),getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
+        return new SendMessageDown(messageId);
     }
 }

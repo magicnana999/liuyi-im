@@ -1,11 +1,12 @@
 package com.creolophus.im.protocol;
 
 /**
+ * server -> client
 * @author magicnana
 * @date 2020-01-11
 */
 
-public class LoginOutput {
+public class LoginDown {
 
 	private String appKey ;
 	private String token ;

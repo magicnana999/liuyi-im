@@ -36,7 +36,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         return sessionTable.get(sessionId);
     }
 
-    private void insertSessionlTable(UserSession client) {
+    private void insertSessionTable(UserSession client) {
         sessionTable.put(client.getSessionId(), client);
     }
 
@@ -56,7 +56,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     public void registerUserClient(UserClient userClient) {
         UserSession client = (UserSession)userClient;
         insertUserTable(client);
-        insertSessionlTable(client);
+        insertSessionTable(client);
     }
 
     private void removeSessionTable(UserSession client) {
@@ -77,7 +77,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     private BackendFeign backendFeign;
 
     @Override
-    public LoginOutput connect(LoginInput input) {
+    public LoginDown login(LoginUp input) {
         UserSession client = new UserSession();
         client.setSession(getSession());
         client.setUserId(getUserId());
@@ -86,7 +86,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         registerUserClient(client);
         backendFeign.registerUserClient("127.0.0.1",33008,client.getUserId());
 
-        LoginOutput ret = new LoginOutput();
+        LoginDown ret = new LoginDown();
         ret.setAppKey(getAppKey());
         ret.setToken(getToken());
         ret.setUserId(getUserId());
@@ -94,11 +94,16 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     }
 
     @Override
-    public Long pushMessage(Long messageId, Integer messageType, String messageBody, Long receiverId, Long groupId, Long senderId){
-        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), new PushMessageOutput(messageId, messageType, groupId, messageBody, receiverId, senderId));
+    public PushMessageDown pushMessage(PushMessageDown pushMessageDown){
+        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
 
-        pushMessage(receiverId, response);
-        return messageId;
+        pushMessage(pushMessageDown.getReceiverId(), response);
+        return pushMessageDown;
+    }
+
+    @Override
+    public void pushMessageAck(PushMessageUp pushMessageUp) {
+        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(),pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
     }
 
 

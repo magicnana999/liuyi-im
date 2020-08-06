@@ -2,15 +2,17 @@ package com.creolophus.im.client;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.PushMessageOutput;
+import com.creolophus.im.protocol.PushMessageDown;
+import com.creolophus.im.protocol.PushMessageUp;
 import com.creolophus.im.protocol.UserTest;
-import com.creolophus.im.sdk.Configration;
-import com.creolophus.im.sdk.ImClientFactory;
-import com.creolophus.im.sdk.LiuyiImClient;
-import com.creolophus.im.sdk.PushProcessor;
+import com.creolophus.im.sdk.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 
 import java.awt.event.*;
+import java.net.SocketAddress;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -21,7 +23,7 @@ import javax.swing.border.EmptyBorder;
  * @author magicnana
  * @date 2020/7/30 下午5:44
  */
-public class MyClientWindow extends JFrame implements PushProcessor {
+public class MyClientWindow extends JFrame implements NettyClientChannelEventListener, NettyImClient.MessageReceiver {
 
     private static UserTest.狗男女 currentUser;
 
@@ -55,6 +57,9 @@ public class MyClientWindow extends JFrame implements PushProcessor {
         currentUserBox.addItem(UserTest.小昭);
 
 
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this);
+
+
 //        txtip = new JTextField();
 //        txtip.setText("120.254.12.102");
 //        txtip.setColumns(10);
@@ -67,7 +72,7 @@ public class MyClientWindow extends JFrame implements PushProcessor {
                 currentUser = (UserTest.狗男女)currentUserBox.getSelectedItem();
                 System.out.println(currentUser.userId);
 
-                liuyiImClient = ImClientFactory.getSocketImClient(new Configration(),MyClientWindow.this);
+//                liuyiImClient = ImClientFactory.getSocketImClient(new Configration(),MyClientWindow.this);
                 liuyiImClient.login(currentUser.token);
 
                 btnConnect.setText("点击断开连接,左侧变成消息接收人");
@@ -135,14 +140,52 @@ public class MyClientWindow extends JFrame implements PushProcessor {
     }
 
     @Override
-    public Command receivePush(Command command) {
+    public void onClose(ChannelHandlerContext ctx, ChannelPromise promise) {
+
+    }
+
+    @Override
+    public void onConnect(
+            ChannelHandlerContext ctx,
+            SocketAddress remoteAddress,
+            SocketAddress localAddress,
+            ChannelPromise promise) {
+
+    }
+
+    @Override
+    public void onDisconnect(ChannelHandlerContext ctx, ChannelPromise promise) {
+
+    }
+
+    @Override
+    public void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+
+    }
+
+    @Override
+    public void onUserEventTriggered(ChannelHandlerContext ctx, Object evt) {
+
+    }
+
+    @Override
+    public PushMessageUp receivePushMessage(Command command) {
         System.out.println("收到推送"+ JSON.toJSONString(command));
         JSONObject jsonObject = (JSONObject)command.getBody();
-        PushMessageOutput out = jsonObject.toJavaObject(PushMessageOutput.class);
+        PushMessageDown out = jsonObject.toJavaObject(PushMessageDown.class);
         UserTest.狗男女 target = UserTest.valueOf(out.getSenderId());
         appendText(target.toString()+": "+out.getMessageBody());
-        Command response = liuyiImClient.buildAckCommand(command);
-        return response;
+        PushMessageUp up = new PushMessageUp();
+        up.setGroupId(out.getGroupId());
+        up.setMessageId(out.getMessageId());
+        up.setReceiverId(out.getReceiverId());
+        up.setSenderId(out.getSenderId());
+        return up;
+    }
+
+    @Override
+    public void receiveSendMessageAck(Command command) {
+        System.out.println("收到 ACK "+JSON.toJSONString(command));
     }
 
     public void sendMessage(){

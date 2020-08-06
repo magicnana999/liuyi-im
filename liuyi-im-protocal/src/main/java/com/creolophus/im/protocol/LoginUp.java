@@ -1,11 +1,12 @@
 package com.creolophus.im.protocol;
 
 /**
+ * client -> server
 * @author magicnana
 * @date 2020-01-11
 */
 
-public class LoginInput {
+public class LoginUp {
 
 	private String deviceLabel ;
 	private String sdkName ;

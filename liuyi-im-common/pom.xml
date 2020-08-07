@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.creolophus</groupId>
             <artifactId>liuyi-ms</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
@@ -66,4 +66,12 @@
         </plugins>
 
     </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Magicnana999 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
+        </repository>
+    </repositories>
 </project>

@@ -191,10 +191,10 @@
             <name>GitHub Magicnana999 Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>jitpack.io</id>-->
+            <!--<url>https://jitpack.io</url>-->
+        <!--</repository>-->
     </repositories>
 
     <distributionManagement>

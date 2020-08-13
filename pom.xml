@@ -14,7 +14,7 @@
     <groupId>com.creolophus</groupId>
     <artifactId>liuyi-im</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <modules>
         <module>liuyi-im-common</module>
@@ -182,17 +182,6 @@
 
     </build>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Magicnana999 Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
-        </repository>
-        <!--<repository>-->
-        <!--<id>jitpack.io</id>-->
-        <!--<url>https://jitpack.io</url>-->
-        <!--</repository>-->
-    </repositories>
 
     <distributionManagement>
         <repository>

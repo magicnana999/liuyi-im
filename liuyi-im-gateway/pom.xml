@@ -5,12 +5,12 @@
     <parent>
         <artifactId>liuyi-im</artifactId>
         <groupId>com.creolophus</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>liuyi-im-gateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
 
 
     <dependencies>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.creolophus</groupId>
             <artifactId>liuyi-im-netty</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
     </dependencies>

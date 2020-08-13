@@ -20,6 +20,6 @@ public class GatewayScheduler {
     @Entry
     @Scheduled(fixedRate = 30 * 1000)
     public void gatewayCheck() {
-        gatewayService.findGetewayListAndCheck();
+        gatewayService.findGatewayListAndCheck();
     }
 }

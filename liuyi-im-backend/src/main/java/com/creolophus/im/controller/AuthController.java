@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
+ * 认证
  * @author magicnana
  * @date 2019/6/4 上午12:17
  */
@@ -26,12 +27,24 @@ public class AuthController extends BaseController {
     @Resource
     private AuthService authService;
 
+    /**
+     * 生成 Token
+     * 其他 Application 调用
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/token", method = RequestMethod.GET)
     public ApiResult getToken(@RequestParam("userId") Long userId) {
         UserSecurity user = authService.createToken(userId);
         return new ApiResult(user.getToken());
     }
 
+    /**
+     * 校验 token
+     * Gateway中每一次上行的消息到达时调用
+     * @param token
+     * @return
+     */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public ApiResult verifyToken(@RequestParam("token") String token) {
         UserSecurity user = authService.verifyToken(token);

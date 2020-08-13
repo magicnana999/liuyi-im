@@ -29,7 +29,7 @@ public class GatewayService extends BaseService {
     @Resource
     private RestTemplate restTemplate;
 
-    public void findGetewayListAndCheck() {
+    public void findGatewayListAndCheck() {
         Set<String> set = gatewayStorage.getGatewayList();
         for (String ipAndPort : set) {
             GatewayAddr addr = new GatewayAddr(ipAndPort);

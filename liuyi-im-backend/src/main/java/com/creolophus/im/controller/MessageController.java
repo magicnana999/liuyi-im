@@ -30,19 +30,40 @@ public class MessageController extends BaseController {
     @Resource
     private MessageService messageService;
 
+    /**
+     * 取得单个会话的消息列表
+     * Application 调用
+     * @param receiverId  消息接收人 ID
+     * @param messageId   当前会话的最新 messageId
+     * @param messageType [1:单聊,2:群聊]
+     * @param sourceId    来源 ID [单聊:senderId,群聊:groupId]
+     * @param pageNo      当前页
+     * @param pageSize    每页数量
+     * @return
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResult findMessageList(
             @RequestParam("receiverId") Long receiverId,
             @RequestParam("messageId") Long messageId,
             @RequestParam("messageType") Integer messageType,
-            @RequestParam("senderId") Long senderId,
+            @RequestParam("sourceId") Long sourceId,
             @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        List<SimpleMessageVo> list = messageService.findMessageList(receiverId, messageId, messageType, senderId, pageNo, pageSize);
+        List<SimpleMessageVo> list = messageService.findMessageList(receiverId, messageId, messageType, sourceId, pageNo, pageSize);
         return new ApiResult(list);
     }
 
 
+    /**
+     * Gateway 调用,发送和同步消息
+     * @param appKey      AppKey
+     * @param senderId    发送人 ID
+     * @param messageType [1:单聊,2:群聊]
+     * @param targetId    [单聊:receiverId,群聊:groupId]
+     * @param sendTime    发送时间
+     * @param messageBody 消息体
+     * @return
+     */
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ApiResult sendMessage(
             @RequestParam("appKey") String appKey,

@@ -18,7 +18,6 @@ import javax.validation.Valid;
  * @author magicnana
  * @date 2018/12/27 上午11:08
  */
-
 @Valid
 @RestController
 @RequestMapping(value = "/liuyi/backend/user_client", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -29,6 +28,13 @@ public class UserClientController extends BaseController {
     @Resource
     private UserClientService userClientService;
 
+    /**
+     * Gateway 调用,注册网关
+     * @param gatewayIp
+     * @param gatewayPort
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult registerUser(
             @RequestParam("gatewayIp") String gatewayIp,
@@ -38,6 +44,13 @@ public class UserClientController extends BaseController {
         return new ApiResult();
     }
 
+    /**
+     * Gateway 调用,下线网关
+     * @param gatewayIp
+     * @param gatewayPort
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/unregister", method = RequestMethod.POST)
     public ApiResult unregisterUser(
             @RequestParam("gatewayIp") String gatewayIp,

@@ -26,10 +26,7 @@
         <module>liuyi-im-id</module>
         <module>liuyi-im-protocal</module>
         <module>liuyi-im-javasdk</module>
-        <module>liuyi-im-demo-server</module>
         <module>liuyi-im-demo-javaclient</module>
-        <module>liuyi-im-dc</module>
-        <module>liuyi-im-dc</module>
     </modules>
 
     <properties>

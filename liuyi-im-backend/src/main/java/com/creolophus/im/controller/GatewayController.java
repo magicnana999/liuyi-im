@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
+ * Gateway
  * @author magicnana
  * @date 2018/12/27 上午11:08
  */
@@ -29,6 +30,12 @@ public class GatewayController extends BaseController {
     @Resource
     private GatewayService gatewayService;
 
+    /**
+     * Gateway 主动调用
+     * @param ip
+     * @param port
+     * @return
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult registerGateway(@RequestParam("ip") String ip, @RequestParam("port") Integer port) {
         gatewayService.registerGateway(ip, port);
@@ -36,8 +43,7 @@ public class GatewayController extends BaseController {
     }
 
     /**
-     * Gateway停止时调用，意外停止有Schedule感知
-     *
+     * Gateway停止时主动调用，意外停止有Schedule感知
      * @param ip
      * @param port
      * @return

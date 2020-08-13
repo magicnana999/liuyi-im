@@ -6,6 +6,7 @@ import com.creolophus.im.dao.MessageDao;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
 import com.creolophus.im.vo.SimpleMessageVo;
+import com.creolophus.liuyi.common.exception.ApiException;
 import com.creolophus.liuyi.common.shutdown.Shutdown;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,32 @@ public class MessageService extends BaseService implements Shutdown {
         return messageStorage.asyncMessage(message);
     }
 
-    public List<SimpleMessageVo> findMessageList(
-            Long receiverId, Long messageId, Integer messageType, Long senderId, int pageNo, int pageSize) {
+    public List<SimpleMessageVo> findMessageList(Long receiverId, Long messageId, Integer messageType, Long sourceId, int pageNo, int pageSize) {
+
+        Message.MessageType mt = Message.MessageType.valueOf(messageType);
+        if(mt == null) {
+            throw new ApiException("无此 MessageType");
+        }
+
+        if(mt.getValue() == Message.MessageType.SINGLE.getValue()) {
+            return findMessageListOfSingle(receiverId, messageId, messageType, sourceId, pageNo, pageSize);
+        } else {
+            return findMessageListOfGroup(receiverId, messageId, messageType, sourceId, pageNo, pageSize);
+        }
+    }
+
+    private List<SimpleMessageVo> findMessageListOfGroup(Long receiverId, Long messageId, Integer messageType, Long groupId, int pageNo, int pageSize) {
+        return messageDao.createLambdaQuery()
+                .andEq(Message::getReceiverId, receiverId)
+                .andGreat(Message::getMessageId, messageId)
+                .andEq(Message::getMessageType, messageType)
+                .andEq(Message::getGroupId, groupId)
+                .asc(Message::getMessageId)
+                .limit((pageNo - 1) * pageSize, pageSize)
+                .select(SimpleMessageVo.class, null);
+    }
+
+    private List<SimpleMessageVo> findMessageListOfSingle(Long receiverId, Long messageId, Integer messageType, Long senderId, int pageNo, int pageSize) {
         return messageDao.createLambdaQuery()
                 .andEq(Message::getReceiverId, receiverId)
                 .andGreat(Message::getMessageId, messageId)
@@ -73,8 +98,7 @@ public class MessageService extends BaseService implements Shutdown {
         logger.info("所有线程已启动 {}", threads.size());
     }
 
-    public Long sendMessage(
-            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime, String appKey) {
+    public Long sendMessage(Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime, String appKey) {
         if(messageType == Message.MessageType.SINGLE.getValue()) {
             Message message = new Message();
             message.setMessageId(idSimpleService.nextMessageId(targetId));

@@ -26,14 +26,14 @@ public class UserService extends BaseService {
     @Resource
     private UserStorage userStorage;
 
-    public Long createUser(String name, String portrait, Long outerId, String appKey) {
+    public Long createUser(String name, String portrait, Long outId, String appKey) {
         User user = new User();
         user.setState(User.State.ENABLE.getValue());
         user.setUserId(idExampleService.nextUserId());
         user.setCreateTime(new Date());
         user.setName(name);
         user.setPortrait(portrait);
-        user.setOuterId(outerId);
+        user.setOutId(outId);
         user.setAppKey(appKey);
         userDao.insert(user);
         return user.getUserId();

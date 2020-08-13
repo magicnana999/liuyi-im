@@ -110,5 +110,19 @@ public class Message extends AbstractEntity {
             return this.value;
         }
 
+        public static MessageType valueOf(Integer value) {
+            if(value == null) {
+                return null;
+            }
+
+            for (MessageType mt : MessageType.values()) {
+                if(mt.getValue() == value) {
+                    return mt;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

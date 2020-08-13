@@ -26,6 +26,13 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
+    /**
+     * Application 调用,同步用户
+     * @param name
+     * @param portrait
+     * @param outerId
+     * @return
+     */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ApiResult createUser(
             @RequestParam("name") String name,
@@ -35,6 +42,11 @@ public class UserController extends BaseController {
         return new ApiResult(userId);
     }
 
+    /**
+     * Application 调用,按 ID 取得 User 信息
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/get_by_id", method = RequestMethod.GET)
     public ApiResult getUser(@RequestParam("userId") Long userId) {
         User user = userService.findUserByUserId(userId);

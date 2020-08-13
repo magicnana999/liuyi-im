@@ -13,10 +13,9 @@ public class ImClientFactory {
     private static LiuyiImClient nettyClient;
 
     public static LiuyiImClient getNettyClient(
-                                               NettyClientChannelEventListener nettyClientChannelEventListener,
-                                               NettyImClient.MessageReceiver messageReceiver){
-        if(nettyClient==null){
-            synchronized (LiuyiImClient.class){
+            NettyClientChannelEventListener nettyClientChannelEventListener, NettyImClient.MessageReceiver messageReceiver) {
+        if(nettyClient == null) {
+            synchronized (LiuyiImClient.class) {
                 nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver).start();
             }
         }

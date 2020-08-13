@@ -11,7 +11,7 @@ import springfox.documentation.service.Parameter;
 public class FrontSwaggerDocket extends SwaggerDocket {
 
     public static Parameter token() {
-        return header(GlobalSetting.HEADER_TOKEN_KEY,true,GlobalSetting.HEADER_TOKEN_PRE+" be7fcee88904a31d40064240ac13d931");
+        return header(GlobalSetting.HEADER_TOKEN_KEY, true, GlobalSetting.HEADER_TOKEN_PRE + " be7fcee88904a31d40064240ac13d931");
     }
 
 }

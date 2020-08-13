@@ -29,7 +29,7 @@ public class MessageService extends NettyBaseService implements MessageProcessor
     public SendMessageDown sendMessage(SendMessageUp m) {
         SimpleDateFormat format = new SimpleDateFormat(LiuyiSetting.MESSAGE_SEND_TIME_PATTERN);
         String sendTime = format.format(new Date());
-        Long messageId =  backendFeign.sendMessage(getAppKey(),getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
+        Long messageId = backendFeign.sendMessage(getAppKey(), getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
         return new SendMessageDown(messageId);
     }
 }

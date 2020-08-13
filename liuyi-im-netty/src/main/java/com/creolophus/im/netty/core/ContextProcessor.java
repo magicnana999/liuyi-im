@@ -11,16 +11,27 @@ import javax.websocket.Session;
  */
 public interface ContextProcessor {
 
-    void initContext(Channel channel, Command command);
-    void initContext(Session session, Command command);
-    void validateCommand(Command command);
-    void validateAfterVerify(Command command);
-
     void clearContext();
 
     String getAppKey();
 
     void setAppKey(String appKey);
+
+    Channel getChannel();
+
+    void setChannel(Channel channel);
+
+    Command getRequest();
+
+    void setRequest(Command request);
+
+    Command getResponse();
+
+    void setResponse(Command response);
+
+    Session getSession();
+
+    void setSession(Session session);
 
     String getToken();
 
@@ -30,19 +41,11 @@ public interface ContextProcessor {
 
     void setUserId(long userId);
 
-    Channel getChannel();
+    void initContext(Channel channel, Command command);
 
-    void setChannel(Channel channel);
+    void initContext(Session session, Command command);
 
-    Session getSession();
+    void validateAfterVerify(Command command);
 
-    void setSession(Session session);
-
-    Command getRequest();
-
-    void setRequest(Command request);
-
-    Command getResponse();
-
-    void setResponse(Command response);
+    void validateCommand(Command command);
 }

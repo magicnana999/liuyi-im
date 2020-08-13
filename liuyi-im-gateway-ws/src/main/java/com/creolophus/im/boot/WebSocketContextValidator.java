@@ -2,16 +2,12 @@ package com.creolophus.im.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.core.AbstractContextProcessor;
+import com.creolophus.im.netty.core.ContextProcessor;
+import com.creolophus.im.protocol.Command;
 import com.creolophus.liuyi.common.api.ApiContext;
 import com.creolophus.liuyi.common.api.GlobalSetting;
-import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.liuyi.common.api.MdcUtil;
-import com.creolophus.im.netty.core.ContextProcessor;
-import com.creolophus.im.netty.exception.NettyCommandWithResException;
-import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.protocol.Command;
 import io.netty.channel.Channel;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +44,7 @@ public class WebSocketContextValidator extends AbstractContextProcessor implemen
         validateCommand(command);
         MdcUtil.setUri("" + command.getHeader().getType());
 
-        if(globalSetting!=null && globalSetting.isDebug()) {
+        if(globalSetting != null && globalSetting.isDebug()) {
             if(logger.isDebugEnabled()) {
                 logger.debug(JSON.toJSONString(command));
             }

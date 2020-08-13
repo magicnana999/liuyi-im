@@ -1,15 +1,9 @@
 package com.creolophus.im.netty.core;
 
-import com.alibaba.fastjson.JSON;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import com.creolophus.im.protocol.Command;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import org.apache.rocketmq.remoting.protocol.RemotingCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
@@ -30,8 +24,8 @@ public class NettyDecoder extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        ByteBuf frame =  (ByteBuf)super.decode(ctx, in);
-        if(frame==null){
+        ByteBuf frame = (ByteBuf) super.decode(ctx, in);
+        if(frame == null) {
             return null;
         }
         ByteBuffer byteBuffer = frame.nioBuffer();

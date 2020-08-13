@@ -20,6 +20,7 @@ public class Header {
     public int getCode() {
         return code;
     }
+
     public void setCode(int code) {
         this.code = code;
     }
@@ -27,6 +28,7 @@ public class Header {
     public String getError() {
         return error;
     }
+
     public void setError(String error) {
         this.error = error;
     }
@@ -34,6 +36,7 @@ public class Header {
     public String getSeq() {
         return seq;
     }
+
     public void setSeq(String seq) {
         this.seq = seq;
     }
@@ -41,6 +44,7 @@ public class Header {
     public int getType() {
         return type;
     }
+
     public void setType(int type) {
         this.type = type;
     }
@@ -50,7 +54,7 @@ public class Header {
         header.setSeq(Seq.nextSequence());
         header.setType(commandType);
         header.setCode(code);
-        return  header;
+        return header;
     }
 
     /**

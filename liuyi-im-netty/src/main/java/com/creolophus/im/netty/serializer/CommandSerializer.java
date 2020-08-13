@@ -18,7 +18,7 @@ public interface CommandSerializer {
 
     byte[] encode(Command command);
 
-    String toString(Command command);
-
     String name();
+
+    String toString(Command command);
 }

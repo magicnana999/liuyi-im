@@ -1,12 +1,12 @@
 package com.creolophus.im.boot;
 
-import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
-import com.creolophus.liuyi.common.api.WebStart;
-import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
 import com.creolophus.im.netty.serializer.CommandSerializer;
 import com.creolophus.im.netty.serializer.FastJSONSerializer;
+import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.im.websocket.WebsocketServerInstance;
+import com.creolophus.liuyi.common.api.WebStart;
+import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
@@ -35,13 +35,13 @@ public class Start extends WebStart {
 
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(Start.class, args);
+    @Bean
+    public CommandSerializer commandSerializer() {
+        return new FastJSONSerializer();
     }
 
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
+    public static void main(String[] args) {
+        SpringApplication.run(Start.class, args);
     }
 
     @Override
@@ -57,18 +57,6 @@ public class Start extends WebStart {
     }
 
     @Bean
-    public CommandSerializer commandSerializer(){
-        return new FastJSONSerializer();
-    }
-
-
-    @Bean
-    public WebSocketContextValidator webSocketContextValidator(){
-        return new WebSocketContextValidator();
-    }
-
-
-    @Bean
     public RequestInterceptor requestInterceptor() {
         final String appKey = "websocket_gateway";
         return new CustomRequestInterceptor() {
@@ -80,6 +68,15 @@ public class Start extends WebStart {
         };
     }
 
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
+
+    @Bean
+    public WebSocketContextValidator webSocketContextValidator() {
+        return new WebSocketContextValidator();
+    }
 
 
 }

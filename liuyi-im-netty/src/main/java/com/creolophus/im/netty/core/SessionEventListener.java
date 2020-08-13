@@ -10,22 +10,17 @@ import javax.websocket.Session;
  */
 public interface SessionEventListener {
     /**
-     * 连接建立成功调用的方法
-     * @param session session 对象
-     */
-    void onOpen(Session session);
-
-    /**
      * 断开连接方法
      */
     void onClose(Session session);
 
     /**
-     * 收到客户端消息后调用的方法
-     * @param session session 对象
-     * @param message 返回客户端的消息
+     * 发生异常时触发的方法
+     *
+     * @param session   session 对象
+     * @param throwable 抛出的异常
      */
-    void onMessage(Session session, String message);
+    void onError(Session session, Throwable throwable);
 
     /**
      * 发出响应后
@@ -33,10 +28,18 @@ public interface SessionEventListener {
     void onFlush(Session session, Command response);
 
     /**
-     * 发生异常时触发的方法
+     * 收到客户端消息后调用的方法
+     *
      * @param session session 对象
-     * @param throwable 抛出的异常
+     * @param message 返回客户端的消息
      */
-    void onError(Session session, Throwable throwable);
+    void onMessage(Session session, String message);
+
+    /**
+     * 连接建立成功调用的方法
+     *
+     * @param session session 对象
+     */
+    void onOpen(Session session);
 
 }

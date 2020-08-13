@@ -33,19 +33,18 @@ public class NettyServerInstance extends AbstractNettyServer {
             RequestProcessor requestProcessor,
             NettyServerChannelEventListener nettyServerChannelEventListener,
             ResponseProcessor responseProcessor) {
-        super(nettyServerConfig, tracerUtil, contextProcessor,requestProcessor, nettyServerChannelEventListener,responseProcessor);
-    }
-
-
-    @Override
-    public void start() {
-        heartbeatSchedule.heartbeat();
-        super.start();
+        super(nettyServerConfig, tracerUtil, contextProcessor, requestProcessor, nettyServerChannelEventListener, responseProcessor);
     }
 
     @Override
     public void shutdown() {
         this.shutdown();
+    }
+
+    @Override
+    public void start() {
+        heartbeatSchedule.heartbeat();
+        super.start();
     }
 
 }

@@ -1,9 +1,9 @@
 package com.creolophus.im.websocket;
 
-import com.creolophus.im.service.UserSessionHolder;
 import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.netty.core.SessionEventListener;
 import com.creolophus.im.protocol.Command;
+import com.creolophus.im.service.UserSessionHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -27,7 +27,7 @@ public class SessionEventListenerImpl implements SessionEventListener {
     @Override
     public void onClose(Session session) {
         UserSession uc = userSessionHolder.getUserClient(UserSession.getSessionId(session));
-        if(uc!=null){
+        if(uc != null) {
             userSessionHolder.unregisterUserClient(uc);
         }
     }

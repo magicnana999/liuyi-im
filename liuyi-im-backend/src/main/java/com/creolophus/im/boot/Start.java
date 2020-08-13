@@ -1,10 +1,10 @@
 package com.creolophus.im.boot;
 
-import com.creolophus.liuyi.common.api.ApiContextValidator;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
+import com.creolophus.im.service.MessageService;
+import com.creolophus.liuyi.common.api.ApiContextValidator;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
-import com.creolophus.im.service.MessageService;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
@@ -45,12 +45,7 @@ public class Start extends WebStart {
         super.onApplicationEvent(event);
         ConfigurableApplicationContext applicationContext = event.getApplicationContext();
         final MessageService messageService = applicationContext.getBean(MessageService.class);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                messageService.shutdown();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> messageService.shutdown()));
     }
 
     public static void main(String[] args) {

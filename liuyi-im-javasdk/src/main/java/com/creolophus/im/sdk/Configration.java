@@ -10,14 +10,6 @@ public class Configration {
     private String ip = "127.0.0.1";
     private int port = 33009;
 
-    public boolean isDev() {
-        return isDev;
-    }
-
-    public void setDev(boolean dev) {
-        isDev = dev;
-    }
-
     public String getIp() {
         return ip;
     }
@@ -32,5 +24,13 @@ public class Configration {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public boolean isDev() {
+        return isDev;
+    }
+
+    public void setDev(boolean dev) {
+        isDev = dev;
     }
 }

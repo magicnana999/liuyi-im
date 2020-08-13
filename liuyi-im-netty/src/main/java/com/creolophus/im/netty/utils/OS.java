@@ -10,6 +10,14 @@ public enum OS {
 
     WINDOWS, LINUX, MAC, OTHER;
 
+    public static boolean isLinux() {
+        return LINUX.equals(valueOf());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(SpanNameUtil.toLowerHyphen("111"));
+    }
+
     public static OS valueOf() {
         String osName = System.getProperty("os.name").toLowerCase();
         if(osName.indexOf("linux") >= 0) {
@@ -21,13 +29,5 @@ public enum OS {
         } else {
             return OTHER;
         }
-    }
-
-    public static boolean isLinux() {
-        return LINUX.equals(valueOf());
-    }
-
-    public static void main(String[] args){
-        System.out.println(SpanNameUtil.toLowerHyphen("111"));
     }
 }

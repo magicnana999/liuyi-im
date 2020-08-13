@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SectionDao extends BaseMapper<MessageIdSection> {
 
-    @Sql(value = "select uu.size,ss.* from (select s.* from message_id_section s,(select section_id from message_id_section order by section_id desc limit 0,1) max_section where s.section_id=max_section.section_id) ss left join (select count(1) as size,section_id from message_id_section_user group by section_id) uu on ss.section_id=uu.section_id")
+    @Sql(value = "select uu.size,ss.* from (select s.* from message_id_section s,(select section_id from message_id_section order by section_id desc limit 0," +
+            "1) max_section where s.section_id=max_section.section_id) ss left join (select count(1) as size,section_id from message_id_section_user group by" +
+            " section_id) uu on ss.section_id=uu.section_id")
     MessageIdSectionLimitVo selectMaxSection();
 
 

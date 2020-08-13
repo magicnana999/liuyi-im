@@ -27,11 +27,8 @@ public class GroupController extends BaseController {
     private GroupService groupService;
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public ApiResult createGroup(
-            @RequestParam("userId") Long userId,
-            @RequestParam("targetIds") String targetIds
-            ) {
-        Group group = groupService.createGroup(userId,targetIds);
+    public ApiResult createGroup(@RequestParam("userId") Long userId, @RequestParam("targetIds") String targetIds) {
+        Group group = groupService.createGroup(userId, targetIds);
         return new ApiResult(group);
     }
 

@@ -5,6 +5,7 @@ import com.creolophus.im.common.entity.Message;
 import com.creolophus.im.dao.MessageDao;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
+import com.creolophus.im.vo.SimpleMessageVo;
 import com.creolophus.liuyi.common.shutdown.Shutdown;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,38 +47,34 @@ public class MessageService extends BaseService implements Shutdown {
         return messageStorage.asyncMessage(message);
     }
 
-    public List<Message> findMessageList(Long receiverId, Long messageId, Integer pageNo, Integer pageSize) {
+    public List<SimpleMessageVo> findMessageList(
+            Long receiverId, Long messageId, Integer messageType, Long senderId, int pageNo, int pageSize) {
         return messageDao.createLambdaQuery()
-                .andEq(Message::getReceiverId,receiverId)
-                .andGreat(Message::getMessageId,messageId)
+                .andEq(Message::getReceiverId, receiverId)
+                .andGreat(Message::getMessageId, messageId)
+                .andEq(Message::getMessageType, messageType)
+                .andEq(Message::getSenderId, senderId)
                 .asc(Message::getMessageId)
-                .page(pageNo, pageSize).getList();
+                .limit((pageNo - 1) * pageSize, pageSize)
+                .select(SimpleMessageVo.class, null);
     }
-
-    public List<Message> findUnreadMessageList(Long receiverId,Long messageId) {
-        return messageDao.selectMessageList(receiverId,messageId);
-    }
-
-
-
 
     @PostConstruct
     public void initThread() {
         Runnable asyncRunnable = () -> messageHandlerService.asyncMessage();
         int processors = Runtime.getRuntime().availableProcessors();
 
-        {
-            for (int i = 0; i < processors; i++) {
-                StopableThread t = new StopableThread(asyncRunnable);
-                threads.add(t);
-                t.start();
-            }
+        for (int i = 0; i < processors; i++) {
+            StopableThread t = new StopableThread(asyncRunnable);
+            threads.add(t);
+            t.start();
         }
-        logger.info("所有线程已启动 {}",threads.size());
+
+        logger.info("所有线程已启动 {}", threads.size());
     }
 
     public Long sendMessage(
-            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime,String appKey) {
+            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime, String appKey) {
         if(messageType == Message.MessageType.SINGLE.getValue()) {
             Message message = new Message();
             message.setMessageId(idSimpleService.nextMessageId(targetId));

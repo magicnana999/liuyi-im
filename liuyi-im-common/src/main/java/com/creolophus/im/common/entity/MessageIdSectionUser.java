@@ -1,39 +1,34 @@
 package com.creolophus.im.common.entity;
-import java.math.*;
-import java.util.Date;
-import java.sql.Timestamp;
-import org.beetl.sql.core.annotatoin.Table;
 
-
-import io.swagger.annotations.ApiModelProperty;
-import org.beetl.sql.core.annotatoin.AutoID;
-import org.beetl.sql.core.annotatoin.AssignID;
 import com.creolophus.liuyi.common.base.AbstractEntity;
+import org.beetl.sql.core.annotatoin.AssignID;
 
 
 /**
-* @author magicnana
-* @date 2020-07-03
-*/
+ * @author magicnana
+ * @date 2020-07-03
+ */
 
-public class MessageIdSectionUser extends AbstractEntity  {
+public class MessageIdSectionUser extends AbstractEntity {
 
-	@AssignID
-	private Long userId ;
-	private Long sectionId ;
+    @AssignID
+    private Long userId;
+    private Long sectionId;
 
-	public Long getUserId(){
-	    return  userId;
-	}
-	public void setUserId(Long userId ){
-	    this.userId = userId;
-	}
+    public Long getSectionId() {
+        return sectionId;
+    }
 
-	public Long getSectionId(){
-	    return  sectionId;
-	}
-	public void setSectionId(Long sectionId ){
-	    this.sectionId = sectionId;
-	}
+    public void setSectionId(Long sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
 }

@@ -11,8 +11,8 @@ import javax.websocket.Session;
  */
 public class SessionUtil {
 
-    public static String getSessionId(Session session){
-        return session==null?null:session.getId();
+    public static String getSessionId(Session session) {
+        return session == null ? null : session.getId();
     }
 
 }

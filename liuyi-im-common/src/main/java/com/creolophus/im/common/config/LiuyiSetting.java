@@ -6,5 +6,5 @@ package com.creolophus.im.common.config;
  */
 public class LiuyiSetting {
 
-    public static final String MESSAGE_SEND_TIME_PATTERN="yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String MESSAGE_SEND_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
 }

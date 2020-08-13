@@ -16,23 +16,23 @@ public class NettyClientConfig implements Cloneable {
     private int clientSocketSndBufSize = 65535;
     private int clientSocketRcvBufSize = 65535;
 
-    public int getClientSocketSndBufSize() {
-        return clientSocketSndBufSize;
-    }
-
-    public String getNettyAddress() {
-        return "127.0.0.1:33009";
-    }
-
-    public void setClientSocketSndBufSize(int clientSocketSndBufSize) {
-        this.clientSocketSndBufSize = clientSocketSndBufSize;
-    }
-
     public int getClientSocketRcvBufSize() {
         return clientSocketRcvBufSize;
     }
 
     public void setClientSocketRcvBufSize(int clientSocketRcvBufSize) {
         this.clientSocketRcvBufSize = clientSocketRcvBufSize;
+    }
+
+    public int getClientSocketSndBufSize() {
+        return clientSocketSndBufSize;
+    }
+
+    public void setClientSocketSndBufSize(int clientSocketSndBufSize) {
+        this.clientSocketSndBufSize = clientSocketSndBufSize;
+    }
+
+    public String getNettyAddress() {
+        return "127.0.0.1:33009";
     }
 }

@@ -41,14 +41,6 @@ public class DefaultNettyServerChannelEventListener implements NettyServerChanne
         unregisterUserClient(ctx.channel());
     }
 
-    @Async
-    public void unregisterUserClient(Channel channel){
-        UserChannel uc = userChannelHolder.getUserClient(UserChannel.getChannelId(channel));
-        if(uc!=null){
-            userChannelHolder.unregisterUserClient(uc);
-        }
-    }
-
     @Override
     public void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 
@@ -62,5 +54,13 @@ public class DefaultNettyServerChannelEventListener implements NettyServerChanne
     @Override
     public void onUserEventTriggered(ChannelHandlerContext ctx, Object evt) {
 
+    }
+
+    @Async
+    public void unregisterUserClient(Channel channel) {
+        UserChannel uc = userChannelHolder.getUserClient(UserChannel.getChannelId(channel));
+        if(uc != null) {
+            userChannelHolder.unregisterUserClient(uc);
+        }
     }
 }

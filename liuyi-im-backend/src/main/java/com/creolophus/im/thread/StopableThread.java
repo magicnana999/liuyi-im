@@ -28,12 +28,36 @@ public class StopableThread extends Thread {
         this.runnable = target;
     }
 
+    public static void main(String[] args) throws InterruptedException {
+        List<StopableThread> list = new ArrayList();
+
+        for (int j = 0; j < 2; j++) {
+            list.add(new StopableThread(() -> {
+                for (int i = 0; i < 5; i++) {
+                    sleep(1);
+                    System.out.println(Thread.currentThread().getName() + " " + i + " doing");
+                }
+            }));
+        }
+
+        list.forEach(thread -> thread.start());
+
+        sleep(5);
+        System.out.println("现在开始停止");
+        list.forEach(thread -> thread.shutdown());
+        System.out.println("所有线程已停止");
+    }
+
     @Override
     public void run() {
         while(true && !stopped) {
             runnable.run();
         }
         logger.debug("Thread [{}] has stopped or finished", Thread.currentThread().getName());
+    }
+
+    public void shutdown() {
+        shutdown(false);
     }
 
     public void shutdown(final boolean interrupt) {
@@ -48,38 +72,13 @@ public class StopableThread extends Thread {
         }
     }
 
-    public void shutdown() {
-        shutdown(false);
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        List<StopableThread> list = new ArrayList();
-
-        for(int j=0;j<2;j++){
-            list.add(new StopableThread(() -> {
-                for(int i=0;i<5;i++){
-                    sleep(1);
-                    System.out.println(Thread.currentThread().getName() +" " +i+" doing");
-                }
-            }));
-        }
-
-        list.forEach(thread -> thread.start());
-
-        sleep(5);
-        System.out.println("现在开始停止");
-        list.forEach(thread -> thread.shutdown());
-        System.out.println("所有线程已停止");
-    }
-
-    public static void sleep(int times){
+    public static void sleep(int times) {
         try {
             TimeUnit.SECONDS.sleep(times);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
 
 
 }

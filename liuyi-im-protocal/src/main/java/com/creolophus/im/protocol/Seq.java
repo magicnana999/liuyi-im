@@ -23,14 +23,9 @@ public class Seq {
 
     private static final int MACHINE_IDENTIFIER;
     private static final short PROCESS_IDENTIFIER;
-
-    public static int getMachineIdentifier() {
-        return MACHINE_IDENTIFIER;
-    }
-
-    public static short getProcessIdentifier() {
-        return PROCESS_IDENTIFIER;
-    }
+    private static final AtomicInteger atomicInteger = new AtomicInteger(0);
+    private static final int machineId = getMachineIdentifier();
+    private static final short processId = getProcessIdentifier();
 
     static {
         try {
@@ -92,9 +87,13 @@ public class Seq {
         return processId;
     }
 
-    private static final AtomicInteger atomicInteger = new AtomicInteger(0);
-    private static final int machineId = getMachineIdentifier();
-    private static final short processId = getProcessIdentifier();
+    public static int getMachineIdentifier() {
+        return MACHINE_IDENTIFIER;
+    }
+
+    public static short getProcessIdentifier() {
+        return PROCESS_IDENTIFIER;
+    }
 
     public static String nextSequence() {
         Date now = new Date();

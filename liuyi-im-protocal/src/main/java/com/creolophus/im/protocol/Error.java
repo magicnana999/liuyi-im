@@ -7,5 +7,6 @@ package com.creolophus.im.protocol;
 public interface Error {
 
     int getCode();
+
     String getMessage();
 }

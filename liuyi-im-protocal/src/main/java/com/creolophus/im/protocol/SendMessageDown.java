@@ -13,7 +13,7 @@ public class SendMessageDown {
         this.messageId = messageId;
     }
 
-    public SendMessageDown(){}
+    public SendMessageDown() {}
 
     public Long getMessageId() {
         return messageId;

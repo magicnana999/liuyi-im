@@ -40,10 +40,10 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
 
     @Override
     public Command sendMessage(Command request) {
-        return abstractNettyClient.sendSync(request,1000);
+        return abstractNettyClient.sendSync(request, 1000);
     }
 
-    public NettyImClient start(){
+    public NettyImClient start() {
         abstractNettyClient.start();
         abstractNettyClient.createChannel();
         return this;
@@ -56,21 +56,14 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
 
     @Override
     public Object processRequest(Command command) {
-        if(command.getHeader().getCode() == 0) {
-            switch (CommandType.valueOf(command.getHeader().getType())) {
-                case PUSH_MESSAGE:
-                    return messageReceiver.receivePushMessage(command);
-                default:
-                    return null;
-            }
-        } else {
-            switch (CommandType.valueOf(command.getHeader().getType())) {
-                case SEND_MESSAGE:
-                    messageReceiver.receiveSendMessageAck(command);
-                    return null;
-                default:
-                    return null;
-            }
+        switch (CommandType.valueOf(command.getHeader().getType())) {
+            case PUSH_MESSAGE:
+                return messageReceiver.receivePushMessage(command);
+            case SEND_MESSAGE:
+                messageReceiver.receiveSendMessageAck(command);
+                return null;
+            default:
+                return null;
         }
     }
 

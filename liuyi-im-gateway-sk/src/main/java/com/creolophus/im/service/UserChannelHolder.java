@@ -2,9 +2,9 @@ package com.creolophus.im.service;
 
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
-import com.creolophus.im.protocol.*;
-import com.creolophus.im.processor.UserClientProcessor;
 import com.creolophus.im.feign.BackendFeign;
+import com.creolophus.im.processor.UserClientProcessor;
+import com.creolophus.im.protocol.*;
 import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         return userTable.get(userId);
     }
 
-    public UserChannel getUserClient(String channelId){
+    public UserChannel getUserClient(String channelId) {
         return channelTable.get(channelId);
     }
 
@@ -51,10 +51,59 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
     }
 
     @Override
+    public LoginDown login(LoginUp input) {
+        UserChannel client = new UserChannel();
+        client.setChannel(getChannel());
+        client.setUserId(getUserId());
+        client.setAppKey(getAppKey());
+        client.setSocketType(UserChannel.SocketType.SOCKET.getValue());
+        registerUserClient(client);
+        backendFeign.registerUserClient("127.0.0.1", 33010, client.getUserId());
+
+        LoginDown ret = new LoginDown();
+        ret.setAppKey(getAppKey());
+        ret.setToken(getToken());
+        ret.setUserId(getUserId());
+
+        logger.debug("用户登录 成功 {}.{}", ret.getAppKey(), ret.getUserId());
+
+        return ret;
+    }
+
+    @Override
+    public PushMessageDown pushMessage(PushMessageDown pushMessageDown) {
+        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
+
+        pushMessage(pushMessageDown.getReceiverId(), response);
+        return pushMessageDown;
+    }
+
+    @Override
+    public void pushMessageAck(PushMessageUp pushMessageUp) {
+        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(), pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
+    }
+
+    @Override
     public void registerUserClient(UserClient userClient) {
-        UserChannel client = (UserChannel)userClient;
+        UserChannel client = (UserChannel) userClient;
         insertUserTable(client);
         insertChannelTable(client);
+    }
+
+    public void pushMessage(Long receiverId, Command response) {
+        if(response != null) {
+//            remoteContextValidator.setResponse(response);
+            try {
+                UserChannel uc = getUserClient(receiverId);
+                if(uc != null && uc.getChannel() != null) {
+                    uc.getChannel().writeAndFlush(response);
+                }
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            logger.error("Nothing to response");
+        }
     }
 
     private void removeChannelTable(UserChannel client) {
@@ -69,56 +118,6 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         backendFeign.unregisterUserClient("127.0.0.1", 33010, client.getUserId());
         removeUserTable(client);
         removeChannelTable(client);
-    }
-
-    @Override
-    public PushMessageDown pushMessage(PushMessageDown pushMessageDown){
-        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
-
-        pushMessage(pushMessageDown.getReceiverId(), response);
-        return pushMessageDown;
-    }
-
-    @Override
-    public void pushMessageAck(PushMessageUp pushMessageUp) {
-        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(),pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
-    }
-
-
-    public void pushMessage(Long receiverId, Command response){
-        if(response != null) {
-//            remoteContextValidator.setResponse(response);
-            try {
-                UserChannel uc = getUserClient(receiverId);
-                if(uc!=null && uc.getChannel()!=null){
-                    uc.getChannel().writeAndFlush(response);
-                }
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            logger.error("Nothing to response");
-        }
-    }
-
-    @Override
-    public LoginDown login(LoginUp input) {
-        UserChannel client = new UserChannel();
-        client.setChannel(getChannel());
-        client.setUserId(getUserId());
-        client.setAppKey(getAppKey());
-        client.setSocketType(UserChannel.SocketType.SOCKET.getValue());
-        registerUserClient(client);
-        backendFeign.registerUserClient("127.0.0.1",33010,client.getUserId());
-
-        LoginDown ret = new LoginDown();
-        ret.setAppKey(getAppKey());
-        ret.setToken(getToken());
-        ret.setUserId(getUserId());
-
-        logger.debug("用户登录 成功 {}.{}", ret.getAppKey(),ret.getUserId());
-
-        return ret;
     }
 
 }

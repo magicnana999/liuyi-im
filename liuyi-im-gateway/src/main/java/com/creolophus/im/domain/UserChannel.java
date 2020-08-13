@@ -7,7 +7,7 @@ import io.netty.channel.Channel;
  * @author magicnana
  * @date 2020/1/11 下午2:45
  */
-public class UserChannel extends UserClient{
+public class UserChannel extends UserClient {
 
     private Channel channel;
 
@@ -29,6 +29,6 @@ public class UserChannel extends UserClient{
 
     @Override
     public String toString() {
-        return "{\"userId\":"+getUserId()+",\"appKey\":"+getAppKey()+",\"channel\":"+getChannelId()+"}";
+        return "{\"userId\":" + getUserId() + ",\"appKey\":" + getAppKey() + ",\"channel\":" + getChannelId() + "}";
     }
 }

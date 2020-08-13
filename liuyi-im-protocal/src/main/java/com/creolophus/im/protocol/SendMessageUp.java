@@ -11,6 +11,14 @@ public class SendMessageUp {
     private Long targetId;
     private String messageBody;
 
+    public String getMessageBody() {
+        return messageBody;
+    }
+
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
+    }
+
     public Integer getMessageType() {
         return messageType;
     }
@@ -25,14 +33,6 @@ public class SendMessageUp {
 
     public void setTargetId(Long targetId) {
         this.targetId = targetId;
-    }
-
-    public String getMessageBody() {
-        return messageBody;
-    }
-
-    public void setMessageBody(String messageBody) {
-        this.messageBody = messageBody;
     }
 
     @Override

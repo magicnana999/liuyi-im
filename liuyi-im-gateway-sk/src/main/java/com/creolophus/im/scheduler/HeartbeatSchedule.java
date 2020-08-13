@@ -1,8 +1,8 @@
 package com.creolophus.im.scheduler;
 
-import com.creolophus.liuyi.common.logger.Entry;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.feign.BackendFeign;
+import com.creolophus.liuyi.common.logger.Entry;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +23,7 @@ public class HeartbeatSchedule {
 
     @Entry
 //    @Scheduled(fixedRate = 1000 * 60)
-    public void heartbeat(){
+    public void heartbeat() {
         backendFeign.registerGateway(gatewayConfig.getListenIp(), gatewayConfig.getHttpPort());
     }
 }

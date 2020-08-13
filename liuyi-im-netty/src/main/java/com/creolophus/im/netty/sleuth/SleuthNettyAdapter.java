@@ -12,16 +12,8 @@ public class SleuthNettyAdapter {
 
     private Tracer.SpanInScope span;
 
-    public Tracer.SpanInScope getSpan() {
-        return span;
-    }
-
-    public void setSpan(Tracer.SpanInScope span) {
-        this.span = span;
-    }
-
-    public void begin(TracerUtil tracerUtil,String methodName) {
-        if(getSpan() == null && tracerUtil!=null) {
+    public void begin(TracerUtil tracerUtil, String methodName) {
+        if(getSpan() == null && tracerUtil != null) {
             Tracer.SpanInScope span = tracerUtil.begin(SleuthNettyAdapter.class.getSimpleName(), methodName);
             setSpan(span);
         }
@@ -31,7 +23,7 @@ public class SleuthNettyAdapter {
     }
 
     public void cleanContext() {
-        if(span!=null){
+        if(span != null) {
             span.close();
             span = null;
         }
@@ -40,5 +32,13 @@ public class SleuthNettyAdapter {
     public static SleuthNettyAdapter getInstance() {
         SleuthNettyAdapter apiContext = SleuthNettyAdapterLocal.getInstance().get();
         return apiContext;
+    }
+
+    public Tracer.SpanInScope getSpan() {
+        return span;
+    }
+
+    public void setSpan(Tracer.SpanInScope span) {
+        this.span = span;
     }
 }

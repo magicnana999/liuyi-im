@@ -22,7 +22,7 @@ public class SnowFlakeGenerator {
 
         OriginalSnowflakeID id = snowflakeIdTable.get(workerId);
         if(id == null) {
-            id = new OriginalSnowflakeID(dcId,workerId,1568086869644L);
+            id = new OriginalSnowflakeID(dcId, workerId, 1568086869644L);
             snowflakeIdTable.put(Thread.currentThread().getId(), id);
         }
         return id.nextId();

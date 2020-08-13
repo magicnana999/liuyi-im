@@ -20,13 +20,18 @@ public class IdSimpleStorage extends BaseStorage {
     private static final int GROUP_ID_LOCK_EXPIRE = SECOND * 3;
 
 
-    private static final String MESSAGE_ID = PREFIX + "id_message"+SE;
+    private static final String MESSAGE_ID = PREFIX + "id_message" + SE;
     private static final String MESSAGE_ID_LOCK = MESSAGE_ID + "lock" + SE;
     private static final int MESSAGE_ID_LOCK_EXPIRE = SECOND * 3;
 
 
     @Resource
     private RedisClient redisClient;
+
+    public boolean LockMessageId(Long receiverId) {
+        String ret = redisClient.lock(getMessageIdLockKey(receiverId), MESSAGE_ID_LOCK_EXPIRE);
+        return StringUtils.isNotBlank(ret);
+    }
 
     public String getGroupIdKey() {
         return GROUP_ID;
@@ -36,11 +41,11 @@ public class IdSimpleStorage extends BaseStorage {
         return GROUP_ID_LOCK;
     }
 
-    public String getMessageIdKey(Long receiverId){
-        return MESSAGE_ID+receiverId;
+    public String getMessageIdKey(Long receiverId) {
+        return MESSAGE_ID + receiverId;
     }
 
-    public String getMessageIdLockKey(Long receiverId){
+    public String getMessageIdLockKey(Long receiverId) {
         Objects.requireNonNull(receiverId, "receiverId 为空,无法生成 getMessageIdLockKey");
         return MESSAGE_ID_LOCK + receiverId;
     }
@@ -50,16 +55,11 @@ public class IdSimpleStorage extends BaseStorage {
         return StringUtils.isNotBlank(ret);
     }
 
-    public boolean LockMessageId(Long receiverId){
-        String ret = redisClient.lock(getMessageIdLockKey(receiverId), MESSAGE_ID_LOCK_EXPIRE);
-        return StringUtils.isNotBlank(ret);
-    }
-
     public Long nextGroupId() {
         return redisClient.incr(getGroupIdKey());
     }
 
-    public Long nextMessageId(Long receiverId){
+    public Long nextMessageId(Long receiverId) {
         return redisClient.incr(getMessageIdKey(receiverId));
     }
 
@@ -67,7 +67,7 @@ public class IdSimpleStorage extends BaseStorage {
         return redisClient.set(getGroupIdKey(), String.valueOf(maxGroupId));
     }
 
-    public String setMessageId(Long receiverId,Long maxMessageId){
+    public String setMessageId(Long receiverId, Long maxMessageId) {
         return redisClient.set(getMessageIdKey(receiverId), String.valueOf(maxMessageId));
     }
 
@@ -75,7 +75,7 @@ public class IdSimpleStorage extends BaseStorage {
         return redisClient.unlock(getGroupIdLockKey(), null);
     }
 
-    public boolean unlockMessageId(Long receiverId){
+    public boolean unlockMessageId(Long receiverId) {
         return redisClient.unlock(getMessageIdLockKey(receiverId), null);
     }
 

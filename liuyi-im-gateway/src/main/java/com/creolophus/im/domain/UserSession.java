@@ -8,7 +8,7 @@ import javax.websocket.Session;
  * @author magicnana
  * @date 2020/1/11 下午2:45
  */
-public class UserSession extends UserClient{
+public class UserSession extends UserClient {
 
     private Session session;
 
@@ -30,6 +30,6 @@ public class UserSession extends UserClient{
 
     @Override
     public String toString() {
-        return "{\"userId\":"+getUserId()+",\"appKey\":"+getAppKey()+",\"session\":"+getSessionId()+"}";
+        return "{\"userId\":" + getUserId() + ",\"appKey\":" + getAppKey() + ",\"session\":" + getSessionId() + "}";
     }
 }

@@ -1,11 +1,11 @@
 package com.creolophus.im.websocket;
 
 import com.alibaba.fastjson.JSON;
-import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.im.netty.core.AbstractWebSocketServer;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.protocol.Command;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.liuyi.common.api.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,24 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
     private Logger logger = LoggerFactory.getLogger(WebsocketServerInstance.class);
 
     private Session session;
+
+    private String getErrorMessage(Throwable e) {
+        String msg = e.getMessage();
+        if(StringUtils.isBlank(msg)) {
+            return "未知异常,没有消息";
+        }
+
+        try {
+            ApiResult apiResult = JSON.parseObject(msg, ApiResult.class);
+            if(apiResult == null || StringUtils.isBlank(apiResult.getMessage())) {
+                return "未知错误,木有消息";
+            } else {
+                return apiResult.getMessage();
+            }
+        } catch (Throwable throwable) {
+            return msg;
+        }
+    }
 
     @Override
     public Session getSession() {
@@ -48,32 +66,13 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
 
 
         Command request = contextProcessor.getRequest();
-        Command response = Command.newResponse(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_ERROR);
-        response(session,response);
+        Command response = Command.newResponse(request.getHeader().getSeq(), request.getHeader().getType(), NettyError.E_ERROR);
+        response(session, response);
         if(sessionEventListener != null) sessionEventListener.onError(session, error);
         SleuthNettyAdapter.getInstance().cleanContext();
         contextProcessor.clearContext();
 
     }
-
-    private String getErrorMessage(Throwable e){
-        String msg  = e.getMessage();
-        if(StringUtils.isBlank(msg)){
-            return "未知异常,没有消息";
-        }
-
-        try{
-            ApiResult apiResult = JSON.parseObject(msg,ApiResult.class);
-            if(apiResult==null || StringUtils.isBlank(apiResult.getMessage())){
-                return "未知错误,木有消息";
-            }else{
-                return apiResult.getMessage();
-            }
-        }catch (Throwable throwable){
-            return msg;
-        }
-    }
-
 
     @OnMessage
     public void onMessage(Session session, String message) {

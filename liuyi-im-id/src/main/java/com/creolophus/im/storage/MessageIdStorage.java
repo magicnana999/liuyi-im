@@ -1,8 +1,8 @@
 package com.creolophus.im.storage;
 
 import com.creolophus.im.common.base.BaseStorage;
-import com.creolophus.liuyi.common.redis.RedisClient;
 import com.creolophus.im.entity.MessageIdSection;
+import com.creolophus.liuyi.common.redis.RedisClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

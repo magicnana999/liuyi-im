@@ -1,8 +1,8 @@
 import com.creolophus.im.common.entity.Message;
+import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import com.creolophus.im.protocol.*;
 import com.creolophus.liuyi.common.id.ObjectID;
 import com.creolophus.liuyi.common.util.JUnitPrint;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import org.junit.Test;
 
 /**
@@ -259,9 +259,9 @@ public class TestCommand {
     }
 
     @Test
-    public void testObjectID(){
+    public void testObjectID() {
         ObjectID objectID = new ObjectID();
-        JUnitPrint.info(objectID.nextId().length()+"");
+        JUnitPrint.info(objectID.nextId().length() + "");
     }
 
 }

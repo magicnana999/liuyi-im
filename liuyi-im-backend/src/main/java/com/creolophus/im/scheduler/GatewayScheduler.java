@@ -1,7 +1,7 @@
 package com.creolophus.im.scheduler;
 
-import com.creolophus.liuyi.common.logger.Entry;
 import com.creolophus.im.service.GatewayService;
+import com.creolophus.liuyi.common.logger.Entry;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class GatewayScheduler {
 
     @Entry
     @Scheduled(fixedRate = 30 * 1000)
-    public void gatewayCheck(){
+    public void gatewayCheck() {
         gatewayService.findGetewayListAndCheck();
     }
 }

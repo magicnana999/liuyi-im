@@ -34,6 +34,33 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
     }
 
     @Override
+    public void initContext(Channel channel, Command command) {
+
+        setChannel(channel);
+        setRequest(command);
+
+        validateCommand(command);
+        MdcUtil.setUri("" + command.getHeader().getType());
+
+        if(globalSetting != null && globalSetting.isDebug()) {
+            if(logger.isDebugEnabled()) {
+                logger.debug(JSON.toJSONString(command));
+            }
+        }
+    }
+
+    @Override
+    public void initContext(Session session, Command command) {
+
+    }
+
+    @Override
+    public void clearContext() {
+        MdcUtil.clearAll();
+        super.cleanContext();
+    }
+
+    @Override
     public String getAppKey() {
         return ApiContext.getContext().getExt(APPKEY);
     }
@@ -106,34 +133,6 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
         ApiContext.getContext().setUserId(userId);
     }
 
-
-    @Override
-    public void initContext(Channel channel, Command command) {
-
-        setChannel(channel);
-        setRequest(command);
-
-        validateCommand(command);
-        MdcUtil.setUri("" + command.getHeader().getType());
-
-        if(globalSetting!=null && globalSetting.isDebug()) {
-            if(logger.isDebugEnabled()) {
-                logger.debug(JSON.toJSONString(command));
-            }
-        }
-    }
-
-    @Override
-    public void initContext(Session session, Command command) {
-
-    }
-
-    @Override
-    public void clearContext() {
-        MdcUtil.clearAll();
-        super.cleanContext();
-    }
-
     public void trace() {
         logger.info("{} {}", JSON.toJSONString(getRequest()), JSON.toJSONString(getResponse()));
     }
@@ -144,6 +143,6 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
         setUserId(request.getAuth().getUserId());
         setToken(request.getToken());
         setAppKey(request.getAuth().getAppKey());
-        MdcUtil.setExt(""+request.getAuth().getUserId());
+        MdcUtil.setExt("" + request.getAuth().getUserId());
     }
 }

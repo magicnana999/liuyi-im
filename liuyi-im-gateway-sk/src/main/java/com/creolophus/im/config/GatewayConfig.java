@@ -17,21 +17,22 @@ public class GatewayConfig extends NettyServerConfig {
 
     @Value("${server.port}")
     private int httpPort;
+
+    public int getHttpPort() {
+        return httpPort;
+    }
+
     @Override
     public int getListenPort() {
         return port;
     }
 
-    public int getSocketPort(){
-        return port;
-    }
-
-    public int getHttpPort(){
-        return httpPort;
-    }
-
     @Override
     public String getListenIp() {
         return "127.0.0.1";
+    }
+
+    public int getSocketPort() {
+        return port;
     }
 }

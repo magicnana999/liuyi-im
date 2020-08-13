@@ -1,13 +1,13 @@
 package com.creolophus.im.boot;
 
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
+import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
 import com.creolophus.im.netty.serializer.CommandSerializer;
 import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
-import com.creolophus.im.config.GatewayConfig;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
@@ -38,13 +38,10 @@ public class Start extends WebStart {
 
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(Start.class, args);
-    }
-
+    @Override
     @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
+    public NettyContextValidator apiContextValidator() {
+        return new NettyContextValidator();
     }
 
     @Override
@@ -67,22 +64,19 @@ public class Start extends WebStart {
     }
 
     @Bean
-    public CommandSerializer commandSerializer(){
+    public CommandSerializer commandSerializer() {
         return new FastJSONSerializer();
-    }
-
-
-    @Override
-    @Bean
-    public NettyContextValidator apiContextValidator(){
-        return new NettyContextValidator();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConfigurationProperties(prefix="spring.netty")
-    public GatewayConfig gatewayConfig(){
+    @ConfigurationProperties(prefix = "spring.netty")
+    public GatewayConfig gatewayConfig() {
         return new GatewayConfig();
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Start.class, args);
     }
 
     @Bean
@@ -97,6 +91,10 @@ public class Start extends WebStart {
         };
     }
 
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 
 
 }

@@ -8,6 +8,6 @@ import com.creolophus.liuyi.common.base.AbstractStorage;
  */
 public class BaseStorage extends AbstractStorage {
 
-    public static final String PREFIX = "liuyi-im"+SE;
+    public static final String PREFIX = "liuyi-im" + SE;
 
 }

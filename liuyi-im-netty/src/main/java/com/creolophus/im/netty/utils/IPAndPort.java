@@ -15,29 +15,29 @@ public class IPAndPort {
     public IPAndPort() {
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
     public IPAndPort(String ip, int port) {
         this.ip = ip;
         this.port = port;
+    }
+
+    public String getID() {
+        return ip + SEP + port;
     }
 
     public String getIp() {
         return ip;
     }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public int getPort() {
         return port;
     }
 
-    public String getID() {
-        return ip + SEP + port;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     @Override

@@ -9,26 +9,26 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Strings {
 
-    public static CharSequence requireNonBlank(CharSequence s,String message){
-        if(StringUtils.isBlank(s)){
+    public static boolean isBlank(CharSequence s) {
+        return StringUtils.isBlank(s);
+    }
+
+    public static boolean isNotBlank(CharSequence s) {
+        return StringUtils.isNotBlank(s);
+    }
+
+    public static CharSequence requireNonBlank(CharSequence s, String message) {
+        if(StringUtils.isBlank(s)) {
             throw new BlankException(message);
         }
         return s;
     }
 
-    public static boolean isNotBlank(CharSequence s){
-        return StringUtils.isNotBlank(s);
-    }
-
-    public static boolean isBlank(CharSequence s){
-        return StringUtils.isBlank(s);
-    }
-
-    public static CharSequence requireNonBlank(CharSequence s){
+    public static CharSequence requireNonBlank(CharSequence s) {
         return requireNonBlank(s, "could not be blank");
     }
 
-    public static class BlankException extends ApiException{
+    public static class BlankException extends ApiException {
 
         public BlankException(String message) {
             super(message);

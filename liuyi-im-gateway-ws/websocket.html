@@ -7,94 +7,96 @@
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script>
     var socket;
+
     function openSocket() {
-        if(typeof(WebSocket) == "undefined") {
-            log(operations.notify,"此浏览器不支持 WebSocket")
-        }else{
-            log(operations.notify,"此浏览器支持 WebSocket")
-            var socketUrl="http://127.0.0.1:33008/liuyi/gateway/ws";
-            socketUrl=socketUrl.replace("https","ws").replace("http","ws");
-            if(socket!=null){
+        if (typeof(WebSocket) == "undefined") {
+            log(operations.notify, "此浏览器不支持 WebSocket")
+        } else {
+            log(operations.notify, "此浏览器支持 WebSocket")
+            var socketUrl = "http://127.0.0.1:33008/liuyi/gateway/ws";
+            socketUrl = socketUrl.replace("https", "ws").replace("http", "ws");
+            if (socket != null) {
                 socket.close();
-                socket=null;
+                socket = null;
             }
             socket = new WebSocket(socketUrl);
-            socket.onopen = function() {
-                log(operations.notify,"WebSocket 已打开")
+            socket.onopen = function () {
+                log(operations.notify, "WebSocket 已打开")
             };
-            socket.onmessage = function(msg) {
-                log(operations.receive,JSON.parse(msg.data))
+            socket.onmessage = function (msg) {
+                log(operations.receive, JSON.parse(msg.data))
             };
-            socket.onclose = function() {
-                log(operations.notify,"WebSocket 已关闭")
+            socket.onclose = function () {
+                log(operations.notify, "WebSocket 已关闭")
             };
-            socket.onerror = function() {
-                log(operations.notify,"WebSocket 发生错误")
+            socket.onerror = function () {
+                log(operations.notify, "WebSocket 发生错误")
             }
         }
     }
+
     function sendMessage(str) {
-        if(typeof(WebSocket) == "undefined") {
-            log(operations.notify,"此浏览器不支持 WebSocket,无法发送消息")
-        }else {
+        if (typeof(WebSocket) == "undefined") {
+            log(operations.notify, "此浏览器不支持 WebSocket,无法发送消息")
+        } else {
             socket.send(str);
-            log(operations.sent,str)
+            log(operations.sent, str)
         }
     }
 
     var operations = {
-        login:'登录',
-        loginFail:'登录失败',
+        login: '登录',
+        loginFail: '登录失败',
         loginSuccess: '登录成功',
-        reportConnect:'报告连接',
-        reportConnectFail:'报告连接失败',
+        reportConnect: '报告连接',
+        reportConnectFail: '报告连接失败',
         reportConnectSuccess: '报告连接成功',
-        clean:'清空',
-        newCommandFail:'构建Command失败',
-        notify:'提示',
-        receive:'收到消息',
-        sent:'发送消息',
+        clean: '清空',
+        newCommandFail: '构建Command失败',
+        notify: '提示',
+        receive: '收到消息',
+        sent: '发送消息',
     }
 
     var loginCommand = {
-        body:{
-            deviceLabel:"iPhone 100",
-            sdkName:"liuyi-im-jssdk",
-            sdkVersion:"1.0.0"
+        body: {
+            deviceLabel: "iPhone 100",
+            sdkName: "liuyi-im-jssdk",
+            sdkVersion: "1.0.0"
         },
-        header:{
-            code:0,
-            seq:"5f1945c84f7a391dfb000001",
-            type:101
+        header: {
+            code: 0,
+            seq: "5f1945c84f7a391dfb000001",
+            type: 101
         },
-        token:"xx"
+        token: "xx"
     }
 
     var sendCommand = {
-        body:{
-            messageBody:"xx",
-            messageType:1,
-            targetId:0
+        body: {
+            messageBody: "xx",
+            messageType: 1,
+            targetId: 0
         },
-        header:{
-            code:0,
-            seq:"5f1945c84f7a391dfb000005",
-            type:105
+        header: {
+            code: 0,
+            seq: "5f1945c84f7a391dfb000005",
+            type: 105
         },
-        token:"xx"
+        token: "xx"
     }
 
     function log(operation, msg) {
-        console.log(operation,msg);
+        console.log(operation, msg);
     }
 
-    function login2Im(token){
+    function login2Im(token) {
         loginCommand.token = token;
         sendMessage(JSON.stringify(loginCommand))
     }
 
-    function send(token,target,message){
-        sendCommand.body.messageBody=message;
+    function send(token, target, message) {
+        sendCommand.body.messageBody = message;
         sendCommand.body.targetId = target;
         sendCommand.token = token;
         sendMessage(JSON.stringify(sendCommand))
@@ -121,15 +123,19 @@
                 <button onclick="login2Im($('#user').val())">登录到Socket</button>
             </td>
         </tr>
-            <td>目标:</td>
-            <td>
-                <select id="target" style="width: 100%">
-                    <option value="100" selected="selected">张无忌</option>
-                    <option value="101">赵敏</option>
-                    <option value="102">周芷若</option>
-                    <option value="103">小昭</option>
-                </select>
-            </td><td><input id="message"/><button onclick="send($('#user').val(),$('#target').val(),$('#message').val())">发送</button></td></tr>
+        <td>目标:</td>
+        <td>
+            <select id="target" style="width: 100%">
+                <option value="100" selected="selected">张无忌</option>
+                <option value="101">赵敏</option>
+                <option value="102">周芷若</option>
+                <option value="103">小昭</option>
+            </select>
+        </td>
+        <td><input id="message"/>
+            <button onclick="send($('#user').val(),$('#target').val(),$('#message').val())">发送</button>
+        </td>
+        </tr>
     </table>
 
     </table>

@@ -1,9 +1,9 @@
 package com.creolophus.im.processor;
 
-import com.creolophus.im.protocol.*;
-import com.creolophus.im.service.AuthService;
 import com.creolophus.im.netty.core.RequestProcessor;
 import com.creolophus.im.netty.serializer.CommandSerializer;
+import com.creolophus.im.protocol.*;
+import com.creolophus.im.service.AuthService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

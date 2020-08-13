@@ -27,7 +27,7 @@ public class ResponseFuture {
     private final String commandSeq;
     private final Channel processChannel;
     private final long timeoutMillis;
-    private final BiConsumer<Command/*request*/,Command/*ack*/> consumer;
+    private final BiConsumer<Command/*request*/, Command/*ack*/> consumer;
     private final long beginTimestamp = System.currentTimeMillis();
     private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -39,33 +39,18 @@ public class ResponseFuture {
     private volatile Throwable cause;
 
     public ResponseFuture(
-            Channel channel, String commandSeq, long timeoutMillis, BiConsumer<Command/*request*/,Command/*ack*/> consumer,
-            SemaphoreReleaseOnlyOnce once,Command request) {
+            Channel channel,
+            String commandSeq,
+            long timeoutMillis,
+            BiConsumer<Command/*request*/, Command/*ack*/> consumer,
+            SemaphoreReleaseOnlyOnce once,
+            Command request) {
         this.commandSeq = commandSeq;
         this.processChannel = channel;
         this.timeoutMillis = timeoutMillis;
         this.consumer = consumer;
         this.once = once;
         this.request = request;
-    }
-
-    public void release() {
-        if (this.once != null) {
-            this.once.release();
-        }
-    }
-
-    public boolean isTimeout() {
-        long diff = System.currentTimeMillis() - this.beginTimestamp;
-        return diff > this.timeoutMillis;
-    }
-
-    public boolean isSendOk(){
-        return sendOk;
-    }
-
-    public void setSendOk(boolean sendOk) {
-        this.sendOk = sendOk;
     }
 
     public Throwable getCause() {
@@ -76,29 +61,48 @@ public class ResponseFuture {
         this.cause = cause;
     }
 
-    public Command waitResponse(final long timeoutMillis) throws InterruptedException {
-        this.countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS);
-        return this.response;
-    }
-
-    public void putResponse(final Command response) {
-        this.response = response;
-        if(this.consumer!=null){
-            this.consumer.accept(request,response);
-        }else{
-            this.countDownLatch.countDown();
-        }
-    }
-
     public String getCommandSeq() {
         return commandSeq;
+    }
+
+    public BiConsumer<Command, Command> getConsumer() {
+        return consumer;
     }
 
     public Channel getProcessChannel() {
         return processChannel;
     }
 
-    public BiConsumer<Command, Command> getConsumer() {
-        return consumer;
+    public boolean isSendOk() {
+        return sendOk;
+    }
+
+    public void setSendOk(boolean sendOk) {
+        this.sendOk = sendOk;
+    }
+
+    public boolean isTimeout() {
+        long diff = System.currentTimeMillis() - this.beginTimestamp;
+        return diff > this.timeoutMillis;
+    }
+
+    public void putResponse(final Command response) {
+        this.response = response;
+        if(this.consumer != null) {
+            this.consumer.accept(request, response);
+        } else {
+            this.countDownLatch.countDown();
+        }
+    }
+
+    public void release() {
+        if(this.once != null) {
+            this.once.release();
+        }
+    }
+
+    public Command waitResponse(final long timeoutMillis) throws InterruptedException {
+        this.countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS);
+        return this.response;
     }
 }

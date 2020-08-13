@@ -10,7 +10,9 @@ public interface LiuyiImClient {
 
     Command buildAckCommand(Command command);
 
-    void login(String token);
-    long sendMessage(int messageType, String messageBody, long targetId);
     void close();
+
+    void login(String token);
+
+    long sendMessage(int messageType, String messageBody, long targetId);
 }

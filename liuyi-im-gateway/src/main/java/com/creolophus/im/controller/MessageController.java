@@ -1,9 +1,9 @@
 package com.creolophus.im.controller;
 
-import com.creolophus.im.protocol.PushMessageDown;
-import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.processor.UserClientProcessor;
+import com.creolophus.im.protocol.PushMessageDown;
+import com.creolophus.liuyi.common.api.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -38,9 +38,8 @@ public class MessageController extends BaseController {
             @RequestParam("messageBody") String messageBody,
             @RequestParam("receiverId") Long receiverId,
             @RequestParam("senderId") Long senderId,
-            @RequestParam(value = "groupId",required = false) Long groupId
-    ){
-        PushMessageDown down = new PushMessageDown(messageId,messageType,groupId,messageBody,receiverId,senderId);
+            @RequestParam(value = "groupId", required = false) Long groupId) {
+        PushMessageDown down = new PushMessageDown(messageId, messageType, groupId, messageBody, receiverId, senderId);
         PushMessageDown ret = userClientProcessor.pushMessage(down);
         return new ApiResult(ret);
     }

@@ -18,63 +18,50 @@ public abstract class AbstractNettyHandler extends SimpleChannelInboundHandler<C
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractNettyHandler.class);
 
-    public Command handleRequest(Command cmd){
-        Command response;
-        try {
-            final Object requestReturn = getRequestProcessor().processRequest(cmd);
-            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
-        }catch (NettyCommandWithResException e){
-            logger.error(e.getMessage(),e);
-            response = e.getResponse();
-        } catch (NettyCommandException e) {
-            logger.error(e.getMessage(),e);
-            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), e.getNettyError());
-        } catch (Throwable e) {
-            logger.error(e.getMessage(),e);
-            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(),NettyError.E_ERROR);
-        }
-        return response;
-    }
-
     protected abstract RequestProcessor getRequestProcessor();
 
     public Command handleExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 //            remoteContextValidator.begin("exceptionCaught");
-        logger.error("{} {} {}",ctx.channel(),cause.getClass().getSimpleName(),cause.getMessage(),cause);
+        logger.error("{} {} {}", ctx.channel(), cause.getClass().getSimpleName(), cause.getMessage(), cause);
 
         Command response = null;
 
-        if(cause!=null && cause instanceof NettyCommandWithResException){
-            NettyCommandWithResException e = (NettyCommandWithResException)cause;
+        if(cause != null && cause instanceof NettyCommandWithResException) {
+            NettyCommandWithResException e = (NettyCommandWithResException) cause;
             response = e.getResponse();
-        }
-
-        else if(cause!=null && cause instanceof NettyCommandException){
-            NettyCommandException e = (NettyCommandException)cause;
+        } else if(cause != null && cause instanceof NettyCommandException) {
+            NettyCommandException e = (NettyCommandException) cause;
             response = Command.newResponse(
 //                        RemoteContext.getContext().getRequest().getOpaque(),
 //                        RemoteContext.getContext().getRequest().getHeader().getCode(),
-                    "100",
-                    12,
-                    e.getNettyError());
-        }
-
-        else if(cause!= null && cause instanceof DecoderException){
-            response = Command.newResponse(
-                    "0",
-                    0,
-                    NettyError.E_REQUEST_DECODE_FAIL);
-        }
-
-        else{
+                    "100", 12, e.getNettyError());
+        } else if(cause != null && cause instanceof DecoderException) {
+            response = Command.newResponse("0", 0, NettyError.E_REQUEST_DECODE_FAIL);
+        } else {
             response = Command.newResponse(
 //                        RemoteContext.getContext().getRequest().getOpaque(),
 //                        RemoteContext.getContext().getRequest().getHeader().getCode(),
-                    "100",
-                    12,
-                    NettyError.E_ERROR);
+                    "100", 12, NettyError.E_ERROR);
         }
 
+        return response;
+    }
+
+    public Command handleRequest(Command cmd) {
+        Command response;
+        try {
+            final Object requestReturn = getRequestProcessor().processRequest(cmd);
+            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
+        } catch (NettyCommandWithResException e) {
+            logger.error(e.getMessage(), e);
+            response = e.getResponse();
+        } catch (NettyCommandException e) {
+            logger.error(e.getMessage(), e);
+            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), e.getNettyError());
+        } catch (Throwable e) {
+            logger.error(e.getMessage(), e);
+            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
+        }
         return response;
     }
 

@@ -27,15 +27,15 @@ public class SemaphoreReleaseOnlyOnce {
         this.semaphore = semaphore;
     }
 
+    public Semaphore getSemaphore() {
+        return semaphore;
+    }
+
     public void release() {
-        if (this.semaphore != null) {
-            if (this.released.compareAndSet(false, true)) {
+        if(this.semaphore != null) {
+            if(this.released.compareAndSet(false, true)) {
                 this.semaphore.release();
             }
         }
-    }
-
-    public Semaphore getSemaphore() {
-        return semaphore;
     }
 }

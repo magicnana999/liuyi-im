@@ -18,20 +18,20 @@ public class MessageIdSectionUser extends AbstractEntity {
     @ApiModelProperty(notes = "SectionID")
     private Long sectionId;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Long getSectionId() {
         return sectionId;
     }
 
     public void setSectionId(Long sectionId) {
         this.sectionId = sectionId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 }

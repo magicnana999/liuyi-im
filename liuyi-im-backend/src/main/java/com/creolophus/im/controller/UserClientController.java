@@ -1,8 +1,8 @@
 package com.creolophus.im.controller;
 
+import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.service.UserClientService;
 import com.creolophus.liuyi.common.api.ApiResult;
-import com.creolophus.im.common.base.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -33,9 +33,8 @@ public class UserClientController extends BaseController {
     public ApiResult registerUser(
             @RequestParam("gatewayIp") String gatewayIp,
             @RequestParam("gatewayPort") Integer gatewayPort,
-            @RequestParam("userId") Long userId
-    ){
-        userClientService.registerUserClient(gatewayIp,gatewayPort,userId);
+            @RequestParam("userId") Long userId) {
+        userClientService.registerUserClient(gatewayIp, gatewayPort, userId);
         return new ApiResult();
     }
 
@@ -43,9 +42,8 @@ public class UserClientController extends BaseController {
     public ApiResult unregisterUser(
             @RequestParam("gatewayIp") String gatewayIp,
             @RequestParam("gatewayPort") Integer gatewayPort,
-            @RequestParam("userId") Long userId
-    ){
-        userClientService.unregisterUserClient(gatewayIp,gatewayPort,userId);
+            @RequestParam("userId") Long userId) {
+        userClientService.unregisterUserClient(gatewayIp, gatewayPort, userId);
         return new ApiResult();
     }
 }

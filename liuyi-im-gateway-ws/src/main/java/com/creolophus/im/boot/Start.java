@@ -1,8 +1,6 @@
 package com.creolophus.im.boot;
 
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
-import com.creolophus.im.netty.serializer.CommandSerializer;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.im.websocket.WebsocketServerInstance;
 import com.creolophus.liuyi.common.api.WebStart;
@@ -34,11 +32,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Start extends WebStart {
 
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
-
-    @Bean
-    public CommandSerializer commandSerializer() {
-        return new FastJSONSerializer();
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(Start.class, args);

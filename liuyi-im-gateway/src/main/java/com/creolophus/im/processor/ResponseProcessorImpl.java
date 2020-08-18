@@ -1,10 +1,11 @@
 package com.creolophus.im.processor;
 
 import com.creolophus.im.netty.core.ResponseProcessor;
-import com.creolophus.im.netty.serializer.CommandSerializer;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.protocol.Decoder;
 import com.creolophus.im.protocol.PushMessageUp;
+import com.creolophus.im.service.UserClientService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,16 +18,16 @@ import javax.annotation.Resource;
 public class ResponseProcessorImpl implements ResponseProcessor {
 
     @Resource
-    private UserClientProcessor userClientProcessor;
+    private UserClientService userClientService;
 
     @Resource
-    private CommandSerializer commandSerializer;
+    private Decoder decoder;
 
     @Override
     public void processResponse(Command response) {
         switch (CommandType.valueOf(response.getHeader().getType())) {
             case PUSH_MESSAGE:
-                userClientProcessor.pushMessageAck(commandSerializer.bodyFromObject(response.getBody(), PushMessageUp.class));
+                userClientService.pushMessageAck(decoder.decode(response.getBody(), PushMessageUp.class));
                 break;
             default:
                 break;

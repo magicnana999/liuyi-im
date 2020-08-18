@@ -1,7 +1,7 @@
 import com.creolophus.im.common.entity.Message;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import com.creolophus.im.protocol.*;
 import com.creolophus.liuyi.common.id.ObjectID;
+import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.util.JUnitPrint;
 import org.junit.Test;
 
@@ -14,7 +14,12 @@ public class TestCommand {
     @Test
     public void commands() {
 
-        FastJSONSerializer fastJSONSerializer = new FastJSONSerializer();
+        Encoder encoder = new Encoder() {
+            @Override
+            public byte[] encode(Command nettyCommand) {
+                return JSON.toJSONString(nettyCommand).getBytes();
+            }
+        };
 
         LoginUp client = new LoginUp();
         client.setDeviceLabel("iPhone 7 Plus");
@@ -24,25 +29,25 @@ public class TestCommand {
         {
             //张无忌
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
             //赵敏
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
             //周芷若
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.周芷若.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
             //小昭
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.小昭.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
 
@@ -53,7 +58,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -63,7 +68,7 @@ public class TestCommand {
             m.setTargetId(UserTest.张无忌.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -73,7 +78,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -83,7 +88,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -93,7 +98,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -103,7 +108,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -113,7 +118,7 @@ public class TestCommand {
             m.setTargetId(UserTest.张无忌.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -123,7 +128,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -133,7 +138,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -143,7 +148,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -154,7 +159,7 @@ public class TestCommand {
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m);
             m.setTargetId(UserTest.周芷若.userId);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -164,7 +169,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -174,7 +179,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -184,7 +189,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -194,7 +199,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -204,7 +209,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -214,7 +219,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.小昭.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -224,7 +229,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -234,7 +239,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -244,7 +249,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.小昭.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
 
         {
@@ -254,7 +259,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(fastJSONSerializer.encode(request)));
+            System.out.println(new String(encoder.encode(request)));
         }
     }
 

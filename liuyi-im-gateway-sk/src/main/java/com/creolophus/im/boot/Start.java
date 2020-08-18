@@ -3,8 +3,10 @@ package com.creolophus.im.boot;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
-import com.creolophus.im.netty.serializer.CommandSerializer;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
+import com.creolophus.im.netty.serializer.JsonDecoder;
+import com.creolophus.im.netty.serializer.JsonEncoder;
+import com.creolophus.im.protocol.Decoder;
+import com.creolophus.im.protocol.Encoder;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
@@ -63,16 +65,26 @@ public class Start extends WebStart {
 
     }
 
-    @Bean
-    public CommandSerializer commandSerializer() {
-        return new FastJSONSerializer();
-    }
+//    @Bean
+//    public JsonEncoder commandSerializer() {
+//        return new FastJSONSerializer();
+//    }
 
     @Bean
     @ConditionalOnMissingBean
     @ConfigurationProperties(prefix = "spring.netty")
     public GatewayConfig gatewayConfig() {
         return new GatewayConfig();
+    }
+
+    @Bean
+    public Decoder jsonDecoder() {
+        return new JsonDecoder();
+    }
+
+    @Bean
+    public Encoder jsonEncoder() {
+        return new JsonEncoder();
     }
 
     public static void main(String[] args) {

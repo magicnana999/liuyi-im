@@ -13,10 +13,16 @@
     <version>0.1.0</version>
 
     <dependencies>
+        <!--<dependency>-->
+        <!--<groupId>com.github.magicnana999</groupId>-->
+        <!--<artifactId>liuyi-ms</artifactId>-->
+        <!--<version>1.0.2</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.github.magicnana999</groupId>
+            <groupId>com.creolophus</groupId>
             <artifactId>liuyi-ms</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 

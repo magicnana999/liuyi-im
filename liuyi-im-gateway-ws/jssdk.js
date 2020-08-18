@@ -41,9 +41,9 @@ var liuyiImJsSdk = {
     },
 
     commandType: {
-        login: 101,
-        sendMessage: 105,
-        receivePush: 106,
+        login: 100,
+        sendMessage: 101,
+        receivePush: 201,
     },
 
     operations: {

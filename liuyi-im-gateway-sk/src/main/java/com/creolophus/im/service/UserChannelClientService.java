@@ -3,8 +3,11 @@ package com.creolophus.im.service;
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.feign.BackendFeign;
-import com.creolophus.im.processor.UserClientProcessor;
-import com.creolophus.im.protocol.*;
+import com.creolophus.im.netty.core.ContextProcessor;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.LoginDown;
+import com.creolophus.im.protocol.LoginUp;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019/1/23 下午5:38
  */
 @Component
-public class UserChannelHolder extends NettyBaseService implements UserClientProcessor {
+public class UserChannelClientService extends UserClientService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserChannelHolder.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserChannelClientService.class);
 
 
     private static final ConcurrentHashMap<Long/*userId*/, UserChannel> userTable = new ConcurrentHashMap();
@@ -31,12 +34,31 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
     @Resource
     private BackendFeign backendFeign;
 
+    @Resource
+    private ContextProcessor contextProcessor;
+
+    private String getAppKey() {
+        return contextProcessor.getAppKey();
+    }
+
+    private Channel getChannel() {
+        return contextProcessor.getChannel();
+    }
+
+    private String getToken() {
+        return contextProcessor.getToken();
+    }
+
     public UserChannel getUserClient(Long userId) {
         return userTable.get(userId);
     }
 
     public UserChannel getUserClient(String channelId) {
         return channelTable.get(channelId);
+    }
+
+    private Long getUserId() {
+        return contextProcessor.getUserId();
     }
 
     private void insertChannelTable(UserChannel client) {
@@ -65,34 +87,14 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         ret.setToken(getToken());
         ret.setUserId(getUserId());
 
-        logger.debug("用户登录 成功 {}.{}", ret.getAppKey(), ret.getUserId());
+        logger.info("用户登录 成功 {}.{}", ret.getAppKey(), ret.getUserId());
 
         return ret;
     }
 
     @Override
-    public PushMessageDown pushMessage(PushMessageDown pushMessageDown) {
-        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
-
-        pushMessage(pushMessageDown.getReceiverId(), response);
-        return pushMessageDown;
-    }
-
-    @Override
-    public void pushMessageAck(PushMessageUp pushMessageUp) {
-        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(), pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
-    }
-
-    @Override
-    public void registerUserClient(UserClient userClient) {
-        UserChannel client = (UserChannel) userClient;
-        insertUserTable(client);
-        insertChannelTable(client);
-    }
-
     public void pushMessage(Long receiverId, Command response) {
         if(response != null) {
-//            remoteContextValidator.setResponse(response);
             try {
                 UserChannel uc = getUserClient(receiverId);
                 if(uc != null && uc.getChannel() != null) {
@@ -104,6 +106,13 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         } else {
             logger.error("Nothing to response");
         }
+    }
+
+
+    public void registerUserClient(UserClient userClient) {
+        UserChannel client = (UserChannel) userClient;
+        insertUserTable(client);
+        insertChannelTable(client);
     }
 
     private void removeChannelTable(UserChannel client) {
@@ -118,6 +127,7 @@ public class UserChannelHolder extends NettyBaseService implements UserClientPro
         backendFeign.unregisterUserClient("127.0.0.1", 33010, client.getUserId());
         removeUserTable(client);
         removeChannelTable(client);
+        logger.info("用户断开 完成 {}.{}", client.getAppKey(), client.getUserId());
     }
 
 }

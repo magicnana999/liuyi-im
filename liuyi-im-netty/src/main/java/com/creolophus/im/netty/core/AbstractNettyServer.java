@@ -1,11 +1,13 @@
 package com.creolophus.im.netty.core;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.config.NettyServerConfig;
 import com.creolophus.im.netty.exception.NettyException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.Decoder;
+import com.creolophus.im.protocol.Encoder;
 import com.creolophus.liuyi.common.api.MdcUtil;
+import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -40,6 +42,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
     private ResponseProcessor responseProcessor;
     private NettyServerChannelEventListener nettyServerChannelEventListener;
 
+    private Encoder encoder;
+    private Decoder decoder;
+
 
     public AbstractNettyServer(
             NettyServerConfig nettyServerConfig,
@@ -47,7 +52,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             ContextProcessor contextProcessor,
             RequestProcessor requestProcessor,
             NettyServerChannelEventListener nettyServerChannelEventListener,
-            ResponseProcessor responseProcessor) {
+            ResponseProcessor responseProcessor,
+            Decoder decoder,
+            Encoder encoder) {
 
         this.nettyServerConfig = nettyServerConfig;
         this.tracerUtil = tracerUtil;
@@ -55,6 +62,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         this.requestProcessor = requestProcessor;
         this.nettyServerChannelEventListener = nettyServerChannelEventListener;
         this.responseProcessor = responseProcessor;
+
+        this.decoder = decoder;
+        this.encoder = encoder;
 
         this.bootstrap = new ServerBootstrap(); // (2)
 
@@ -97,7 +107,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
                         public void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(
                                     //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                    new NettyConnectManageHandler(), new NettyEncoder(), new NettyDecoder(), new NettyServerHandler());
+                                    new NettyConnectManageHandler(), new NettyEncoder(encoder), new NettyDecoder(decoder), new NettyServerHandler());
                         }
                     });
 
@@ -106,8 +116,10 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             }
 
             ChannelFuture f = bootstrap.bind(nettyServerConfig.getListenPort()).sync(); // (7)
-            logger.info("Netty started on port {} (socket)", nettyServerConfig.getListenPort());
+            logger.debug("Netty started on port {} (socket)", nettyServerConfig.getListenPort());
             f.channel().closeFuture().sync();
+            logger.info("Server启动 成功 {}:{}", nettyServerConfig.getListenIp(), nettyServerConfig.getListenPort());
+
 
         } catch (InterruptedException e1) {
             throw new NettyException("this.serverBootstrap.bind().sync() InterruptedException", e1);
@@ -135,10 +147,6 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             } else {
                 processResponseCommand(ctx, msg);
             }
-        }        @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-            Command response = handleExceptionCaught(ctx, cause);
-            response(ctx, response);
         }
 
         @Override
@@ -157,7 +165,11 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             }
         }
 
-
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            Command response = handleExceptionCaught(ctx, cause);
+            response(ctx, response);
+        }
 
 
     }

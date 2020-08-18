@@ -3,6 +3,7 @@ package com.creolophus.im.controller;
 import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.processor.UserClientProcessor;
 import com.creolophus.im.protocol.PushMessageDown;
+import com.creolophus.im.service.UserClientService;
 import com.creolophus.liuyi.common.api.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,9 @@ public class MessageController extends BaseController {
     @Resource
     private UserClientProcessor userClientProcessor;
 
+    @Resource
+    private UserClientService userClientService;
+
 
     @RequestMapping(value = "/push", method = RequestMethod.POST)
     public ApiResult pushMessage(
@@ -40,7 +44,7 @@ public class MessageController extends BaseController {
             @RequestParam("senderId") Long senderId,
             @RequestParam(value = "groupId", required = false) Long groupId) {
         PushMessageDown down = new PushMessageDown(messageId, messageType, groupId, messageBody, receiverId, senderId);
-        PushMessageDown ret = userClientProcessor.pushMessage(down);
+        PushMessageDown ret = userClientService.pushMessage(down);
         return new ApiResult(ret);
     }
 

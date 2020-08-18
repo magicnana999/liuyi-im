@@ -1,12 +1,12 @@
 package com.creolophus.im.boot;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.core.AbstractContextProcessor;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.liuyi.common.api.ApiContext;
 import com.creolophus.liuyi.common.api.GlobalSetting;
 import com.creolophus.liuyi.common.api.MdcUtil;
+import com.creolophus.liuyi.common.json.JSON;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,27 +34,6 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
     }
 
     @Override
-    public void initContext(Channel channel, Command command) {
-
-        setChannel(channel);
-        setRequest(command);
-
-        validateCommand(command);
-        MdcUtil.setUri("" + command.getHeader().getType());
-
-        if(globalSetting != null && globalSetting.isDebug()) {
-            if(logger.isDebugEnabled()) {
-                logger.debug(JSON.toJSONString(command));
-            }
-        }
-    }
-
-    @Override
-    public void initContext(Session session, Command command) {
-
-    }
-
-    @Override
     public void clearContext() {
         MdcUtil.clearAll();
         super.cleanContext();
@@ -68,6 +47,45 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
     @Override
     public void setAppKey(String appKey) {
         ApiContext.getContext().setExt(APPKEY, appKey);
+    }
+
+    @Override
+    public Channel getChannel() {
+        return ApiContext.getContext().getExt(CHANNEL);
+    }
+
+    @Override
+    public void setChannel(Channel channel) {
+        ApiContext.getContext().setExt(CHANNEL, channel);
+    }
+
+    @Override
+    public Command getRequest() {
+        return ApiContext.getContext().getExt(REQUEST);
+    }
+
+    @Override
+    public void setRequest(Command reqCommand) {
+        ApiContext.getContext().setExt(REQUEST, reqCommand);
+    }
+
+    @Override
+    public Command getResponse() {
+        return ApiContext.getContext().getExt(RESPONSE);
+    }
+
+    @Override
+    public void setResponse(Command resCommand) {
+        ApiContext.getContext().setExt(RESPONSE, resCommand);
+    }
+
+    @Override
+    public Session getSession() {
+        return null;
+    }
+
+    @Override
+    public void setSession(Session session) {
     }
 
     @Override
@@ -91,42 +109,24 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
     }
 
     @Override
-    public Channel getChannel() {
-        return ApiContext.getContext().getExt(CHANNEL);
+    public void initContext(Channel channel, Command command) {
+
+        setChannel(channel);
+        setRequest(command);
+
+        validateCommand(command);
+        MdcUtil.setUri("" + command.getHeader().getType());
+
+        if(globalSetting != null && globalSetting.isDebug()) {
+            if(logger.isDebugEnabled()) {
+                logger.debug(JSON.toJSONString(command));
+            }
+        }
     }
 
     @Override
-    public void setChannel(Channel channel) {
-        ApiContext.getContext().setExt(CHANNEL, channel);
-    }
+    public void initContext(Session session, Command command) {
 
-    @Override
-    public Session getSession() {
-        return null;
-    }
-
-    @Override
-    public void setSession(Session session) {
-    }
-
-    @Override
-    public Command getRequest() {
-        return ApiContext.getContext().getExt(REQUEST);
-    }
-
-    @Override
-    public void setRequest(Command reqCommand) {
-        ApiContext.getContext().setExt(REQUEST, reqCommand);
-    }
-
-    @Override
-    public Command getResponse() {
-        return ApiContext.getContext().getExt(RESPONSE);
-    }
-
-    @Override
-    public void setResponse(Command resCommand) {
-        ApiContext.getContext().setExt(RESPONSE, resCommand);
     }
 
     public void setUserId(Long userId) {

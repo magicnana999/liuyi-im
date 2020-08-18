@@ -1,9 +1,5 @@
 package com.creolophus.im.protocol;
 
-import com.alibaba.fastjson.JSON;
-
-import java.nio.ByteBuffer;
-
 /**
  * @author magicnana
  * @date 2019/9/12 下午1:50
@@ -15,40 +11,40 @@ public class Command {
     private Object body;
     private Auth auth;
 
-    public static Command decode(final byte[] array) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(array);
-        return decode(byteBuffer);
-    }
-
-    public static Command decode(final ByteBuffer byteBuffer) {
-        int length = byteBuffer.getInt();
-
-        byte[] data = new byte[length];
-        byteBuffer.get(data);
-
-        Command cmd = JSON.parseObject(data, Command.class);
-        return cmd;
-    }
-
-    public ByteBuffer encode() {
-        // 1> header length size
-        int length = 4;
-
-        // 2> header data length
-        byte[] bytes = JSON.toJSONBytes(this);
-        length += bytes.length;
-
-        ByteBuffer result = ByteBuffer.allocate(length);
-
-        // length
-        result.putInt(bytes.length);
-
-        // header data
-        result.put(bytes);
-        result.flip();
-
-        return result;
-    }
+//    public static Command decode(final byte[] array) {
+//        ByteBuffer byteBuffer = ByteBuffer.wrap(array);
+//        return decode(byteBuffer);
+//    }
+//
+//    public static Command decode(final ByteBuffer byteBuffer) {
+//        int length = byteBuffer.getInt();
+//
+//        byte[] data = new byte[length];
+//        byteBuffer.get(data);
+//
+//        Command cmd = JSON.parseObject(data, Command.class);
+//        return cmd;
+//    }
+//
+//    public ByteBuffer encode() {
+//        // 1> header length size
+//        int length = 4;
+//
+//        // 2> header data length
+//        byte[] bytes = JSON.toJSONBytes(this);
+//        length += bytes.length;
+//
+//        ByteBuffer result = ByteBuffer.allocate(length);
+//
+//        // length
+//        result.putInt(bytes.length);
+//
+//        // header data
+//        result.put(bytes);
+//        result.flip();
+//
+//        return result;
+//    }
 
     public Auth getAuth() {
         return auth;
@@ -82,15 +78,6 @@ public class Command {
         this.token = token;
     }
 
-    public static void main(String[] args) {
-        Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), "hello world");
-        byte[] data = JSON.toJSONBytes(request);
-        System.out.println(data.length + " " + new String(data));
-
-        ByteBuffer byteBuffer = request.encode();
-        System.out.println(byteBuffer.limit() + " " + JSON.toJSONString(Command.decode(byteBuffer)));
-
-    }
 
     public static Command newRequest(int commandType, Object body) {
         Header header = Header.newRequest(commandType);

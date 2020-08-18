@@ -1,15 +1,13 @@
 package com.creolophus.im.client;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.PushMessageDown;
-import com.creolophus.im.protocol.PushMessageUp;
-import com.creolophus.im.protocol.UserTest;
+import com.creolophus.im.netty.serializer.JsonDecoder;
+import com.creolophus.im.netty.serializer.JsonEncoder;
+import com.creolophus.im.protocol.*;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
 import com.creolophus.im.sdk.NettyImClient;
+import com.creolophus.liuyi.common.json.JSON;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 
@@ -39,6 +37,9 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     private LiuyiImClient liuyiImClient;
 
+    private Decoder decoder = new JsonDecoder();
+    private Encoder encoder = new JsonEncoder();
+
 
     public MyClientWindow() {
         setAlwaysOnTop(true);
@@ -58,7 +59,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         currentUserBox.addItem(UserTest.小昭);
 
 
-        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this);
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, decoder, encoder);
 
 
 //        txtip = new JTextField();
@@ -177,8 +178,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     @Override
     public PushMessageUp receivePushMessage(Command command) {
         System.out.println("收到推送" + JSON.toJSONString(command));
-        JSONObject jsonObject = (JSONObject) command.getBody();
-        PushMessageDown out = jsonObject.toJavaObject(PushMessageDown.class);
+        PushMessageDown out = decoder.decode(command.getBody(), PushMessageDown.class);
         UserTest.狗男女 target = UserTest.valueOf(out.getSenderId());
         appendText(target.toString() + ": " + out.getMessageBody());
         PushMessageUp up = new PushMessageUp();

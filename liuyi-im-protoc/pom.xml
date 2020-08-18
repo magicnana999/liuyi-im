@@ -9,17 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>liuyi-im-javasdk</artifactId>
-
+    <artifactId>liuyi-im-protoc</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.creolophus</groupId>
-            <artifactId>liuyi-im-netty</artifactId>
-            <version>0.1.0</version>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.7.1</version>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -66,5 +64,15 @@
             </plugin>
         </plugins>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources/protoc</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
     </build>
+
 </project>

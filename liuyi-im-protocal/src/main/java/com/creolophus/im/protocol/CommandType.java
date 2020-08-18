@@ -5,7 +5,7 @@ package com.creolophus.im.protocol;
  * @date 2019/6/19 上午11:59
  */
 public enum CommandType {
-    LOGIN(100), SEND_MESSAGE(102), PUSH_MESSAGE(201),
+    LOGIN(100), SEND_MESSAGE(101), PUSH_MESSAGE(201),
     /**
      * 要不要已读?这是个问题,我先不要了吧!
      */

@@ -1,10 +1,10 @@
 package com.creolophus.im.storage;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.common.base.BaseStorage;
 import com.creolophus.im.common.security.UserSecurity;
 import com.creolophus.im.common.util.Strings;
 import com.creolophus.liuyi.common.base.AbstractStorage;
+import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.redis.RedisClient;
 import org.springframework.stereotype.Service;
 

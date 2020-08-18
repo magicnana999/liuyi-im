@@ -1,11 +1,11 @@
 package com.creolophus.im.websocket;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.core.AbstractWebSocketServer;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.liuyi.common.api.ApiResult;
+import com.creolophus.liuyi.common.json.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,9 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
     @OnMessage
     public void onMessage(Session session, String message) {
         SleuthNettyAdapter.getInstance().begin(tracerUtil, "onMessage");
-        logger.debug("{} {}", session.getId(), message);
+        logger.debug("{}", session.getId());
+        logger.debug(message);
+
         Command request = decode(message);
         contextProcessor.initContext(session, request);
         verify(session, request);

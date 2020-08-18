@@ -1,11 +1,11 @@
 package com.creolophus.im.service;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.common.entity.Message;
 import com.creolophus.im.dao.MessageDao;
 import com.creolophus.im.domain.GatewayAddr;
 import com.creolophus.im.storage.MessageStorage;
+import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.logger.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -7,6 +7,8 @@ import com.creolophus.im.netty.exception.NettyTooMuchRequestException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.netty.utils.NettyUtil;
 import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.Decoder;
+import com.creolophus.im.protocol.Encoder;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -52,12 +54,17 @@ public class AbstractNettyClient extends AbstractNettyInstance {
     private NettyClientChannelEventListener nettyClientChannelEventListener;
     private volatile Channel channel;
 
+    private Decoder decoder;
+    private Encoder encoder;
+
 
     public AbstractNettyClient(
             NettyClientConfig nettyClientConfig,
             TracerUtil tracerUtil,
             RequestProcessor requestProcessor,
-            NettyClientChannelEventListener nettyClientChannelEventListener) {
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            Decoder decoder,
+            Encoder encoder) {
 
         this.nettyClientConfig = nettyClientConfig;
         this.tracerUtil = tracerUtil;
@@ -66,6 +73,9 @@ public class AbstractNettyClient extends AbstractNettyInstance {
 
         this.semaphoreAsync = new Semaphore(65535);
         this.semaphoreOneway = new Semaphore(65535);
+
+        this.decoder = decoder;
+        this.encoder = encoder;
 
         this.bootstrap = new Bootstrap(); // (2)
 
@@ -80,6 +90,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         if(channel == null) {
             ChannelFuture channelFuture = this.bootstrap.connect(NettyUtil.string2SocketAddress(nettyClientConfig.getNettyAddress()));
             this.channel = channelFuture.channel();
+            logger.info("Client连接 成功 {} -> {}", channel.id(), nettyClientConfig.getNettyAddress());
         }
         return channel;
     }
@@ -201,9 +212,11 @@ public class AbstractNettyClient extends AbstractNettyInstance {
                     public void initChannel(SocketChannel ch) {
                         ch.pipeline().addLast(
                                 //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                new NettyConnectManageHandler(), new NettyEncoder(), new NettyDecoder(), new NettyClientHandler());
+                                new NettyConnectManageHandler(), new NettyEncoder(encoder), new NettyDecoder(decoder), new NettyClientHandler());
                     }
                 });
+        logger.info("Client启动 成功");
+
     }
 
     public void sendAsync(Command request, long timeoutMillis, BiConsumer<Command, Command> consumer) throws InterruptedException {
@@ -253,23 +266,17 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "channelRead");
             logger.debug("{}", ctx.channel());
-            Command command = (Command) msg;
+            logger.debug(msg.toString());
             super.channelRead(ctx, msg);
         }
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Command msg) {
-            logger.debug(msg.toString());
             if(msg.getHeader().getCode() == 0) {
                 processRequestCommand(ctx, msg);
             } else {
                 processResponseCommand(ctx, msg);
             }
-        }        @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-
-            Command response = handleExceptionCaught(ctx, cause);
-            response(ctx, response);
         }
 
         @Override
@@ -293,7 +300,12 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             }
         }
 
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 
+            Command response = handleExceptionCaught(ctx, cause);
+            response(ctx, response);
+        }
 
 
     }
@@ -327,7 +339,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
 
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientClose");
-            closeChannel(ctx.channel());
+//            closeChannel(ctx.channel());
             super.close(ctx, promise);
             logger.info("{}", ctx.channel());
             if(nettyClientChannelEventListener != null) {

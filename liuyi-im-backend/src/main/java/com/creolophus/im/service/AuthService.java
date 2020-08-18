@@ -1,12 +1,12 @@
 package com.creolophus.im.service;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.common.entity.User;
 import com.creolophus.im.common.security.TokenUtil;
 import com.creolophus.im.common.security.UserSecurity;
 import com.creolophus.im.storage.AuthStorage;
 import com.creolophus.liuyi.common.exception.UnauthorizedException;
+import com.creolophus.liuyi.common.json.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

@@ -42,21 +42,14 @@
             </td>
             <td>
                 <button onclick="openSocket()">打开Socket</button>
-                <button onclick="login2Im($('#user').val())">登录到Socket</button>
                 <button onclick="shutdownSocket()">关闭Socket</button>
             </td>
         </tr>
-        <td>目标:</td>
+        <td>留言:</td>
+
+        <td><input id="message"/></td>
         <td>
-            <select id="target" style="width: 100%">
-                <option value="100" selected="selected">张无忌</option>
-                <option value="101">赵敏</option>
-                <option value="102">周芷若</option>
-                <option value="103">小昭</option>
-            </select>
-        </td>
-        <td><input id="message"/>
-            <button onclick="send($('#target').val(),$('#message').val())">发送</button>
+            <button onclick="send('112449420578652161',$('#message').val())">发送</button>
         </td>
         </tr>
     </table>

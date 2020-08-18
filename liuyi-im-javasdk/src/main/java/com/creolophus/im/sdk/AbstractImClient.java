@@ -1,8 +1,8 @@
 package com.creolophus.im.sdk;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.creolophus.im.protocol.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
@@ -12,12 +12,20 @@ import java.util.function.BiConsumer;
  * @date 2020/8/4 下午5:39
  */
 public abstract class AbstractImClient implements LiuyiImClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractImClient.class);
     private static final ReentrantLock lock = new ReentrantLock();
     private Context context;
     private volatile boolean isLogin = false;
 
-    protected AbstractImClient() {
+
+    private Decoder decoder;
+    private Encoder encoder;
+
+    protected AbstractImClient(Decoder decoder, Encoder encoder) {
         this.context = new Context();
+        this.decoder = decoder;
+        this.encoder = encoder;
     }
 
     @Override
@@ -37,15 +45,18 @@ public abstract class AbstractImClient implements LiuyiImClient {
                 context.setToken(token);
                 Command request = buildLoginCommand(token);
                 try {
-//                    sendMessage(request, (request1, ack) -> {
-//                        System.out.println(JSON.toJSONString(request1));
-//                        System.out.println(JSON.toJSONString(ack));
-//                    });
-                    Command response = sendMessage(request);
-                    LoginDown loginDown = ((JSONObject) response.getBody()).toJavaObject(LoginDown.class);
-                    context.setAppKey(loginDown.getAppKey());
-                    context.setUserId(loginDown.getUserId());
-                    isLogin = true;
+                    sendMessage(request, (request1, ack) -> {
+                        LoginDown loginDown = decoder.decode(ack.getBody(), LoginDown.class);
+                        context.setAppKey(loginDown.getAppKey());
+                        context.setUserId(loginDown.getUserId());
+
+                        logger.debug("用户登录 成功 {}.{}", context.getAppKey(), context.getUserId());
+                        isLogin = true;
+                    });
+//                    Command response = sendMessage(request);
+//                    LoginDown loginDown = ((JSONObject) response.getBody()).toJavaObject(LoginDown.class);
+//                    context.setAppKey(loginDown.getAppKey());
+//                    context.setUserId(loginDown.getUserId());
                 } catch (Throwable e) {
                     throw new RuntimeException("无法登录", e);
                 }
@@ -60,8 +71,7 @@ public abstract class AbstractImClient implements LiuyiImClient {
         Command request = buildSendMessageCommand(messageType, messageBody, targetId);
         try {
             sendMessage(request, (request1, ack) -> {
-                System.out.println(JSON.toJSONString(request1));
-                System.out.println(JSON.toJSONString(ack));
+                logger.debug("消息发送 成功 {}.{}", ack.getHeader().getSeq(), ack.getHeader().getCode());
             });
         } catch (Throwable e) {
             throw new RuntimeException("无法发送消息", e);

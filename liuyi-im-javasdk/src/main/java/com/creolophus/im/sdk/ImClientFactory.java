@@ -3,8 +3,8 @@ package com.creolophus.im.sdk;
 
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
-import com.creolophus.im.protocol.Decoder;
-import com.creolophus.im.protocol.Encoder;
+import com.creolophus.im.protocol.CommandDecoder;
+import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 
 /**
@@ -17,10 +17,13 @@ public class ImClientFactory {
     private static LiuyiImClient nettyClient;
 
     public static LiuyiImClient getNettyClient(
-            NettyClientChannelEventListener nettyClientChannelEventListener, NettyImClient.MessageReceiver messageReceiver, Decoder decoder, Encoder encoder) {
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            NettyImClient.MessageReceiver messageReceiver,
+            CommandDecoder commandDecoder,
+            CommandEncoder commandEncoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, decoder, encoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, commandDecoder, commandEncoder).start();
             }
         }
         return nettyClient;
@@ -30,12 +33,11 @@ public class ImClientFactory {
             NettyClientChannelEventListener nettyClientChannelEventListener,
             NettyImClient.MessageReceiver messageReceiver,
             NettyClientConfig nettyClientConfig,
-            TracerUtil tracerUtil,
-            Decoder decoder,
-            Encoder encoder) {
+            TracerUtil tracerUtil, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, tracerUtil, decoder, encoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, tracerUtil, commandDecoder, commandEncoder)
+                        .start();
             }
         }
         return nettyClient;
@@ -44,12 +46,10 @@ public class ImClientFactory {
     public static LiuyiImClient getNettyClient(
             NettyClientChannelEventListener nettyClientChannelEventListener,
             NettyImClient.MessageReceiver messageReceiver,
-            TracerUtil tracerUtil,
-            Decoder decoder,
-            Encoder encoder) {
+            TracerUtil tracerUtil, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, tracerUtil, decoder, encoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, tracerUtil, commandDecoder, commandEncoder).start();
             }
         }
         return nettyClient;
@@ -58,12 +58,10 @@ public class ImClientFactory {
     public static LiuyiImClient getNettyClient(
             NettyClientChannelEventListener nettyClientChannelEventListener,
             NettyImClient.MessageReceiver messageReceiver,
-            NettyClientConfig nettyClientConfig,
-            Decoder decoder,
-            Encoder encoder) {
+            NettyClientConfig nettyClientConfig, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, decoder, encoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, commandDecoder, commandEncoder).start();
             }
         }
         return nettyClient;

@@ -1,7 +1,6 @@
 package com.creolophus.im.controller;
 
 import com.creolophus.im.common.base.BaseController;
-import com.creolophus.im.processor.UserClientProcessor;
 import com.creolophus.im.protocol.PushMessageDown;
 import com.creolophus.im.service.UserClientService;
 import com.creolophus.liuyi.common.api.ApiResult;
@@ -27,9 +26,6 @@ import javax.annotation.Resource;
 public class MessageController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
-
-    @Resource
-    private UserClientProcessor userClientProcessor;
 
     @Resource
     private UserClientService userClientService;

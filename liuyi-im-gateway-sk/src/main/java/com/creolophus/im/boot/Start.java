@@ -3,10 +3,10 @@ package com.creolophus.im.boot;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
-import com.creolophus.im.netty.serializer.JsonDecoder;
-import com.creolophus.im.netty.serializer.JsonEncoder;
-import com.creolophus.im.protocol.Decoder;
-import com.creolophus.im.protocol.Encoder;
+import com.creolophus.im.netty.serializer.JsonCommandDecoder;
+import com.creolophus.im.netty.serializer.JsonCommandEncoder;
+import com.creolophus.im.protocol.CommandDecoder;
+import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
@@ -66,7 +66,7 @@ public class Start extends WebStart {
     }
 
 //    @Bean
-//    public JsonEncoder commandSerializer() {
+//    public JsonCommandEncoder commandSerializer() {
 //        return new FastJSONSerializer();
 //    }
 
@@ -78,13 +78,13 @@ public class Start extends WebStart {
     }
 
     @Bean
-    public Decoder jsonDecoder() {
-        return new JsonDecoder();
+    public CommandDecoder jsonCommandDecoder() {
+        return new JsonCommandDecoder();
     }
 
     @Bean
-    public Encoder jsonEncoder() {
-        return new JsonEncoder();
+    public CommandEncoder jsonCommandEncoder() {
+        return new JsonCommandEncoder();
     }
 
     public static void main(String[] args) {

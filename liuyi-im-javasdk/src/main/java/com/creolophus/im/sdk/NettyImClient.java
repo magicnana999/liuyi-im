@@ -18,13 +18,13 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
     private AbstractNettyClient abstractNettyClient;
     private MessageReceiver messageReceiver;
 
-    NettyImClient(Decoder decoder, Encoder encoder) {
-        super(decoder, encoder);
+    NettyImClient(CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+        super(commandDecoder, commandEncoder);
     }
 
-    NettyImClient(NettyClientChannelEventListener listener, MessageReceiver messageReceiver, Decoder decoder, Encoder encoder) {
-        super(decoder, encoder);
-        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), null, this, listener, decoder, encoder);
+    NettyImClient(NettyClientChannelEventListener listener, MessageReceiver messageReceiver, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+        super(commandDecoder, commandEncoder);
+        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), null, this, listener, commandDecoder, commandEncoder);
         this.messageReceiver = messageReceiver;
     }
 
@@ -32,25 +32,32 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
             NettyClientChannelEventListener listener,
             MessageReceiver messageReceiver,
             NettyClientConfig nettyClientConfig,
-            TracerUtil tracerUtil,
-            Decoder decoder,
-            Encoder encoder) {
-        super(decoder, encoder);
-        abstractNettyClient = new AbstractNettyClient(nettyClientConfig, tracerUtil, this, listener, decoder, encoder);
+            TracerUtil tracerUtil, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+        super(commandDecoder, commandEncoder);
+        abstractNettyClient = new AbstractNettyClient(nettyClientConfig, tracerUtil, this, listener, commandDecoder, commandEncoder);
         this.messageReceiver = messageReceiver;
     }
 
     NettyImClient(
-            NettyClientChannelEventListener listener, MessageReceiver messageReceiver, NettyClientConfig nettyClientConfig, Decoder decoder, Encoder encoder) {
-        super(decoder, encoder);
+            NettyClientChannelEventListener listener,
+            MessageReceiver messageReceiver,
+            NettyClientConfig nettyClientConfig,
+            CommandDecoder commandDecoder,
+            CommandEncoder commandEncoder) {
+        super(commandDecoder, commandEncoder);
 
-        abstractNettyClient = new AbstractNettyClient(nettyClientConfig, null, this, listener, decoder, encoder);
+        abstractNettyClient = new AbstractNettyClient(nettyClientConfig, null, this, listener, commandDecoder, commandEncoder);
         this.messageReceiver = messageReceiver;
     }
 
-    NettyImClient(NettyClientChannelEventListener listener, MessageReceiver messageReceiver, TracerUtil tracerUtil, Decoder decoder, Encoder encoder) {
-        super(decoder, encoder);
-        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), tracerUtil, this, listener, decoder, encoder);
+    NettyImClient(
+            NettyClientChannelEventListener listener,
+            MessageReceiver messageReceiver,
+            TracerUtil tracerUtil,
+            CommandDecoder commandDecoder,
+            CommandEncoder commandEncoder) {
+        super(commandDecoder, commandEncoder);
+        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), tracerUtil, this, listener, commandDecoder, commandEncoder);
         this.messageReceiver = messageReceiver;
     }
 

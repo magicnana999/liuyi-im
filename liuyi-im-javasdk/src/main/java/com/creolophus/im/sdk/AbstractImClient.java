@@ -19,13 +19,13 @@ public abstract class AbstractImClient implements LiuyiImClient {
     private volatile boolean isLogin = false;
 
 
-    private Decoder decoder;
-    private Encoder encoder;
+    private CommandDecoder commandDecoder;
+    private CommandEncoder commandEncoder;
 
-    protected AbstractImClient(Decoder decoder, Encoder encoder) {
+    protected AbstractImClient(CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
         this.context = new Context();
-        this.decoder = decoder;
-        this.encoder = encoder;
+        this.commandDecoder = commandDecoder;
+        this.commandEncoder = commandEncoder;
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class AbstractImClient implements LiuyiImClient {
                 Command request = buildLoginCommand(token);
                 try {
                     sendMessage(request, (request1, ack) -> {
-                        LoginDown loginDown = decoder.decode(ack.getBody(), LoginDown.class);
+                        LoginDown loginDown = commandDecoder.decode(ack.getBody(), LoginDown.class);
                         context.setAppKey(loginDown.getAppKey());
                         context.setUserId(loginDown.getUserId());
 

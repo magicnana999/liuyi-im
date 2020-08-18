@@ -1,6 +1,6 @@
 syntax = "proto3"; // PB协议版本
 
-import "google/protobuf/any.proto"; // 引用外部的message，可以是本地的，也可以是此处比较特殊的 Any
+import "com/creolophus/im/protocol/Command.java"; // 引用外部的message，可以是本地的，也可以是此处比较特殊的 Any
 
 package jet.protobuf; // 包名，其他 proto 在引用此 proto 的时候，就可以使用 test.protobuf.PersonTest 来使用，
 // 注意：和下面的 java_package 是两种易混淆概念，同时定义的时候，java_package 具有较高的优先级

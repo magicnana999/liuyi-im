@@ -17,13 +17,7 @@ import javax.annotation.Resource;
 public class RequestProcessorImpl implements RequestProcessor {
 
     @Resource
-    private UserClientProcessor userClientProcessor;
-
-    @Resource
-    private Decoder decoder;
-
-    @Resource
-    private MessageProcessor messageProcessor;
+    private CommandDecoder commandDecoder;
 
     @Resource
     private MessageService messageService;
@@ -38,9 +32,11 @@ public class RequestProcessorImpl implements RequestProcessor {
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
             case LOGIN:
-                return userClientService.login(decoder.decode(request.getBody(), LoginUp.class));
+                return userClientService.login(commandDecoder.decode(request.getBody(), LoginUp.class));
             case SEND_MESSAGE:
-                return messageService.sendMessage(decoder.decode(request.getBody(), SendMessageUp.class));
+                return messageService.sendMessage(commandDecoder.decode(request.getBody(), SendMessageUp.class));
+            case PUSH_MESSAGE:
+                userClientService.pushMessageAck(commandDecoder.decode(request.getBody(), PushMessageUp.class));
             default:
                 break;
         }

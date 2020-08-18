@@ -1,8 +1,8 @@
 package com.creolophus.im.client;
 
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
-import com.creolophus.im.netty.serializer.JsonDecoder;
-import com.creolophus.im.netty.serializer.JsonEncoder;
+import com.creolophus.im.netty.serializer.JsonCommandDecoder;
+import com.creolophus.im.netty.serializer.JsonCommandEncoder;
 import com.creolophus.im.protocol.*;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
@@ -37,8 +37,8 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     private LiuyiImClient liuyiImClient;
 
-    private Decoder decoder = new JsonDecoder();
-    private Encoder encoder = new JsonEncoder();
+    private CommandDecoder commandDecoder = new JsonCommandDecoder();
+    private CommandEncoder commandEncoder = new JsonCommandEncoder();
 
 
     public MyClientWindow() {
@@ -59,7 +59,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         currentUserBox.addItem(UserTest.小昭);
 
 
-        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, decoder, encoder);
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, commandDecoder, commandEncoder);
 
 
 //        txtip = new JTextField();
@@ -178,7 +178,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     @Override
     public PushMessageUp receivePushMessage(Command command) {
         System.out.println("收到推送" + JSON.toJSONString(command));
-        PushMessageDown out = decoder.decode(command.getBody(), PushMessageDown.class);
+        PushMessageDown out = commandDecoder.decode(command.getBody(), PushMessageDown.class);
         UserTest.狗男女 target = UserTest.valueOf(out.getSenderId());
         appendText(target.toString() + ": " + out.getMessageBody());
         PushMessageUp up = new PushMessageUp();

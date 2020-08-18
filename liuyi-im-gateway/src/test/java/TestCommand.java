@@ -5,6 +5,8 @@ import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.util.JUnitPrint;
 import org.junit.Test;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author magicnana
  * @date 2020/2/20 上午11:41
@@ -14,10 +16,10 @@ public class TestCommand {
     @Test
     public void commands() {
 
-        Encoder encoder = new Encoder() {
+        CommandEncoder commandEncoder = new CommandEncoder() {
             @Override
-            public byte[] encode(Command nettyCommand) {
-                return JSON.toJSONString(nettyCommand).getBytes();
+            public ByteBuffer encode(Command nettyCommand) {
+                return ByteBuffer.wrap(JSON.toJSONString(nettyCommand).getBytes());
             }
         };
 
@@ -29,25 +31,26 @@ public class TestCommand {
         {
             //张无忌
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            String str = new String(commandEncoder.encode(request).toString());
+            System.out.println(str.getBytes().length + " " + str);
         }
 
         {
             //赵敏
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).toString()));
         }
 
         {
             //周芷若
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.周芷若.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
             //小昭
             Command request = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(UserTest.小昭.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
 
@@ -58,7 +61,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -68,7 +71,7 @@ public class TestCommand {
             m.setTargetId(UserTest.张无忌.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -78,7 +81,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -88,7 +91,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -98,7 +101,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -108,7 +111,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -118,7 +121,7 @@ public class TestCommand {
             m.setTargetId(UserTest.张无忌.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -128,7 +131,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -138,7 +141,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -148,7 +151,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -159,7 +162,7 @@ public class TestCommand {
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m);
             m.setTargetId(UserTest.周芷若.userId);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -169,7 +172,7 @@ public class TestCommand {
             m.setTargetId(UserTest.周芷若.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -179,7 +182,7 @@ public class TestCommand {
             m.setTargetId(UserTest.赵敏.userId);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -189,7 +192,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -199,7 +202,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -209,7 +212,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -219,7 +222,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.小昭.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -229,7 +232,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.赵敏.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -239,7 +242,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.周芷若.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -249,7 +252,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.小昭.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
 
         {
@@ -259,7 +262,7 @@ public class TestCommand {
             m.setTargetId(1000L);
 
             Command request = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), m).withToken(UserTest.张无忌.token);
-            System.out.println(new String(encoder.encode(request)));
+            System.out.println(new String(commandEncoder.encode(request).array()));
         }
     }
 

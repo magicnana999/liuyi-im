@@ -1,10 +1,16 @@
 package com.creolophus.im.processor;
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.core.RequestProcessor;
-import com.creolophus.im.protocol.*;
+import com.creolophus.im.protocol.Auth;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.service.AuthService;
 import com.creolophus.im.service.MessageService;
 import com.creolophus.im.service.UserClientService;
+import com.creolophus.im.type.LoginMsg;
+import com.creolophus.im.type.PushMessageAck;
+import com.creolophus.im.type.SendMessageMsg;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,7 +23,7 @@ import javax.annotation.Resource;
 public class RequestProcessorImpl implements RequestProcessor {
 
     @Resource
-    private CommandDecoder commandDecoder;
+    private MessageCoder messageCoder;
 
     @Resource
     private MessageService messageService;
@@ -32,11 +38,11 @@ public class RequestProcessorImpl implements RequestProcessor {
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
             case LOGIN:
-                return userClientService.login(commandDecoder.decode(request.getBody(), LoginUp.class));
+                return userClientService.login(messageCoder.decode(request.getBody(), LoginMsg.class));
             case SEND_MESSAGE:
-                return messageService.sendMessage(commandDecoder.decode(request.getBody(), SendMessageUp.class));
+                return messageService.sendMessage(messageCoder.decode(request.getBody(), SendMessageMsg.class));
             case PUSH_MESSAGE:
-                userClientService.pushMessageAck(commandDecoder.decode(request.getBody(), PushMessageUp.class));
+                userClientService.pushMessageAck(messageCoder.decode(request.getBody(), PushMessageAck.class));
             default:
                 break;
         }

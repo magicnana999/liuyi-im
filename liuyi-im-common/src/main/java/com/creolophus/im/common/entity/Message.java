@@ -96,33 +96,5 @@ public class Message extends AbstractEntity {
     public void setSenderId(Long senderId) {
         this.senderId = senderId;
     }
-
-    public enum MessageType {
-        SINGLE(1), GROUP(2);
-
-        int value;
-
-        MessageType(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
-
-        public static MessageType valueOf(Integer value) {
-            if(value == null) {
-                return null;
-            }
-
-            for (MessageType mt : MessageType.values()) {
-                if(mt.getValue() == value) {
-                    return mt;
-                }
-            }
-
-            return null;
-        }
-
-    }
+    
 }

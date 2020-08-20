@@ -7,7 +7,7 @@ package com.creolophus.im.protocol;
 public class Header {
 
 
-    private static final int SEND = 0;
+    private static final int MSG = 0;
     private static final int ACK_OK = 200;
     private String seq;
     private int type;
@@ -49,32 +49,10 @@ public class Header {
         this.type = type;
     }
 
-    private static Header newHeader(int commandType, int code) {
-        Header header = new Header();
-        header.setSeq(Seq.nextSequence());
-        header.setType(commandType);
-        header.setCode(code);
-        return header;
-    }
-
-    /**
-     * 客户端发送的
-     */
-    public static Header newRequest(int commandType) {
-        return newHeader(commandType, SEND);
-    }
-
-    /**
-     * 服务端主动推送给客户端的
-     */
-    public static Header newResponse(int commandType) {
-        return newHeader(commandType, ACK_OK);
-    }
-
     /**
      * 服务端收到客户端的请求后,处理失败,回复的.
      */
-    public static Header newResponse(String sequence, int commandType, Error error) {
+    public static Header newAck(String sequence, int commandType, Error error) {
         Header header = new Header();
         header.setSeq(sequence);
         header.setType(commandType);
@@ -86,7 +64,7 @@ public class Header {
     /**
      * 服务端收到客户端的请求后,处理成功,回复的.
      */
-    public static Header newResponse(String sequence, int commandType) {
+    public static Header newAck(String sequence, int commandType) {
         Header header = new Header();
         header.setSeq(sequence);
         header.setType(commandType);
@@ -94,6 +72,20 @@ public class Header {
         return header;
     }
 
+    private static Header newHeader(int commandType, int code) {
+        Header header = new Header();
+        header.setSeq(Seq.nextSequence());
+        header.setType(commandType);
+        header.setCode(code);
+        return header;
+    }
+
+    /**
+     * 客户端发送的
+     */
+    public static Header newMsg(int commandType) {
+        return newHeader(commandType, MSG);
+    }
 
     @Override
     public String toString() {

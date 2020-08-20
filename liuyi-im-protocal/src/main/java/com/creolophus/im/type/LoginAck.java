@@ -1,4 +1,4 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 /**
  * server -> client
@@ -7,12 +7,20 @@ package com.creolophus.im.protocol;
  * @date 2020-01-11
  */
 
-public class LoginDown {
+public class LoginAck {
 
     private String appKey;
     private String token;
     private Long userId;
 
+    public LoginAck() {
+    }
+
+    public LoginAck(String appKey, String token, Long userId) {
+        this.appKey = appKey;
+        this.token = token;
+        this.userId = userId;
+    }
 
     public String getAppKey() {
         return appKey;

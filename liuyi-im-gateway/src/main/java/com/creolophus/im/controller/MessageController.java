@@ -1,8 +1,8 @@
 package com.creolophus.im.controller;
 
 import com.creolophus.im.common.base.BaseController;
-import com.creolophus.im.protocol.PushMessageDown;
 import com.creolophus.im.service.UserClientService;
+import com.creolophus.im.type.PushMessageMsg;
 import com.creolophus.liuyi.common.api.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +39,8 @@ public class MessageController extends BaseController {
             @RequestParam("receiverId") Long receiverId,
             @RequestParam("senderId") Long senderId,
             @RequestParam(value = "groupId", required = false) Long groupId) {
-        PushMessageDown down = new PushMessageDown(messageId, messageType, groupId, messageBody, receiverId, senderId);
-        PushMessageDown ret = userClientService.pushMessage(down);
+        PushMessageMsg down = new PushMessageMsg(messageId, messageType, groupId, messageBody, receiverId, senderId);
+        PushMessageMsg ret = userClientService.pushMessage(down);
         return new ApiResult(ret);
     }
 

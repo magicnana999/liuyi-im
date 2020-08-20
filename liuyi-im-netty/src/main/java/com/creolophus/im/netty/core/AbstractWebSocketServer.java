@@ -50,10 +50,10 @@ public abstract class AbstractWebSocketServer {
         Command response = null;
         try {
             final Object requestReturn = requestProcessor.processRequest(cmd);
-            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
+            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
         } catch (Throwable e) {
             logger.error(e.getMessage(), e);
-            response = Command.newResponse(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
+            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
         } finally {
             return response(session, response);
         }

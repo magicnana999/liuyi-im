@@ -1,4 +1,4 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 /**
  * client -> server
@@ -7,12 +7,20 @@ package com.creolophus.im.protocol;
  * @date 2020-01-11
  */
 
-public class LoginUp {
+public class LoginMsg {
 
     private String deviceLabel;
     private String sdkName;
     private String sdkVersion;
 
+    public LoginMsg() {
+    }
+
+    public LoginMsg(String deviceLabel, String sdkName, String sdkVersion) {
+        this.deviceLabel = deviceLabel;
+        this.sdkName = sdkName;
+        this.sdkVersion = sdkVersion;
+    }
 
     public String getDeviceLabel() {
         return deviceLabel;

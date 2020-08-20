@@ -1,4 +1,4 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 /**
  * Server -> Client
@@ -6,7 +6,7 @@ package com.creolophus.im.protocol;
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class PushMessageDown {
+public class PushMessageMsg {
 
     private Long messageId;
     private Integer messageType;
@@ -15,7 +15,7 @@ public class PushMessageDown {
     private Long receiverId;
     private Long senderId;
 
-    public PushMessageDown(Long messageId, Integer messageType, Long groupId, String messageBody, Long receiverId, Long senderId) {
+    public PushMessageMsg(Long messageId, Integer messageType, Long groupId, String messageBody, Long receiverId, Long senderId) {
         this.messageId = messageId;
         this.messageType = messageType;
         this.groupId = groupId;
@@ -24,7 +24,7 @@ public class PushMessageDown {
         this.senderId = senderId;
     }
 
-    public PushMessageDown() {}
+    public PushMessageMsg() {}
 
     public Long getGroupId() {
         return groupId;

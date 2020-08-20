@@ -1,15 +1,24 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 
 /**
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class SendMessageUp {
+public class SendMessageMsg {
 
     private Integer messageType;
     private Long targetId;
     private String messageBody;
+
+    public SendMessageMsg() {
+    }
+
+    public SendMessageMsg(Integer messageType, Long targetId, String messageBody) {
+        this.messageType = messageType;
+        this.targetId = targetId;
+        this.messageBody = messageBody;
+    }
 
     public String getMessageBody() {
         return messageBody;
@@ -44,4 +53,5 @@ public class SendMessageUp {
         sb.append('}');
         return sb.toString();
     }
+
 }

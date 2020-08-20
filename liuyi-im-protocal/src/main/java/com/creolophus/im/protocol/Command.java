@@ -4,47 +4,12 @@ package com.creolophus.im.protocol;
  * @author magicnana
  * @date 2019/9/12 下午1:50
  */
-public class Command {
+public class Command<T> {
 
     private String token;
     private Header header;
-    private Object body;
+    private T body;
     private Auth auth;
-
-//    public static Command decode(final byte[] array) {
-//        ByteBuffer byteBuffer = ByteBuffer.wrap(array);
-//        return decode(byteBuffer);
-//    }
-//
-//    public static Command decode(final ByteBuffer byteBuffer) {
-//        int length = byteBuffer.getInt();
-//
-//        byte[] data = new byte[length];
-//        byteBuffer.get(data);
-//
-//        Command cmd = JSON.parseObject(data, Command.class);
-//        return cmd;
-//    }
-//
-//    public ByteBuffer encode() {
-//        // 1> header length size
-//        int length = 4;
-//
-//        // 2> header data length
-//        byte[] bytes = JSON.toJSONBytes(this);
-//        length += bytes.length;
-//
-//        ByteBuffer result = ByteBuffer.allocate(length);
-//
-//        // length
-//        result.putInt(bytes.length);
-//
-//        // header data
-//        result.put(bytes);
-//        result.flip();
-//
-//        return result;
-//    }
 
     public Auth getAuth() {
         return auth;
@@ -54,11 +19,11 @@ public class Command {
         this.auth = auth;
     }
 
-    public Object getBody() {
+    public T getBody() {
         return body;
     }
 
-    public void setBody(Object body) {
+    public void setBody(T body) {
         this.body = body;
     }
 
@@ -78,33 +43,24 @@ public class Command {
         this.token = token;
     }
 
+    public static Command newAck(String sequence, int commandType, Error error) {
+        Header header = Header.newAck(sequence, commandType, error);
+        Command command = new Command();
+        command.setHeader(header);
+        return command;
 
-    public static Command newRequest(int commandType, Object body) {
-        Header header = Header.newRequest(commandType);
+    }
+
+    public static Command newAck(String sequence, int commandType, Object body) {
+        Header header = Header.newAck(sequence, commandType);
         Command command = new Command();
         command.setHeader(header);
         command.setBody(body);
         return command;
     }
 
-    public static Command newResponse(String sequence, int commandType, Error error) {
-        Header header = Header.newResponse(sequence, commandType, error);
-        Command command = new Command();
-        command.setHeader(header);
-        return command;
-
-    }
-
-    public static Command newResponse(String sequence, int commandType, Object body) {
-        Header header = Header.newResponse(sequence, commandType);
-        Command command = new Command();
-        command.setHeader(header);
-        command.setBody(body);
-        return command;
-    }
-
-    public static Command newResponse(int commandType, Object body) {
-        Header header = Header.newResponse(commandType);
+    public static Command newMsg(int commandType, Object body) {
+        Header header = Header.newMsg(commandType);
         Command command = new Command();
         command.setHeader(header);
         command.setBody(body);

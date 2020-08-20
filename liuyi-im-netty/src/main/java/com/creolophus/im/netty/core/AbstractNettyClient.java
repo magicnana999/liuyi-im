@@ -1,5 +1,6 @@
 package com.creolophus.im.netty.core;
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.exception.NettyException;
 import com.creolophus.im.netty.exception.NettyTimeoutException;
@@ -7,8 +8,6 @@ import com.creolophus.im.netty.exception.NettyTooMuchRequestException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.netty.utils.NettyUtil;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandDecoder;
-import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -54,15 +53,15 @@ public class AbstractNettyClient extends AbstractNettyInstance {
     private NettyClientChannelEventListener nettyClientChannelEventListener;
     private volatile Channel channel;
 
-    private CommandDecoder commandDecoder;
-    private CommandEncoder commandEncoder;
+    private MessageCoder messageCoder;
 
 
     public AbstractNettyClient(
             NettyClientConfig nettyClientConfig,
             TracerUtil tracerUtil,
             RequestProcessor requestProcessor,
-            NettyClientChannelEventListener nettyClientChannelEventListener, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            MessageCoder messageCoder) {
 
         this.nettyClientConfig = nettyClientConfig;
         this.tracerUtil = tracerUtil;
@@ -72,8 +71,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         this.semaphoreAsync = new Semaphore(65535);
         this.semaphoreOneway = new Semaphore(65535);
 
-        this.commandDecoder = commandDecoder;
-        this.commandEncoder = commandEncoder;
+        this.messageCoder = messageCoder;
 
         this.bootstrap = new Bootstrap(); // (2)
 
@@ -210,7 +208,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
                     public void initChannel(SocketChannel ch) {
                         ch.pipeline().addLast(
                                 //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                new NettyConnectManageHandler(), new NettyEncoder(commandEncoder), new NettyDecoder(commandDecoder), new NettyClientHandler());
+                                new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder), new NettyClientHandler());
                     }
                 });
         logger.info("Client启动 成功");

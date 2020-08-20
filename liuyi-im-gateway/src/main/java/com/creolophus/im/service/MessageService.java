@@ -3,8 +3,8 @@ package com.creolophus.im.service;
 import com.creolophus.im.common.config.LiuyiSetting;
 import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.netty.core.ContextProcessor;
-import com.creolophus.im.protocol.SendMessageDown;
-import com.creolophus.im.protocol.SendMessageUp;
+import com.creolophus.im.type.SendMessageAck;
+import com.creolophus.im.type.SendMessageMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,12 +36,12 @@ public class MessageService {
         return contextProcessor.getUserId();
     }
 
-    public SendMessageDown sendMessage(SendMessageUp m) {
+    public SendMessageAck sendMessage(SendMessageMsg m) {
         SimpleDateFormat format = new SimpleDateFormat(LiuyiSetting.MESSAGE_SEND_TIME_PATTERN);
         String sendTime = format.format(new Date());
         Long messageId = backendFeign.sendMessage(getAppKey(), getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
         logger.info("消息发送 完成 {} -> {}.{}", getUserId(), m.getTargetId(), messageId);
-        return new SendMessageDown(messageId);
+        return new SendMessageAck(messageId);
     }
 
 }

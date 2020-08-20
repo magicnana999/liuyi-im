@@ -5,6 +5,7 @@ import com.creolophus.im.common.entity.Message;
 import com.creolophus.im.dao.MessageDao;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
+import com.creolophus.im.type.MessageType;
 import com.creolophus.im.vo.SimpleMessageVo;
 import com.creolophus.liuyi.common.exception.ApiException;
 import com.creolophus.liuyi.common.thread.Stopable;
@@ -50,12 +51,12 @@ public class MessageService extends BaseService implements Stopable {
 
     public List<SimpleMessageVo> findMessageList(Long receiverId, Long messageId, Integer messageType, Long sourceId, int pageNo, int pageSize) {
 
-        Message.MessageType mt = Message.MessageType.valueOf(messageType);
+        MessageType mt = MessageType.valueOf(messageType);
         if(mt == null) {
             throw new ApiException("无此 MessageType");
         }
 
-        if(mt.getValue() == Message.MessageType.SINGLE.getValue()) {
+        if(mt.value() == MessageType.SINGLE.value()) {
             return findMessageListOfSingle(receiverId, messageId, messageType, sourceId, pageNo, pageSize);
         } else {
             return findMessageListOfGroup(receiverId, messageId, messageType, sourceId, pageNo, pageSize);
@@ -99,7 +100,7 @@ public class MessageService extends BaseService implements Stopable {
     }
 
     public Long sendMessage(Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime, String appKey) {
-        if(messageType == Message.MessageType.SINGLE.getValue()) {
+        if(messageType == MessageType.SINGLE.value()) {
             Message message = new Message();
             message.setMessageId(idSimpleService.nextMessageId(targetId));
             message.setCreateTime(new Date());

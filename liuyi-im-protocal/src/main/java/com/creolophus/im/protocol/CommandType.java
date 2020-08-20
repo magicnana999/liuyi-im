@@ -6,28 +6,21 @@ package com.creolophus.im.protocol;
  */
 public enum CommandType {
     LOGIN(100), SEND_MESSAGE(101), PUSH_MESSAGE(201),
-    /**
-     * 要不要已读?这是个问题,我先不要了吧!
-     */
-//    PUSH_ARRIVAL(202),
-//    SEND_READ(103),
-//    PUSH_READ(203),
-    SEND_TYPING(104), PUSH_TYPING(204);
-
+    ;
     private int value;
 
     CommandType(int value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public int value() {
         return value;
     }
 
     public static CommandType valueOf(int value) {
 
         for (CommandType code : CommandType.values()) {
-            if(code.getValue() == value) {
+            if(code.value() == value) {
                 return code;
             }
         }

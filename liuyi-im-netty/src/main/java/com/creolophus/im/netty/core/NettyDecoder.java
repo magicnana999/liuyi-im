@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.protocol.CommandDecoder;
+import com.creolophus.im.coder.MessageCoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -18,11 +18,11 @@ public class NettyDecoder extends LengthFieldBasedFrameDecoder {
 
     private static final int FRAME_MAX_LENGTH = 16777216 * 10;
 
-    private CommandDecoder commandDecoder;
+    private MessageCoder messageCoder;
 
-    public NettyDecoder(CommandDecoder commandDecoder) {
+    public NettyDecoder(MessageCoder messageCoder) {
         super(FRAME_MAX_LENGTH, 0, 4, 0, 0);
-        this.commandDecoder = commandDecoder;
+        this.messageCoder = messageCoder;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class NettyDecoder extends LengthFieldBasedFrameDecoder {
             return null;
         }
         ByteBuffer byteBuffer = frame.nioBuffer();
-        return commandDecoder.decode(byteBuffer);
+        return messageCoder.decode(byteBuffer);
     }
 
     //    @Override

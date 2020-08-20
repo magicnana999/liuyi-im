@@ -1,19 +1,19 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 
 /**
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class SendMessageDown {
+public class SendMessageAck {
 
     private Long messageId;
 
-    public SendMessageDown(Long messageId) {
+    public SendMessageAck(Long messageId) {
         this.messageId = messageId;
     }
 
-    public SendMessageDown() {}
+    public SendMessageAck() {}
 
     public Long getMessageId() {
         return messageId;

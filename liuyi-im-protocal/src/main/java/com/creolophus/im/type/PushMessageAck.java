@@ -1,4 +1,4 @@
-package com.creolophus.im.protocol;
+package com.creolophus.im.type;
 
 /**
  * Client -> Server
@@ -6,21 +6,21 @@ package com.creolophus.im.protocol;
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */
-public class PushMessageUp {
+public class PushMessageAck {
 
     private Long messageId;
     private Long groupId;
     private Long receiverId;
     private Long senderId;
 
-    public PushMessageUp(Long messageId, Long groupId, Long receiverId, Long senderId) {
+    public PushMessageAck(Long messageId, Long groupId, Long receiverId, Long senderId) {
         this.messageId = messageId;
         this.groupId = groupId;
         this.receiverId = receiverId;
         this.senderId = senderId;
     }
 
-    public PushMessageUp() {}
+    public PushMessageAck() {}
 
     public Long getGroupId() {
         return groupId;

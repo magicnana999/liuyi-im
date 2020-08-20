@@ -5,8 +5,8 @@ import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.LoginDown;
-import com.creolophus.im.protocol.LoginUp;
+import com.creolophus.im.type.LoginAck;
+import com.creolophus.im.type.LoginMsg;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class UserChannelClientService extends UserClientService {
     }
 
     @Override
-    public LoginDown login(LoginUp input) {
+    public LoginAck login(LoginMsg input) {
         UserChannel client = new UserChannel();
         client.setChannel(getChannel());
         client.setUserId(getUserId());
@@ -82,7 +82,7 @@ public class UserChannelClientService extends UserClientService {
         registerUserClient(client);
         backendFeign.registerUserClient("127.0.0.1", 33010, client.getUserId());
 
-        LoginDown ret = new LoginDown();
+        LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
         ret.setToken(getToken());
         ret.setUserId(getUserId());

@@ -1,11 +1,10 @@
 package com.creolophus.im.netty.core;
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyServerConfig;
 import com.creolophus.im.netty.exception.NettyException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandDecoder;
-import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.liuyi.common.api.MdcUtil;
 import com.creolophus.liuyi.common.json.JSON;
 import com.creolophus.liuyi.common.logger.TracerUtil;
@@ -39,11 +38,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
     protected TracerUtil tracerUtil;
     protected ContextProcessor contextProcessor;
     private RequestProcessor requestProcessor;
-    //    private ResponseProcessor responseProcessor;
     private NettyServerChannelEventListener nettyServerChannelEventListener;
 
-    private CommandEncoder commandEncoder;
-    private CommandDecoder commandDecoder;
+    private MessageCoder messageCoder;
 
 
     public AbstractNettyServer(
@@ -52,19 +49,14 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             ContextProcessor contextProcessor,
             RequestProcessor requestProcessor,
             NettyServerChannelEventListener nettyServerChannelEventListener,
-//            ResponseProcessor responseProcessor,
-            CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+            MessageCoder messageCoder) {
 
         this.nettyServerConfig = nettyServerConfig;
         this.tracerUtil = tracerUtil;
         this.contextProcessor = contextProcessor;
         this.requestProcessor = requestProcessor;
         this.nettyServerChannelEventListener = nettyServerChannelEventListener;
-//        this.responseProcessor = responseProcessor;
-
-        this.commandDecoder = commandDecoder;
-        this.commandEncoder = commandEncoder;
-
+        this.messageCoder = messageCoder;
         this.bootstrap = new ServerBootstrap(); // (2)
 
         if(useEpoll()) {
@@ -106,7 +98,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
                         public void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(
                                     //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                    new NettyConnectManageHandler(), new NettyEncoder(commandEncoder), new NettyDecoder(commandDecoder),
+                                    new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder),
                                     new NettyServerHandler());
                         }
                     });

@@ -6,8 +6,8 @@ import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.feign.BackendFeign;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.LoginDown;
-import com.creolophus.im.protocol.LoginUp;
+import com.creolophus.im.type.LoginAck;
+import com.creolophus.im.type.LoginMsg;
 import com.creolophus.liuyi.common.json.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,7 @@ public class UserSessionClientService extends UserClientService {
     }
 
     @Override
-    public LoginDown login(LoginUp input) {
+    public LoginAck login(LoginMsg input) {
         UserSession client = new UserSession();
         client.setSession(getSession());
         client.setUserId(getUserId());
@@ -86,7 +86,7 @@ public class UserSessionClientService extends UserClientService {
         registerUserClient(client);
         backendFeign.registerUserClient("127.0.0.1", 33008, client.getUserId());
 
-        LoginDown ret = new LoginDown();
+        LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
         ret.setToken(getToken());
         ret.setUserId(getUserId());

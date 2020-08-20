@@ -66,7 +66,7 @@ public class WebsocketServerInstance extends AbstractWebSocketServer {
 
 
         Command request = contextProcessor.getRequest();
-        Command response = Command.newResponse(request.getHeader().getSeq(), request.getHeader().getType(), NettyError.E_ERROR);
+        Command response = Command.newAck(request.getHeader().getSeq(), request.getHeader().getType(), NettyError.E_ERROR);
         response(session, response);
         if(sessionEventListener != null) sessionEventListener.onError(session, error);
         SleuthNettyAdapter.getInstance().cleanContext();

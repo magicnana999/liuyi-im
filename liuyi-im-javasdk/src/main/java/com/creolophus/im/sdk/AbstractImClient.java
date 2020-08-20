@@ -1,6 +1,11 @@
 package com.creolophus.im.sdk;
 
-import com.creolophus.im.protocol.*;
+import com.creolophus.im.coder.MessageCoder;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.type.LoginAck;
+import com.creolophus.im.type.LoginMsg;
+import com.creolophus.im.type.SendMessageMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +24,16 @@ public abstract class AbstractImClient implements LiuyiImClient {
     private volatile boolean isLogin = false;
 
 
-    private CommandDecoder commandDecoder;
-    private CommandEncoder commandEncoder;
+    private MessageCoder messageCoder;
 
-    protected AbstractImClient(CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+    protected AbstractImClient(MessageCoder messageCoder) {
         this.context = new Context();
-        this.commandDecoder = commandDecoder;
-        this.commandEncoder = commandEncoder;
+        this.messageCoder = messageCoder;
     }
 
     @Override
     public Command buildAckCommand(Command request) {
-        Command response = Command.newResponse(request.getHeader().getSeq(), request.getHeader().getType(), "OK").withToken(context.getToken());
+        Command response = Command.newAck(request.getHeader().getSeq(), request.getHeader().getType(), "OK").withToken(context.getToken());
         return response;
     }
 
@@ -46,15 +49,15 @@ public abstract class AbstractImClient implements LiuyiImClient {
                 Command request = buildLoginCommand(token);
                 try {
                     sendMessage(request, (request1, ack) -> {
-                        LoginDown loginDown = commandDecoder.decode(ack.getBody(), LoginDown.class);
-                        context.setAppKey(loginDown.getAppKey());
-                        context.setUserId(loginDown.getUserId());
+                        LoginAck loginAck = messageCoder.decode(ack.getBody(), LoginAck.class);
+                        context.setAppKey(loginAck.getAppKey());
+                        context.setUserId(loginAck.getUserId());
 
                         logger.debug("用户登录 成功 {}.{}", context.getAppKey(), context.getUserId());
                         isLogin = true;
                     });
 //                    Command response = sendMessage(request);
-//                    LoginDown loginDown = ((JSONObject) response.getBody()).toJavaObject(LoginDown.class);
+//                    LoginAck loginDown = ((JSONObject) response.getBody()).toJavaObject(LoginAck.class);
 //                    context.setAppKey(loginDown.getAppKey());
 //                    context.setUserId(loginDown.getUserId());
                 } catch (Throwable e) {
@@ -80,21 +83,21 @@ public abstract class AbstractImClient implements LiuyiImClient {
     }
 
     public Command buildLoginCommand(String token) {
-        LoginUp client = new LoginUp();
+        LoginMsg client = new LoginMsg();
         client.setDeviceLabel(System.getProperty("os.name"));
         client.setSdkName("liuyi-im-nettysdk");
         client.setSdkVersion("1.0.0");
 
-        Command command = Command.newRequest(CommandType.LOGIN.getValue(), client).withToken(token);
+        Command command = Command.newMsg(CommandType.LOGIN.value(), client).withToken(token);
         return command;
     }
 
     public Command buildSendMessageCommand(int messageType, String messageBody, long targetId) {
-        SendMessageUp input = new SendMessageUp();
+        SendMessageMsg input = new SendMessageMsg();
         input.setMessageBody(messageBody);
         input.setMessageType(messageType);
         input.setTargetId(targetId);
-        Command command = Command.newRequest(CommandType.SEND_MESSAGE.getValue(), input).withToken(context.getToken());
+        Command command = Command.newMsg(CommandType.SEND_MESSAGE.value(), input).withToken(context.getToken());
         return command;
     }
 

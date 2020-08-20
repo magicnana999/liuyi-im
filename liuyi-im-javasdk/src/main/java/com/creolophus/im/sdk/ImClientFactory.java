@@ -1,10 +1,9 @@
 package com.creolophus.im.sdk;
 
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
-import com.creolophus.im.protocol.CommandDecoder;
-import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 
 /**
@@ -17,13 +16,34 @@ public class ImClientFactory {
     private static LiuyiImClient nettyClient;
 
     public static LiuyiImClient getNettyClient(
-            NettyClientChannelEventListener nettyClientChannelEventListener,
-            NettyImClient.MessageReceiver messageReceiver,
-            CommandDecoder commandDecoder,
-            CommandEncoder commandEncoder) {
+            NettyClientChannelEventListener nettyClientChannelEventListener, NettyImClient.MessageReceiver messageReceiver, MessageCoder messageCoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, commandDecoder, commandEncoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, messageCoder).start();
+            }
+        }
+        return nettyClient;
+    }
+
+    public static LiuyiImClient getNettyClient(
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            NettyImClient.MessageReceiver messageReceiver,
+            NettyClientConfig nettyClientConfig, TracerUtil tracerUtil, MessageCoder messageCoder) {
+        if(nettyClient == null) {
+            synchronized (LiuyiImClient.class) {
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, tracerUtil, messageCoder)
+                        .start();
+            }
+        }
+        return nettyClient;
+    }
+
+    public static LiuyiImClient getNettyClient(
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            NettyImClient.MessageReceiver messageReceiver, TracerUtil tracerUtil, MessageCoder messageCoder) {
+        if(nettyClient == null) {
+            synchronized (LiuyiImClient.class) {
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, tracerUtil, messageCoder).start();
             }
         }
         return nettyClient;
@@ -33,35 +53,10 @@ public class ImClientFactory {
             NettyClientChannelEventListener nettyClientChannelEventListener,
             NettyImClient.MessageReceiver messageReceiver,
             NettyClientConfig nettyClientConfig,
-            TracerUtil tracerUtil, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
+            MessageCoder messageCoder) {
         if(nettyClient == null) {
             synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, tracerUtil, commandDecoder, commandEncoder)
-                        .start();
-            }
-        }
-        return nettyClient;
-    }
-
-    public static LiuyiImClient getNettyClient(
-            NettyClientChannelEventListener nettyClientChannelEventListener,
-            NettyImClient.MessageReceiver messageReceiver,
-            TracerUtil tracerUtil, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
-        if(nettyClient == null) {
-            synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, tracerUtil, commandDecoder, commandEncoder).start();
-            }
-        }
-        return nettyClient;
-    }
-
-    public static LiuyiImClient getNettyClient(
-            NettyClientChannelEventListener nettyClientChannelEventListener,
-            NettyImClient.MessageReceiver messageReceiver,
-            NettyClientConfig nettyClientConfig, CommandDecoder commandDecoder, CommandEncoder commandEncoder) {
-        if(nettyClient == null) {
-            synchronized (LiuyiImClient.class) {
-                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, commandDecoder, commandEncoder).start();
+                nettyClient = new NettyImClient(nettyClientChannelEventListener, messageReceiver, nettyClientConfig, messageCoder).start();
             }
         }
         return nettyClient;

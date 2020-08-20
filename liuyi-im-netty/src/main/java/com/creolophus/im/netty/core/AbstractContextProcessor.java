@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class AbstractContextProcessor extends LiuYiApiContextValidator implements ContextProcessor {
 
     protected void throwError(String commandSequence, int commandType, NettyError remoteError) {
-        Command response = Command.newResponse(commandSequence, commandType, remoteError);
+        Command response = Command.newAck(commandSequence, commandType, remoteError);
         throw new NettyCommandWithResException(response);
     }
 

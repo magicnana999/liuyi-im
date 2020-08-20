@@ -1,12 +1,10 @@
 package com.creolophus.im.boot;
 
+import com.creolophus.im.coder.MessageCoder;
+import com.creolophus.im.coder.ProtoCoder;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
-import com.creolophus.im.netty.serializer.JsonCommandDecoder;
-import com.creolophus.im.netty.serializer.JsonCommandEncoder;
-import com.creolophus.im.protocol.CommandDecoder;
-import com.creolophus.im.protocol.CommandEncoder;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
@@ -77,20 +75,14 @@ public class Start extends WebStart {
         return new GatewayConfig();
     }
 
-    @Bean
-    public CommandDecoder jsonCommandDecoder() {
-        return new JsonCommandDecoder();
-    }
-
-    @Bean
-    public CommandEncoder jsonCommandEncoder() {
-        return new JsonCommandEncoder();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Start.class, args);
     }
 
+    @Bean
+    public MessageCoder messageCoder() {
+        return new ProtoCoder();
+    }
     @Bean
     public RequestInterceptor requestInterceptor() {
         final String appKey = "socket_gateway";

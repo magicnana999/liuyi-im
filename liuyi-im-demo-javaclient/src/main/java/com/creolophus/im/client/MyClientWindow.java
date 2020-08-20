@@ -1,12 +1,15 @@
 package com.creolophus.im.client;
 
+import com.creolophus.im.coder.MessageCoder;
+import com.creolophus.im.coder.ProtoCoder;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
-import com.creolophus.im.netty.serializer.JsonCommandDecoder;
-import com.creolophus.im.netty.serializer.JsonCommandEncoder;
-import com.creolophus.im.protocol.*;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.UserTest;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
 import com.creolophus.im.sdk.NettyImClient;
+import com.creolophus.im.type.PushMessageAck;
+import com.creolophus.im.type.PushMessageMsg;
 import com.creolophus.liuyi.common.json.JSON;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -37,8 +40,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     private LiuyiImClient liuyiImClient;
 
-    private CommandDecoder commandDecoder = new JsonCommandDecoder();
-    private CommandEncoder commandEncoder = new JsonCommandEncoder();
+    private MessageCoder messageCoder = new ProtoCoder();
 
 
     public MyClientWindow() {
@@ -59,7 +61,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         currentUserBox.addItem(UserTest.小昭);
 
 
-        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, commandDecoder, commandEncoder);
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, messageCoder);
 
 
 //        txtip = new JTextField();
@@ -176,12 +178,12 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     }
 
     @Override
-    public PushMessageUp receivePushMessage(Command command) {
+    public PushMessageAck receivePushMessage(Command command) {
         System.out.println("收到推送" + JSON.toJSONString(command));
-        PushMessageDown out = commandDecoder.decode(command.getBody(), PushMessageDown.class);
+        PushMessageMsg out = messageCoder.decode(command.getBody(), PushMessageMsg.class);
         UserTest.狗男女 target = UserTest.valueOf(out.getSenderId());
         appendText(target.toString() + ": " + out.getMessageBody());
-        PushMessageUp up = new PushMessageUp();
+        PushMessageAck up = new PushMessageAck();
         up.setGroupId(out.getGroupId());
         up.setMessageId(out.getMessageId());
         up.setReceiverId(out.getReceiverId());

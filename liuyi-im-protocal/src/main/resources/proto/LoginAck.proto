@@ -1,0 +1,18 @@
+syntax = "proto3"; // PB协议版本
+
+package com.creolophus.im.protobuf; // 包名，其他 proto 在引用此 proto 的时候，就可以使用 test.protobuf.PersonTest 来使用，
+// 注意：和下面的 java_package 是两种易混淆概念，同时定义的时候，java_package 具有较高的优先级
+
+option java_package = "com.creolophus.im.protobuf"; // 生成类的包名，注意：会在指定路径下按照该包名的定义来生成文件夹
+option java_outer_classname = "ProtoLoginAck"; // 生成类的类名，注意：下划线的命名会在编译的时候被自动改为驼峰命名
+
+/**
+    private String appKey;
+    private String token;
+    private Long userId;
+**/
+message LoginAck {
+    string appKey = 1;
+    string token = 2;
+    int64 userId = 3;
+}

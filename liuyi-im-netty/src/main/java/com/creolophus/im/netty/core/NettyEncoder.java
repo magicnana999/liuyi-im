@@ -1,7 +1,7 @@
 package com.creolophus.im.netty.core;
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.netty.serializer.FastJSONSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -14,10 +14,14 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @date 2019/9/18 上午10:28
  */
 public class NettyEncoder extends MessageToByteEncoder<Command> {
+    private MessageCoder messageCoder;
 
+    public NettyEncoder(MessageCoder messageCoder) {
+        this.messageCoder = messageCoder;
+    }
 
     @Override
     public void encode(ChannelHandlerContext ctx, Command nettyCommand, ByteBuf out) {
-        out.writeBytes(nettyCommand.encode());
+        out.writeBytes(messageCoder.encode(nettyCommand));
     }
 }

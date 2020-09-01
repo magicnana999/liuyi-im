@@ -5,7 +5,6 @@ import com.creolophus.im.netty.exception.NettyCommandWithResException;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
-import com.creolophus.liuyi.common.api.ApiContextValidator;
 import com.creolophus.liuyi.common.api.MdcUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class AbstractContextProcessor extends LiuYiApiContextValidator implements ContextProcessor {
 
     protected void throwError(String commandSequence,int commandType,NettyError remoteError) {
-        Command response = Command.newResponse(commandSequence, commandType, remoteError);
+        Command response = Command.newAck(commandSequence, commandType, remoteError);
         throw new NettyCommandWithResException(response);
     }
 

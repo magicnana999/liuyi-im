@@ -2,7 +2,7 @@ package com.creolophus.im.netty;
 
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.netty.core.NettyServerChannelEventListener;
-import com.creolophus.im.service.UserChannelHolder;
+import com.creolophus.im.service.UserChannelClientService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.scheduling.annotation.Async;
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 public class DefaultNettyServerChannelEventListener implements NettyServerChannelEventListener {
 
     @Resource
-    private UserChannelHolder userChannelHolder;
+    private UserChannelClientService userChannelClientService;
 
 
     @Override
@@ -41,14 +41,6 @@ public class DefaultNettyServerChannelEventListener implements NettyServerChanne
         unregisterUserClient(ctx.channel());
     }
 
-    @Async
-    public void unregisterUserClient(Channel channel){
-        UserChannel uc = userChannelHolder.getUserClient(UserChannel.getChannelId(channel));
-        if(uc!=null){
-            userChannelHolder.unregisterUserClient(uc);
-        }
-    }
-
     @Override
     public void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 
@@ -62,5 +54,13 @@ public class DefaultNettyServerChannelEventListener implements NettyServerChanne
     @Override
     public void onUserEventTriggered(ChannelHandlerContext ctx, Object evt) {
 
+    }
+
+    @Async
+    public void unregisterUserClient(Channel channel) {
+        UserChannel uc = userChannelClientService.getUserClient(UserChannel.getChannelId(channel));
+        if(uc != null) {
+            userChannelClientService.unregisterUserClient(uc);
+        }
     }
 }

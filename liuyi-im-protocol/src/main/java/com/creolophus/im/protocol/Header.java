@@ -7,7 +7,7 @@ package com.creolophus.im.protocol;
 public class Header {
 
 
-    private static final int MSG = 0;
+    public static final int MSG = 0;
     private static final int ACK_OK = 200;
     private String seq;
     private int type;
@@ -47,6 +47,14 @@ public class Header {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    private boolean isAck() {
+        return this.code > MSG;
+    }
+
+    private boolean isMsg() {
+        return this.code == MSG;
     }
 
     /**

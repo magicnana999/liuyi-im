@@ -28,30 +28,6 @@ public class StopableThread extends Thread {
         this.runnable = target;
     }
 
-    @Override
-    public void run() {
-        while(true && !stopped) {
-            runnable.run();
-        }
-        logger.debug("Thread [{}] has stopped or finished", Thread.currentThread().getName());
-    }
-
-    public void shutdown(final boolean interrupt) {
-        this.stopped = true;
-        try {
-            if(interrupt) {
-                super.interrupt();
-            }
-            super.join(JOIN_TIME);      //1分半还执行不完就不等了.
-        } catch (InterruptedException e) {
-            logger.error("Thread [{}] Interrupted", Thread.currentThread().getName(), e);
-        }
-    }
-
-    public void shutdown() {
-        shutdown(false);
-    }
-
     public static void main(String[] args) throws InterruptedException {
         List<StopableThread> list = new ArrayList();
 
@@ -70,6 +46,32 @@ public class StopableThread extends Thread {
         System.out.println("现在开始停止");
         list.forEach(thread -> thread.shutdown());
         System.out.println("所有线程已停止");
+    }
+
+    @Override
+    public void run() {
+        while(true && !stopped) {
+            runnable.run();
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug("Thread [{}] has stopped or finished", Thread.currentThread().getName());
+        }
+    }
+
+    public void shutdown() {
+        shutdown(false);
+    }
+
+    public void shutdown(final boolean interrupt) {
+        this.stopped = true;
+        try {
+            if(interrupt) {
+                super.interrupt();
+            }
+            super.join(JOIN_TIME);      //1分半还执行不完就不等了.
+        } catch (InterruptedException e) {
+            logger.error("Thread [{}] Interrupted", Thread.currentThread().getName(), e);
+        }
     }
 
     public static void sleep(int times){

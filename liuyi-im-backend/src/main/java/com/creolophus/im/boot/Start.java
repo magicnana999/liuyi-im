@@ -1,10 +1,10 @@
 package com.creolophus.im.boot;
 
-import com.creolophus.liuyi.common.api.ApiContextValidator;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
+import com.creolophus.im.service.MessageService;
+import com.creolophus.liuyi.common.api.ApiContextValidator;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;
-import com.creolophus.im.service.MessageService;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
@@ -65,7 +65,9 @@ public class Start extends WebStart {
             public void apply(RequestTemplate template) {
                 String appKey = liuYiApiContextValidator.getAppKeyByContext();
                 template.header(LiuYiApiContextValidator.HEADER_APP_KEY, appKey);
-                logger.debug("feign header [{}:{}]", LiuYiApiContextValidator.HEADER_APP_KEY, appKey);
+                if(logger.isDebugEnabled()) {
+                    logger.debug("feign header [{}:{}]", LiuYiApiContextValidator.HEADER_APP_KEY, appKey);
+                }
             }
         };
     }

@@ -1,23 +1,25 @@
 package com.creolophus.im.client;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.creolophus.im.coder.JacksonCoder;
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.PushMessageDown;
-import com.creolophus.im.protocol.PushMessageUp;
 import com.creolophus.im.protocol.UserTest;
-import com.creolophus.im.sdk.*;
+import com.creolophus.im.sdk.ImClientFactory;
+import com.creolophus.im.sdk.LiuyiImClient;
+import com.creolophus.im.sdk.NettyImClient;
+import com.creolophus.im.type.PushMessageMsg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-
-import java.awt.event.*;
-import java.net.SocketAddress;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.SocketAddress;
 
 /**
  * @author magicnana
@@ -25,9 +27,8 @@ import javax.swing.border.EmptyBorder;
  */
 public class MyClientWindow extends JFrame implements NettyClientChannelEventListener, NettyImClient.MessageReceiver {
 
-    private static UserTest.狗男女 currentUser;
-
     private static final long serialVersionUID = 1L;
+    private static UserTest.狗男女 currentUser;
     private JPanel contentPane;
     private JTextArea txt;
 //    private JTextField txtip;
@@ -37,6 +38,8 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
 
     private LiuyiImClient liuyiImClient;
+
+    private MessageCoder messageCoder = new JacksonCoder();
 
 
     public MyClientWindow() {
@@ -57,7 +60,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         currentUserBox.addItem(UserTest.小昭);
 
 
-        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this);
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, messageCoder);
 
 
 //        txtip = new JTextField();
@@ -139,6 +142,12 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         contentPane.setLayout(gl_contentPane);
     }
 
+    /* 客户端发送的内容添加到中间的txt控件中 */
+    public void appendText(String in) {
+        txt.append("\n" + in);
+        System.out.println("画 UI" + in);
+    }
+
     @Override
     public void onClose(ChannelHandlerContext ctx, ChannelPromise promise) {
 
@@ -169,18 +178,12 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     }
 
     @Override
-    public PushMessageUp receivePushMessage(Command command) {
+    public PushMessageMsg receivePushMessage(Command command) {
         System.out.println("收到推送"+ JSON.toJSONString(command));
-        JSONObject jsonObject = (JSONObject)command.getBody();
-        PushMessageDown out = jsonObject.toJavaObject(PushMessageDown.class);
-        UserTest.狗男女 target = UserTest.valueOf(out.getSenderId());
-        appendText(target.toString()+": "+out.getMessageBody());
-        PushMessageUp up = new PushMessageUp();
-        up.setGroupId(out.getGroupId());
-        up.setMessageId(out.getMessageId());
-        up.setReceiverId(out.getReceiverId());
-        up.setSenderId(out.getSenderId());
-        return up;
+        PushMessageMsg pushMessageMsg = messageCoder.decode(command.getBody(), PushMessageMsg.class);
+        UserTest.狗男女 target = UserTest.valueOf(pushMessageMsg.getSenderId());
+        appendText(target.toString() + ": " + pushMessageMsg.getMessageBody());
+        return pushMessageMsg;
     }
 
     @Override
@@ -193,12 +196,6 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
         liuyiImClient.sendMessage(1, txtSend.getText(), target.userId);
         appendText("我: " + txtSend.getText());
-    }
-
-    /* 客户端发送的内容添加到中间的txt控件中 */
-    public void appendText(String in) {
-        txt.append("\n" + in);
-        System.out.println("画 UI"+in);
     }
 
 }

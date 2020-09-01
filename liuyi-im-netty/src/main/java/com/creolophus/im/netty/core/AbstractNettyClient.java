@@ -8,6 +8,7 @@ import com.creolophus.im.netty.exception.NettyTooMuchRequestException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.netty.utils.NettyUtil;
 import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.Header;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -176,6 +177,38 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         }
     }
 
+    @Override
+    public void response(ChannelOutboundInvoker ctx, Command response) {
+        if(logger.isDebugEnabled()) {
+            logger.debug(response.toString());
+        }
+        super.response(ctx, response);
+    }
+
+    @Override
+    public void shutdown() {
+        workerGroup.shutdownGracefully();
+    }
+
+    @Override
+    public void start() {
+        Bootstrap childHandler = bootstrap.group(workerGroup)
+                .channel(useEpoll() ? EpollSocketChannel.class : NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, false)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
+                .option(ChannelOption.SO_SNDBUF, nettyClientConfig.getClientSocketSndBufSize())
+                .option(ChannelOption.SO_RCVBUF, nettyClientConfig.getClientSocketRcvBufSize())
+                .handler(new ChannelInitializer<SocketChannel>() { // (4)
+                    @Override
+                    public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(
+                                //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
+                                new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder), new NettyClientHandler());
+                    }
+                });
+    }
+
     public void sendAsync(Command request, long timeoutMillis, BiConsumer<Command,Command> consumer) throws InterruptedException {
         long beginStartTime = System.currentTimeMillis();
         final Channel channel = this.createChannel();
@@ -217,51 +250,22 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         }
     }
 
-    @Override
-    public void start() {
-        Bootstrap childHandler = bootstrap.group(workerGroup)
-                .channel(useEpoll() ? EpollSocketChannel.class : NioSocketChannel.class)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .option(ChannelOption.SO_KEEPALIVE, false)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                .option(ChannelOption.SO_SNDBUF, nettyClientConfig.getClientSocketSndBufSize())
-                .option(ChannelOption.SO_RCVBUF, nettyClientConfig.getClientSocketRcvBufSize())
-                .handler(new ChannelInitializer<SocketChannel>() { // (4)
-                    @Override
-                    public void initChannel(SocketChannel ch) {
-                        ch.pipeline()
-                                .addLast(
-                                        //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                        new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder),
-                                        new NettyClientHandler());
-                    }});
-    }
-
-    @Override
-    public void shutdown() {
-        workerGroup.shutdownGracefully();
-    }
-
-    @Override
-    public void response(ChannelOutboundInvoker ctx, Command response) {
-        logger.debug(response.toString());
-        super.response(ctx, response);
-    }
-
     class NettyClientHandler extends AbstractNettyHandler {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "channelRead");
-            logger.debug("{}", ctx.channel());
-            Command command = (Command)msg;
+            if(logger.isDebugEnabled()) {
+                logger.debug("通道 {}", ctx.channel());
+                logger.debug("收到消息 {}", msg.toString());
+
+            }
             super.channelRead(ctx, msg);
         }
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Command msg) {
-            logger.debug(msg.toString());
-            if(msg.getHeader().getCode()==0){
+            if(msg.getHeader().getCode() == Header.MSG) {
                 processRequestCommand(ctx, msg);
             }else{
                 processResponseCommand(ctx, msg);
@@ -276,14 +280,9 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         protected void processRequestCommand(ChannelHandlerContext ctx,Command command){
             Command response = handleRequest(command);
             response(ctx, response);
-        }        @Override
-        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-
-            Command response = handleExceptionCaught(ctx, cause);
-            response(ctx, response);
         }
 
-        protected void processResponseCommand(ChannelHandlerContext ctx,Command command){
+        protected void processResponseCommand(ChannelHandlerContext ctx, Command command) {
 
             final String commandSeq = command.getHeader().getSeq();
             final ResponseFuture responseFuture = responseTable.get(commandSeq);
@@ -295,8 +294,11 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         }
 
 
-
-
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            Command response = handleExceptionCaught(ctx, cause);
+            response(ctx, response);
+        }
     }
 
     class NettyConnectManageHandler extends ChannelDuplexHandler {
@@ -339,12 +341,15 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
             super.flush(ctx);
+            SleuthNettyAdapter.getInstance().cleanContext();
         }
 
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
             SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientEventTriggered");
-            logger.debug("{} {}",ctx.channel(),evt);
+            if(logger.isDebugEnabled()) {
+                logger.debug("{} {}", ctx.channel(), evt);
+            }
 
             if(evt instanceof IdleStateEvent) {
                 IdleStateEvent event = (IdleStateEvent) evt;

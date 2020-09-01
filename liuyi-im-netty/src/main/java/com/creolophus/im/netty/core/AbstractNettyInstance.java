@@ -13,10 +13,13 @@ public abstract class AbstractNettyInstance {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractNettyInstance.class);
 
-
-    public abstract void start();
-
-    public abstract void shutdown();
+    public void closeChannel(Channel channel) {
+        channel.close().addListener((ChannelFutureListener) future -> {
+            if(logger.isDebugEnabled()) {
+                logger.debug("channel has been closed {}", channel);
+            }
+        });
+    }
 
     public void response(ChannelOutboundInvoker ctx, Command response) {
         if(response != null) {
@@ -28,9 +31,9 @@ public abstract class AbstractNettyInstance {
         }
     }
 
-    public void closeChannel(Channel channel) {
-        channel.close().addListener((ChannelFutureListener) future -> logger.debug("channel has been closed {}",channel));
-    }
+    public abstract void shutdown();
+
+    public abstract void start();
 
     public boolean useEpoll() {
         return OS.isLinux() && Epoll.isAvailable();

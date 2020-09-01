@@ -41,7 +41,7 @@ public class AuthService extends BaseService {
 
     public Auth verify(String token) {
 
-        UserSecurity us = prod(token);
+        UserSecurity us = test(token);
         if(us == null) {
             throw new UnauthorizedException("无法取得 token 信息");
         }

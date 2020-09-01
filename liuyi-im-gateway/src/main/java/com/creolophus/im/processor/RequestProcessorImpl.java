@@ -36,11 +36,8 @@ public class RequestProcessorImpl implements RequestProcessor {
 
     @Override
     public void verify(Command request) {
-//        remoteContextValidator.validateCommand(request);
         Auth auth = authService.verify(request.getToken());
         request.setAuth(auth);
-//        remoteContextValidator.validateAppKey(request);
-//        remoteContextValidator.validateUserId(request);
     }
 
     @Override

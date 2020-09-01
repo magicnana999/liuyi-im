@@ -51,6 +51,10 @@ public abstract class AbstractNettyHandler extends SimpleChannelInboundHandler<C
         Command response;
         try {
             final Object requestReturn = getRequestProcessor().processRequest(cmd);
+
+            if(requestReturn == null) {
+                return null;
+            }
             response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), requestReturn);
         } catch (NettyCommandWithResException e) {
             logger.error(e.getMessage(), e);

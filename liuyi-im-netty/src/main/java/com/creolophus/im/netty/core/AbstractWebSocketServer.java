@@ -40,7 +40,9 @@ public abstract class AbstractWebSocketServer {
     }
 
     public void flush(Session session, String request, Command response) {
-        logger.debug("{}", session.getId());
+        if(logger.isDebugEnabled()) {
+            logger.debug("{}", session.getId());
+        }
         logger.info("flush {}", JSON.toJSONString(response));
     }
 

@@ -20,4 +20,5 @@ public interface NettyClientChannelEventListener {
     void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause);
 
     void onUserEventTriggered(ChannelHandlerContext ctx, Object evt);
+
 }

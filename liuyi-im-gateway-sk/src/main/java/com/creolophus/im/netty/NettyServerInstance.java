@@ -2,7 +2,10 @@ package com.creolophus.im.netty;
 
 import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyServerConfig;
-import com.creolophus.im.netty.core.*;
+import com.creolophus.im.netty.core.AbstractNettyServer;
+import com.creolophus.im.netty.core.ContextProcessor;
+import com.creolophus.im.netty.core.NettyServerChannelEventListener;
+import com.creolophus.im.netty.core.RequestProcessor;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import org.slf4j.Logger;
@@ -27,19 +30,15 @@ public class NettyServerInstance extends AbstractNettyServer {
     @Resource
     private HeartbeatSchedule heartbeatSchedule;
 
-    @Resource
-    private MessageCoder messageCoder;
-
     public NettyServerInstance(
             NettyServerConfig nettyServerConfig,
             TracerUtil tracerUtil,
             ContextProcessor contextProcessor,
             RequestProcessor requestProcessor,
-            NettyServerChannelEventListener nettyServerChannelEventListener, MessageCoder messageCoder,
-            ResponseProcessor responseProcessor) {
-        super(nettyServerConfig, tracerUtil, contextProcessor, requestProcessor, nettyServerChannelEventListener, messageCoder, responseProcessor);
+            NettyServerChannelEventListener nettyServerChannelEventListener,
+            MessageCoder messageCoder) {
+        super(nettyServerConfig, tracerUtil, contextProcessor, requestProcessor, nettyServerChannelEventListener, messageCoder);
     }
-
 
     @Override
     public void start() {

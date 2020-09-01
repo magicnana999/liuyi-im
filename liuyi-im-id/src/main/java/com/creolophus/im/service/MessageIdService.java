@@ -1,11 +1,11 @@
 package com.creolophus.im.service;
 
-import com.creolophus.im.storage.MessageIdStorage;
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.dao.SectionDao;
 import com.creolophus.im.dao.SectionUserDao;
 import com.creolophus.im.entity.MessageIdSection;
 import com.creolophus.im.entity.MessageIdSectionUser;
+import com.creolophus.im.storage.MessageIdStorage;
 import com.creolophus.im.vo.MessageIdSectionLimitVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +57,20 @@ public class MessageIdService extends BaseService {
         return messageIdSectionUser;
     }
 
+    private Long getCurrentBySectionId(Long sectionId) {
+        return messageIdStorage.getCurrentFieldBySectionId(sectionId);
+    }
+
+    private Long getMaxBySectionId(Long sectionId) {
+        return messageIdStorage.getMaxFieldBySectionId(sectionId);
+    }
+
     public Long getSectionId() {
         Long currentSectionId = messageIdStorage.getSectionId();
         if(currentSectionId == null) {
-            logger.debug("SectionId缓存,不存在");
+            if(logger.isDebugEnabled()) {
+                logger.debug("SectionId缓存,不存在");
+            }
             if(messageIdStorage.lockSetSectionId()) {
                 try {
                     MessageIdSectionLimitVo sectionLimit = sectionDao.selectMaxSection();
@@ -73,18 +83,24 @@ public class MessageIdService extends BaseService {
                         currentSectionId = sectionLimit.getSectionId() + 1;
                         insertSectionWithNewSectionId(currentSectionId);
                     }
-                    logger.debug("section_id_offset {},section_capacity {},new_section_id {}", SECTION_ID_OFFSET, SECTION_CAPACITY, currentSectionId);
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("section_id_offset {},section_capacity {},new_section_id {}", SECTION_ID_OFFSET, SECTION_CAPACITY, currentSectionId);
+                    }
                     messageIdStorage.setSectionId(currentSectionId);
                     return currentSectionId;
                 } finally {
                     messageIdStorage.unlockSetSectionId();
                 }
             } else {
-                logger.debug("try again");
+                if(logger.isDebugEnabled()) {
+                    logger.debug("try again");
+                }
                 return getSectionId();
             }
         } else {
-            logger.debug("SectionId缓存,已存在 {}", currentSectionId);
+            if(logger.isDebugEnabled()) {
+                logger.debug("SectionId缓存,已存在 {}", currentSectionId);
+            }
             Integer size = sectionUserDao.selectSectionSize(currentSectionId);
             if(size != null && size >= SECTION_CAPACITY) {
                 if(messageIdStorage.lockSetSectionId()) {
@@ -96,7 +112,9 @@ public class MessageIdService extends BaseService {
                         messageIdStorage.unlockSetSectionId();
                     }
                 } else {
-                    logger.debug("try again");
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("try again");
+                    }
                     return getSectionId();
                 }
             } else {
@@ -130,6 +148,14 @@ public class MessageIdService extends BaseService {
         }
     }
 
+    private MessageIdSectionUser insertSectionUser(Long sectionId, Long userId) {
+        MessageIdSectionUser messageIdSectionUser = new MessageIdSectionUser();
+        messageIdSectionUser.setSectionId(sectionId);
+        messageIdSectionUser.setUserId(userId);
+        sectionUserDao.insert(messageIdSectionUser);
+        return messageIdSectionUser;
+    }
+
     private MessageIdSection insertSectionWithNewSectionId(Long sectionId) {
 
         MessageIdSection messageIdSection = new MessageIdSection();
@@ -141,22 +167,6 @@ public class MessageIdService extends BaseService {
         messageIdSection.setUpdateTime(messageIdSection.getCreateTime());
         sectionDao.insert(messageIdSection);
         return messageIdSection;
-    }
-
-    private MessageIdSectionUser insertSectionUser(Long sectionId, Long userId) {
-        MessageIdSectionUser messageIdSectionUser = new MessageIdSectionUser();
-        messageIdSectionUser.setSectionId(sectionId);
-        messageIdSectionUser.setUserId(userId);
-        sectionUserDao.insert(messageIdSectionUser);
-        return messageIdSectionUser;
-    }
-
-    private Long getCurrentBySectionId(Long sectionId){
-        return messageIdStorage.getCurrentFieldBySectionId(sectionId);
-    }
-
-    private Long getMaxBySectionId(Long sectionId){
-        return messageIdStorage.getMaxFieldBySectionId(sectionId);
     }
 
     private Long makeSureSectionAllowAfterIncr(Long sectionId, long batch) {

@@ -5,8 +5,9 @@ import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.feign.BackendFeign;
-import com.creolophus.im.protocol.*;
 import com.creolophus.im.processor.UserClientProcessor;
+import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.CommandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
 
     private static final ConcurrentHashMap<Long/*userId*/, UserSession> userTable = new ConcurrentHashMap();
     private static final ConcurrentHashMap<String/*channelId*/, UserSession> sessionTable = new ConcurrentHashMap();
+    @Resource
+    private BackendFeign backendFeign;
 
     public UserSession getUserClient(Long userId) {
         return userTable.get(userId);
@@ -45,36 +48,14 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         if(origin != null && origin.getSession()!=null) {
             try {
                 origin.getSession().close();
-                logger.debug("channel has been closed {}", origin.getSessionId());
+                if(logger.isDebugEnabled()) {
+                    logger.debug("channel has been closed {}", origin.getSessionId());
+                }
             } catch (IOException e) {
                 throw new RuntimeException("此用户已存在 UserSession,并且无法关闭"+ client.getUserId() +" "+client.getSessionId());
             }
         }
     }
-
-    @Override
-    public void registerUserClient(UserClient userClient) {
-        UserSession client = (UserSession)userClient;
-        insertUserTable(client);
-        insertSessionTable(client);
-    }
-
-    private void removeSessionTable(UserSession client) {
-        sessionTable.remove(client.getSessionId());
-    }
-
-    private void removeUserTable(UserSession client) {
-        userTable.remove(client.getUserId());
-    }
-
-    public void unregisterUserClient(UserSession client) {
-        backendFeign.unregisterUserClient("127.0.0.1", 33008, client.getUserId());
-        removeUserTable(client);
-        removeSessionTable(client);
-    }
-
-    @Resource
-    private BackendFeign backendFeign;
 
     @Override
     public LoginDown login(LoginUp input) {
@@ -101,12 +82,6 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         return pushMessageDown;
     }
 
-    @Override
-    public void pushMessageAck(PushMessageUp pushMessageUp) {
-        logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(),pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
-    }
-
-
     public void pushMessage(Long receiverId, Command response){
         if(response != null) {
             try {
@@ -120,6 +95,34 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         } else {
             logger.error("Nothing to response");
         }
+    }
+
+    @Override
+    public void pushMessageAck(PushMessageUp pushMessageUp) {
+        if(logger.isDebugEnabled()) {
+            logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(), pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
+        }
+    }
+
+    @Override
+    public void registerUserClient(UserClient userClient) {
+        UserSession client = (UserSession) userClient;
+        insertUserTable(client);
+        insertSessionTable(client);
+    }
+
+    private void removeSessionTable(UserSession client) {
+        sessionTable.remove(client.getSessionId());
+    }
+
+    private void removeUserTable(UserSession client) {
+        userTable.remove(client.getUserId());
+    }
+
+    public void unregisterUserClient(UserSession client) {
+        backendFeign.unregisterUserClient("127.0.0.1", 33008, client.getUserId());
+        removeUserTable(client);
+        removeSessionTable(client);
     }
 
 }

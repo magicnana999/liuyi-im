@@ -1,12 +1,14 @@
 package com.creolophus.im.sdk;
 
+import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.AbstractNettyClient;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 import com.creolophus.im.netty.core.RequestProcessor;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
-import com.creolophus.im.protocol.PushMessageUp;
+import com.creolophus.im.protocol.Header;
+import com.creolophus.im.type.PushMessageMsg;
 
 import java.util.function.BiConsumer;
 
@@ -19,14 +21,26 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
     private AbstractNettyClient abstractNettyClient;
     private MessageReceiver messageReceiver;
 
-    NettyImClient(NettyClientChannelEventListener listener, MessageReceiver messageReceiver) {
-        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), null, this, listener);
+    NettyImClient(NettyClientChannelEventListener listener, MessageReceiver messageReceiver, MessageCoder messageCoder) {
+        super(messageCoder);
+        abstractNettyClient = new AbstractNettyClient(new NettyClientConfig(), null, this, listener, messageCoder);
         this.messageReceiver = messageReceiver;
     }
 
     @Override
     public void close() {
         abstractNettyClient.shutdown();
+    }
+
+    public NettyImClient start(){
+        abstractNettyClient.start();
+        abstractNettyClient.createChannel();
+        return this;
+    }
+
+    @Override
+    public Command sendMessage(Command request) {
+        return abstractNettyClient.sendSync(request, 1000);
     }
 
     @Override
@@ -39,24 +53,13 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
     }
 
     @Override
-    public Command sendMessage(Command request) {
-        return abstractNettyClient.sendSync(request,1000);
-    }
-
-    public NettyImClient start(){
-        abstractNettyClient.start();
-        abstractNettyClient.createChannel();
-        return this;
-    }
-
-    @Override
     public void verify(Command msg) {
 
     }
 
     @Override
     public Object processRequest(Command command) {
-        if(command.getHeader().getCode() == 0) {
+        if(command.getHeader().getCode() == Header.MSG) {
             switch (CommandType.valueOf(command.getHeader().getType())) {
                 case PUSH_MESSAGE:
                     return messageReceiver.receivePushMessage(command);
@@ -75,7 +78,7 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
     }
 
     public interface MessageReceiver {
-        PushMessageUp receivePushMessage(Command command);
+        PushMessageMsg receivePushMessage(Command command);
 
         void receiveSendMessageAck(Command command);
     }

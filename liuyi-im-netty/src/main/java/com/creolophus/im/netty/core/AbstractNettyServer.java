@@ -38,7 +38,6 @@ public class AbstractNettyServer extends AbstractNettyInstance {
     protected TracerUtil tracerUtil;
     protected ContextProcessor contextProcessor;
     private RequestProcessor requestProcessor;
-    private ResponseProcessor responseProcessor;
     private NettyServerChannelEventListener nettyServerChannelEventListener;
     private MessageCoder messageCoder;
 
@@ -47,9 +46,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             NettyServerConfig nettyServerConfig,
             TracerUtil tracerUtil,
             ContextProcessor contextProcessor,
-            RequestProcessor requestProcessor,
-            NettyServerChannelEventListener nettyServerChannelEventListener, MessageCoder messageCoder,
-            ResponseProcessor responseProcessor) {
+            RequestProcessor requestProcessor, NettyServerChannelEventListener nettyServerChannelEventListener, MessageCoder messageCoder) {
 
         this.nettyServerConfig= nettyServerConfig;
         this.tracerUtil = tracerUtil;
@@ -57,7 +54,6 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         this.requestProcessor = requestProcessor;
         this.nettyServerChannelEventListener = nettyServerChannelEventListener;
         this.messageCoder = messageCoder;
-        this.responseProcessor = responseProcessor;
 
         this.bootstrap = new ServerBootstrap(); // (2)
 
@@ -68,6 +64,20 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             this.bossGroup = new NioEventLoopGroup(1); // (1)
             this.workerGroup = new NioEventLoopGroup(nettyServerConfig.getServerSelectorThreads());
         }
+    }
+
+    @Override
+    public void response(ChannelOutboundInvoker ctx, Command response) {
+        if(response != null) {
+            contextProcessor.setResponse(response);
+            super.response(ctx, response);
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 
     @Override
@@ -104,27 +114,15 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         }
     }
 
-    @Override
-    public void shutdown() {
-        bossGroup.shutdownGracefully();
-        workerGroup.shutdownGracefully();
-    }
-
-    @Override
-    public void response(ChannelOutboundInvoker ctx, Command response) {
-        if(response != null) {
-            contextProcessor.setResponse(response);
-        }
-        super.response(ctx, response);
-    }
-
     class NettyServerHandler extends AbstractNettyHandler {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "channelRead");
-            logger.debug("{}", ctx.channel());
-            logger.debug(msg.toString());
+            if(logger.isDebugEnabled()) {
+                logger.debug("通道 {}", ctx.channel());
+                logger.debug("收到消息 {}", msg.toString());
+            }
             Command command = (Command)msg;
             contextProcessor.initContext(ctx.channel(), command);
             requestProcessor.verify(command);
@@ -134,11 +132,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Command msg) {
-            if(msg.getHeader().getCode()==0){
-                processRequestCommand(ctx, msg);
-            }else{
-                processResponseCommand(ctx, msg);
-            }
+            processRequest(ctx, msg);
         }
 
         @Override
@@ -146,16 +140,12 @@ public class AbstractNettyServer extends AbstractNettyInstance {
             return requestProcessor;
         }
 
-        protected void processRequestCommand(ChannelHandlerContext ctx, Command command){
+        protected void processRequest(ChannelHandlerContext ctx, Command command) {
             Command response = handleRequest(command);
             response(ctx, response);
         }
 
-        protected void processResponseCommand(ChannelHandlerContext ctx,Command command){
-            if(responseProcessor!=null){
-                responseProcessor.processResponse(command);
-            }
-        }        @Override
+        @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             Command response = handleExceptionCaught(ctx, cause);
             response(ctx, response);
@@ -195,7 +185,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //            remoteContextValidator.mdc("channelActive");
             MdcUtil.setMethod("channelActive");
-            logger.debug("{}",ctx.channel());
+            if(logger.isDebugEnabled()) {
+                logger.debug("{}", ctx.channel());
+            }
             super.channelActive(ctx);
             if(nettyServerChannelEventListener !=null){
                 nettyServerChannelEventListener.onChannelActive(ctx);
@@ -206,7 +198,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyServerChannelInactive");
-            logger.debug("{}",ctx.channel());
+            if(logger.isDebugEnabled()) {
+                logger.debug("{}", ctx.channel());
+            }
             super.channelInactive(ctx);
             if(nettyServerChannelEventListener !=null){
                 nettyServerChannelEventListener.onChannelInactive(ctx);
@@ -221,7 +215,9 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
             SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyServerUserEventTriggered");
-            logger.debug("{} {}",ctx.channel(),evt);
+            if(logger.isDebugEnabled()) {
+                logger.debug("{} {}", ctx.channel(), evt);
+            }
 
             if(evt instanceof IdleStateEvent) {
                 IdleStateEvent event = (IdleStateEvent) evt;
@@ -238,8 +234,7 @@ public class AbstractNettyServer extends AbstractNettyInstance {
 
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
-            logger.debug("{}", ctx.channel());
-            logger.info("flush {}", JSON.toJSONString(contextProcessor.getResponse()));
+            logger.info("发送消息 {}", JSON.toJSONString(contextProcessor.getResponse()));
             super.flush(ctx);
             if(nettyServerChannelEventListener != null) {
                 nettyServerChannelEventListener.onFlush(ctx);

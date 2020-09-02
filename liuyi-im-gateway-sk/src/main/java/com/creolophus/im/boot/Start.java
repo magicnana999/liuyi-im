@@ -1,7 +1,7 @@
 package com.creolophus.im.boot;
 
-import com.creolophus.im.coder.JacksonCoder;
 import com.creolophus.im.coder.MessageCoder;
+import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
@@ -80,7 +80,7 @@ public class Start extends WebStart {
 
     @Bean
     public MessageCoder messageCoder() {
-        return new JacksonCoder();
+        return MessageCoderSelector.PROTOBUF.getMessageCoder();
     }
     @Bean
     public RequestInterceptor requestInterceptor() {

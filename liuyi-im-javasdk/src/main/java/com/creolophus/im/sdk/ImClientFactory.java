@@ -1,6 +1,7 @@
 package com.creolophus.im.sdk;
 
 
+import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 
 /**

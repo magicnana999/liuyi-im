@@ -1,9 +1,4 @@
-package com.creolophus.im.sdk;
-
-import com.creolophus.im.coder.GsonCoder;
-import com.creolophus.im.coder.JacksonCoder;
-import com.creolophus.im.coder.MessageCoder;
-import com.creolophus.im.coder.ProtoCoder;
+package com.creolophus.im.coder;
 
 /**
  * @author magicnana

@@ -1,12 +1,12 @@
 package com.creolophus.im.client;
 
 import com.alibaba.fastjson.JSON;
+import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.UserTest;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
-import com.creolophus.im.sdk.MessageCoderSelector;
 import com.creolophus.im.sdk.MessageReceiver;
 import com.creolophus.im.type.PushMessageAck;
 import com.creolophus.im.type.PushMessageMsg;
@@ -40,7 +40,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     private LiuyiImClient liuyiImClient;
 
-    private MessageCoderSelector messageCoderSelector = MessageCoderSelector.JACKSON;
+    private MessageCoderSelector messageCoderSelector = MessageCoderSelector.PROTOBUF;
 
 
     public MyClientWindow() {

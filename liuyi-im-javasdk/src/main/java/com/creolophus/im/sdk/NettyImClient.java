@@ -2,6 +2,7 @@ package com.creolophus.im.sdk;
 
 import com.alibaba.fastjson.JSON;
 import com.creolophus.im.coder.MessageCoder;
+import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.AbstractNettyClient;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;

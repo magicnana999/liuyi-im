@@ -1,5 +1,6 @@
 package com.creolophus.im.netty.core;
 
+import com.alibaba.fastjson.JSON;
 import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.exception.NettyException;
@@ -105,6 +106,9 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
                 if (f.isSuccess()) {
                     responseFuture.setSendOk(true);
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("发送命令 {}", JSON.toJSONString(request));
+                    }
                     return;
                 }
                 requestFail(commandSeq,f.cause());
@@ -120,7 +124,11 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             final SemaphoreReleaseOnlyOnce once = new SemaphoreReleaseOnlyOnce(this.semaphoreOneway);
                 channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
                     once.release();
-                    if (!f.isSuccess()) {
+                    if(f.isSuccess()) {
+                        if(logger.isDebugEnabled()) {
+                            logger.debug("发送命令 {}", JSON.toJSONString(request));
+                        }
+                    } else {
                         requestFail(request.getHeader().getSeq(),f.cause());
                     }
                 });
@@ -138,6 +146,9 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
                 if(f.isSuccess()) {
                     responseFuture.setSendOk(true);
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("发送命令 {}", JSON.toJSONString(request));
+                    }
                     return;
                 } else {
                     responseFuture.setSendOk(false);
@@ -180,7 +191,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
     @Override
     public void response(ChannelOutboundInvoker ctx, Command response) {
         if(logger.isDebugEnabled()) {
-            logger.debug(response.toString());
+            logger.debug("发送命令 {}", JSON.toJSONString(response));
         }
         super.response(ctx, response);
     }
@@ -256,8 +267,8 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "channelRead");
             if(logger.isDebugEnabled()) {
-                logger.debug("通道 {}", ctx.channel());
-                logger.debug("收到消息 {}", msg.toString());
+                logger.debug("当前通道 {}", ctx.channel());
+                logger.debug("收到命令 {}", msg.toString());
 
             }
             super.channelRead(ctx, msg);

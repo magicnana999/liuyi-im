@@ -9,6 +9,7 @@ import com.creolophus.im.protocol.UserTest;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
 import com.creolophus.im.sdk.NettyImClient;
+import com.creolophus.im.type.PushMessageAck;
 import com.creolophus.im.type.PushMessageMsg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -178,12 +179,17 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     }
 
     @Override
-    public PushMessageMsg receivePushMessage(Command command) {
+    public PushMessageAck receivePushMessage(Command command) {
         System.out.println("收到推送"+ JSON.toJSONString(command));
         PushMessageMsg pushMessageMsg = messageCoder.decode(command.getBody(), PushMessageMsg.class);
         UserTest.狗男女 target = UserTest.valueOf(pushMessageMsg.getSenderId());
         appendText(target.toString() + ": " + pushMessageMsg.getMessageBody());
-        return pushMessageMsg;
+        PushMessageAck pushMessageAck = new PushMessageAck();
+        pushMessageAck.setGroupId(pushMessageMsg.getGroupId());
+        pushMessageAck.setMessageId(pushMessageMsg.getMessageId());
+        pushMessageAck.setReceiverId(pushMessageMsg.getReceiverId());
+        pushMessageAck.setSenderId(pushMessageMsg.getSenderId());
+        return pushMessageAck;
     }
 
     @Override

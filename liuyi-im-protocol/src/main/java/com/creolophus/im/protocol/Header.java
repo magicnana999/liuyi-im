@@ -49,12 +49,8 @@ public class Header {
         this.type = type;
     }
 
-    private boolean isAck() {
+    public boolean isAck() {
         return this.code > MSG;
-    }
-
-    private boolean isMsg() {
-        return this.code == MSG;
     }
 
     /**

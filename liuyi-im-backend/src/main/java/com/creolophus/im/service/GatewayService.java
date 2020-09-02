@@ -1,9 +1,9 @@
 package com.creolophus.im.service;
 
+import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.domain.GatewayAddr;
 import com.creolophus.im.storage.GatewayStorage;
 import com.creolophus.im.vo.ValidateGatewayVo;
-import com.creolophus.im.common.base.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,26 +29,26 @@ public class GatewayService extends BaseService {
     @Resource
     private RestTemplate restTemplate;
 
-    public void registerGateway(String ip, Integer socketPort) {
-        gatewayStorage.registerGateway(ip,socketPort);
-    }
-
-    public void unregisterGateway(String ip, Integer port) {
-        gatewayStorage.unregisterGateway(ip,port);
-    }
-
     public void findGetewayListAndCheck(){
         Set<String> set = gatewayStorage.getGatewayList();
         for(String ipAndPort : set){
             GatewayAddr addr = new GatewayAddr(ipAndPort);
             if(!validateGateway(addr)){
                 unregisterGateway(addr.getIp(),addr.getPort());
-                logger.info("Gateway 下线 {}", ipAndPort);
+                logger.info("网关下线 {}", ipAndPort);
             }else{
                 gatewayStorage.registerGateway(addr.getIp(), addr.getPort());
-                logger.info("Gateway 在线 {}", ipAndPort);
+                logger.info("网关上线 {}", ipAndPort);
             }
         }
+    }
+
+    public void registerGateway(String ip, Integer socketPort) {
+        gatewayStorage.registerGateway(ip, socketPort);
+    }
+
+    public void unregisterGateway(String ip, Integer port) {
+        gatewayStorage.unregisterGateway(ip, port);
     }
 
     private boolean validateGateway(GatewayAddr gw) {

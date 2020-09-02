@@ -1,5 +1,6 @@
 package com.creolophus.im.service;
 
+import com.alibaba.fastjson.JSON;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.type.LoginAck;
@@ -23,12 +24,16 @@ public abstract class UserClientService {
 
     public abstract LoginAck login(LoginMsg input);
 
-    public PushMessageMsg pushMessage(PushMessageMsg pushMessageMsg) {
+    public Long pushMessage(PushMessageMsg pushMessageMsg) {
         Command response = Command.newMsg(CommandType.PUSH_MESSAGE.value(), pushMessageMsg);
-        pushMessage(pushMessageMsg.getReceiverId(), response);
-        logger.info("消息推送 完成 {} -> {}.{}", pushMessageMsg.getSenderId(), pushMessageMsg.getReceiverId(), pushMessageMsg.getMessageId());
 
-        return pushMessageMsg;
+        if(logger.isDebugEnabled()) {
+            logger.debug("发送命令 {}", JSON.toJSONString(response));
+        }
+        pushMessage(pushMessageMsg.getReceiverId(), response);
+        logger.info("消息推送 {} -> {}.{}", pushMessageMsg.getSenderId(), pushMessageMsg.getReceiverId(), pushMessageMsg.getMessageId());
+
+        return pushMessageMsg.getMessageId();
     }
 
     public abstract void pushMessage(Long receiverId, Command response);

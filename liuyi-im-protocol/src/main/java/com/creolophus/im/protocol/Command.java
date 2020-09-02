@@ -43,6 +43,10 @@ public class Command<T> {
         this.token = token;
     }
 
+    public boolean isAck() {
+        return header.isAck();
+    }
+
     public static Command newAck(String sequence, int commandType, Error error) {
         Header header = Header.newAck(sequence, commandType, error);
         Command command = new Command();

@@ -40,7 +40,7 @@ public class MessageController extends BaseController {
             @RequestParam("senderId") Long senderId,
             @RequestParam(value = "groupId", required = false) Long groupId) {
         PushMessageMsg down = new PushMessageMsg(messageId, messageType, groupId, messageBody, receiverId, senderId);
-        PushMessageMsg ret = userClientService.pushMessage(down);
+        Long ret = userClientService.pushMessage(down);
         return new ApiResult(ret);
     }
 

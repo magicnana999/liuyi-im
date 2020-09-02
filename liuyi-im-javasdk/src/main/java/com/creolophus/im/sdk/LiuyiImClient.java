@@ -11,4 +11,5 @@ public interface LiuyiImClient {
     void login(String token);
 
     long sendMessage(int messageType, String messageBody, long targetId);
+
 }

@@ -120,8 +120,8 @@ public class AbstractNettyServer extends AbstractNettyInstance {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             SleuthNettyAdapter.getInstance().begin(tracerUtil, "channelRead");
             if(logger.isDebugEnabled()) {
-                logger.debug("通道 {}", ctx.channel());
-                logger.debug("收到消息 {}", msg.toString());
+                logger.debug("当前通道 {}", ctx.channel());
+                logger.debug("收到命令 {}", msg.toString());
             }
             Command command = (Command)msg;
             contextProcessor.initContext(ctx.channel(), command);
@@ -234,7 +234,11 @@ public class AbstractNettyServer extends AbstractNettyInstance {
 
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
-            logger.info("发送消息 {}", JSON.toJSONString(contextProcessor.getResponse()));
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "push");
+            Command response = contextProcessor.getResponse();
+            if(response != null) {
+                logger.info("发送命令 {}", JSON.toJSONString(response));
+            }
             super.flush(ctx);
             if(nettyServerChannelEventListener != null) {
                 nettyServerChannelEventListener.onFlush(ctx);

@@ -50,9 +50,13 @@ public class MessageHandlerService extends BaseService {
     }
 
     private String pushMessage(Message message) {
-        if(message == null || message.getReceiverId() == null) return "0";
+        if(message == null || message.getReceiverId() == null) {
+            return "0";
+        }
         GatewayAddr gatewayAddr = userClientService.findUserClient(message.getReceiverId());
-        if(gatewayAddr != null) return messagePushService.push(gatewayAddr.getIp(), gatewayAddr.getPort(), message);
+        if(gatewayAddr != null) {
+            return messagePushService.push(gatewayAddr.getIp(), gatewayAddr.getPort(), message);
+        }
         return "0";
     }
 

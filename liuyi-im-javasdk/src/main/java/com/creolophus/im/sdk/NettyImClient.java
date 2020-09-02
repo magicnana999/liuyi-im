@@ -8,7 +8,7 @@ import com.creolophus.im.netty.core.RequestProcessor;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.protocol.Header;
-import com.creolophus.im.type.PushMessageMsg;
+import com.creolophus.im.type.PushMessageAck;
 
 import java.util.function.BiConsumer;
 
@@ -32,12 +32,6 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
         abstractNettyClient.shutdown();
     }
 
-    public NettyImClient start(){
-        abstractNettyClient.start();
-        abstractNettyClient.createChannel();
-        return this;
-    }
-
     @Override
     public Command sendMessage(Command request) {
         return abstractNettyClient.sendSync(request, 1000);
@@ -50,6 +44,12 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
         } catch (Throwable e) {
             throw new RuntimeException("无法发送消息", e);
         }
+    }
+
+    public NettyImClient start() {
+        abstractNettyClient.start();
+        abstractNettyClient.createChannel();
+        return this;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class NettyImClient extends AbstractImClient implements LiuyiImClient, Re
     }
 
     public interface MessageReceiver {
-        PushMessageMsg receivePushMessage(Command command);
+        PushMessageAck receivePushMessage(Command command);
 
         void receiveSendMessageAck(Command command);
     }

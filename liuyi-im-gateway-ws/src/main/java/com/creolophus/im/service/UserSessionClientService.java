@@ -5,14 +5,16 @@ import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.feign.BackendFeign;
-import com.creolophus.im.processor.UserClientProcessor;
+import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.type.LoginAck;
+import com.creolophus.im.type.LoginMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,9 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019/1/23 下午5:38
  */
 @Component
-public class UserSessionHolder extends SessionBaseService implements UserClientProcessor {
+public class UserSessionClientService extends UserClientService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserSessionHolder.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserSessionClientService.class);
 
 
     private static final ConcurrentHashMap<Long/*userId*/, UserSession> userTable = new ConcurrentHashMap();
@@ -31,12 +33,39 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     @Resource
     private BackendFeign backendFeign;
 
+    @Resource
+    private ContextProcessor contextProcessor;
+
+    protected String getAppKey() {
+        return contextProcessor.getAppKey();
+    }
+
+    protected Command getRequest() {
+        return contextProcessor.getRequest();
+    }
+
+    protected Command getResponse() {
+        return contextProcessor.getResponse();
+    }
+
+    protected Session getSession() {
+        return contextProcessor.getSession();
+    }
+
+    protected String getToken() {
+        return contextProcessor.getToken();
+    }
+
     public UserSession getUserClient(Long userId) {
         return userTable.get(userId);
     }
 
     public UserSession getUserClient(String sessionId){
         return sessionTable.get(sessionId);
+    }
+
+    protected long getUserId() {
+        return contextProcessor.getUserId();
     }
 
     private void insertSessionTable(UserSession client) {
@@ -58,7 +87,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     }
 
     @Override
-    public LoginDown login(LoginUp input) {
+    public LoginAck login(LoginMsg input) {
         UserSession client = new UserSession();
         client.setSession(getSession());
         client.setUserId(getUserId());
@@ -67,7 +96,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         registerUserClient(client);
         backendFeign.registerUserClient("127.0.0.1",33008,client.getUserId());
 
-        LoginDown ret = new LoginDown();
+        LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
         ret.setToken(getToken());
         ret.setUserId(getUserId());
@@ -75,13 +104,6 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
     }
 
     @Override
-    public PushMessageDown pushMessage(PushMessageDown pushMessageDown){
-        Command response = Command.newRequest(CommandType.PUSH_MESSAGE.getValue(), pushMessageDown);
-
-        pushMessage(pushMessageDown.getReceiverId(), response);
-        return pushMessageDown;
-    }
-
     public void pushMessage(Long receiverId, Command response){
         if(response != null) {
             try {
@@ -97,14 +119,7 @@ public class UserSessionHolder extends SessionBaseService implements UserClientP
         }
     }
 
-    @Override
-    public void pushMessageAck(PushMessageUp pushMessageUp) {
-        if(logger.isDebugEnabled()) {
-            logger.debug("消息推送 到达 {} -> {}.{}", pushMessageUp.getSenderId(), pushMessageUp.getReceiverId(), pushMessageUp.getMessageId());
-        }
-    }
 
-    @Override
     public void registerUserClient(UserClient userClient) {
         UserSession client = (UserSession) userClient;
         insertUserTable(client);

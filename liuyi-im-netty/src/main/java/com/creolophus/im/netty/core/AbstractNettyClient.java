@@ -288,6 +288,12 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             return requestProcessor;
         }
 
+        @Override
+        public Command handleRequest(Command cmd) {
+            Command command = (Command) getRequestProcessor().processRequest(cmd);
+            return command;
+        }
+
         protected void processRequestCommand(ChannelHandlerContext ctx,Command command){
             Command response = handleRequest(command);
             response(ctx, response);
@@ -341,8 +347,6 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
 
             SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientClose");
-            closeChannel(ctx.channel());
-            super.close(ctx, promise);
             logger.info("{}",ctx.channel());
             if(nettyClientChannelEventListener !=null){
                 nettyClientChannelEventListener.onClose(ctx,promise);

@@ -1,14 +1,13 @@
 package com.creolophus.im.client;
 
 import com.alibaba.fastjson.JSON;
-import com.creolophus.im.coder.JacksonCoder;
-import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.UserTest;
 import com.creolophus.im.sdk.ImClientFactory;
 import com.creolophus.im.sdk.LiuyiImClient;
-import com.creolophus.im.sdk.NettyImClient;
+import com.creolophus.im.sdk.MessageCoderSelector;
+import com.creolophus.im.sdk.MessageReceiver;
 import com.creolophus.im.type.PushMessageAck;
 import com.creolophus.im.type.PushMessageMsg;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,12 +20,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.SocketAddress;
+import java.util.function.BiConsumer;
 
 /**
  * @author magicnana
  * @date 2020/7/30 下午5:44
  */
-public class MyClientWindow extends JFrame implements NettyClientChannelEventListener, NettyImClient.MessageReceiver {
+public class MyClientWindow extends JFrame implements NettyClientChannelEventListener, MessageReceiver {
 
     private static final long serialVersionUID = 1L;
     private static UserTest.狗男女 currentUser;
@@ -40,7 +40,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     private LiuyiImClient liuyiImClient;
 
-    private MessageCoder messageCoder = new JacksonCoder();
+    private MessageCoderSelector messageCoderSelector = MessageCoderSelector.JACKSON;
 
 
     public MyClientWindow() {
@@ -61,7 +61,8 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         currentUserBox.addItem(UserTest.小昭);
 
 
-        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, messageCoder);
+        liuyiImClient = ImClientFactory.getNettyClient(MyClientWindow.this, MyClientWindow.this, messageCoderSelector);
+        liuyiImClient.start();
 
 
 //        txtip = new JTextField();
@@ -74,10 +75,14 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
             public void mouseClicked(MouseEvent e) {
 //                ConnectionManager.getChatManager().connect(txtip.getText());
                 currentUser = (UserTest.狗男女)currentUserBox.getSelectedItem();
-                System.out.println(currentUser.userId);
 
 //                liuyiImClient = ImClientFactory.getSocketImClient(new Configration(),MyClientWindow.this);
-                liuyiImClient.login(currentUser.token);
+                liuyiImClient.login(currentUser.token, new BiConsumer<Command, Command>() {
+                    @Override
+                    public void accept(Command msg, Command ack) {
+                        System.out.println("登录成功");
+                    }
+                });
 
                 btnConnect.setText("点击断开连接,左侧变成消息接收人");
 
@@ -181,7 +186,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     @Override
     public PushMessageAck receivePushMessage(Command command) {
         System.out.println("收到推送"+ JSON.toJSONString(command));
-        PushMessageMsg pushMessageMsg = messageCoder.decode(command.getBody(), PushMessageMsg.class);
+        PushMessageMsg pushMessageMsg = messageCoderSelector.getMessageCoder().decode(command.getBody(), PushMessageMsg.class);
         UserTest.狗男女 target = UserTest.valueOf(pushMessageMsg.getSenderId());
         appendText(target.toString() + ": " + pushMessageMsg.getMessageBody());
         PushMessageAck pushMessageAck = new PushMessageAck();
@@ -192,15 +197,16 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         return pushMessageAck;
     }
 
-    @Override
-    public void receiveSendMessageAck(Command command) {
-        System.out.println("收到 ACK "+JSON.toJSONString(command));
-    }
 
     public void sendMessage(){
         UserTest.狗男女 target = (UserTest.狗男女)currentUserBox.getSelectedItem();
 
-        liuyiImClient.sendMessage(1, txtSend.getText(), target.userId);
+        liuyiImClient.sendMessage(1, txtSend.getText(), target.userId, new BiConsumer<Command, Command>() {
+            @Override
+            public void accept(Command command, Command command2) {
+                System.out.println("发送消息成功");
+            }
+        });
         appendText("我: " + txtSend.getText());
     }
 

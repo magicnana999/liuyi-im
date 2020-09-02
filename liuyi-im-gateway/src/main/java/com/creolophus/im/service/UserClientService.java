@@ -39,7 +39,7 @@ public abstract class UserClientService {
     public abstract void pushMessage(Long receiverId, Command response);
 
     public void pushMessageAck(PushMessageAck pushMessageAck) {
-        logger.info("消息推送 到达 {} -> {}.{}", pushMessageAck.getSenderId(), pushMessageAck.getReceiverId(), pushMessageAck.getMessageId());
+        logger.info("消息到达 {} -> {}.{}", pushMessageAck.getSenderId(), pushMessageAck.getReceiverId(), pushMessageAck.getMessageId());
     }
 
 }

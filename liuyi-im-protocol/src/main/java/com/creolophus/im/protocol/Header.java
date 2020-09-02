@@ -49,10 +49,6 @@ public class Header {
         this.type = type;
     }
 
-    public boolean isAck() {
-        return this.code > MSG;
-    }
-
     /**
      * 服务端收到客户端的请求后,处理失败,回复的.
      */

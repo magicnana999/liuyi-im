@@ -91,7 +91,7 @@ public class UserChannelClientService extends UserClientService {
         ret.setToken(getToken());
         ret.setUserId(getUserId());
 
-        logger.info("用户登录 成功 {}.{}", ret.getAppKey(), ret.getUserId());
+        logger.info("用户登录 {}.{}", ret.getAppKey(), ret.getUserId());
 
         return ret;
     }

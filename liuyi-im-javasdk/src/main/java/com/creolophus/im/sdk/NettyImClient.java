@@ -1,6 +1,5 @@
 package com.creolophus.im.sdk;
 
-import com.alibaba.fastjson.JSON;
 import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.netty.config.NettyClientConfig;
@@ -116,8 +115,6 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
         Command request = buildSendMessageCommand(messageType, messageBody, targetId);
         try {
             sendCommand(request, (request1, ack) -> {
-                System.out.println(JSON.toJSONString(request1));
-                System.out.println(JSON.toJSONString(ack));
                 consumer.accept(request1, ack);
             });
         } catch (Throwable e) {

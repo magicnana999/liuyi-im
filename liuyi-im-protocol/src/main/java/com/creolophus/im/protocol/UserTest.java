@@ -8,10 +8,10 @@ public class UserTest {
 
     public static final String appKey = "1d0d0423ce82ced4851c62c5724265e4";
 
-    public static final 狗男女 张无忌 = new 狗男女(100, "e912782f1ee0612220c17214aaeb2892", "张无忌");
-    public static final 狗男女 赵敏 = new 狗男女(101, "15907024f9ecb4b4a5f088f94d25ce26", "赵敏");
-    public static final 狗男女 周芷若 = new 狗男女(102, "7be9166d6072cbeec51af0b618896fe3", "周芷若");
-    public static final 狗男女 小昭 = new 狗男女(103, "054449cf09cdc407f558e2d64d4df595", "小昭");
+    public static final 狗男女 张无忌 = new 狗男女(10086100, "e912782f1ee0612220c17214aaeb2892", "张无忌");
+    public static final 狗男女 赵敏 = new 狗男女(10086101, "15907024f9ecb4b4a5f088f94d25ce26", "赵敏");
+    public static final 狗男女 周芷若 = new 狗男女(10086102, "7be9166d6072cbeec51af0b618896fe3", "周芷若");
+    public static final 狗男女 小昭 = new 狗男女(10086103, "054449cf09cdc407f558e2d64d4df595", "小昭");
 
     public static 狗男女 valueOf(long userId) {
         if(userId == 张无忌.userId) {

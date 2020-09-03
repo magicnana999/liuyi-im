@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 
 /**
  * @author magicnana
@@ -8,7 +8,7 @@ import com.creolophus.im.protocol.Command;
  */
 public interface RequestProcessor {
 
-    void verify(Command msg);
-
     Object processRequest(Command msg);
+
+    void verify(Command msg);
 }

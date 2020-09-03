@@ -1,7 +1,7 @@
 package com.creolophus.im.netty.core;
 
 import com.creolophus.im.netty.utils.OS;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOutboundInvoker;

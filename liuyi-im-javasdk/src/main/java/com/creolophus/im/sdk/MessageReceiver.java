@@ -1,7 +1,7 @@
 package com.creolophus.im.sdk;
 
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.type.PushMessageAck;
+import com.creolophus.im.protocol.domain.Command;
+import com.creolophus.im.protocol.type.PushMessageAck;
 
 /**
  * @author magicnana

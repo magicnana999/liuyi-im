@@ -1,11 +1,11 @@
 package com.creolophus.im.netty;
 
-import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyServerConfig;
 import com.creolophus.im.netty.core.AbstractNettyServer;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.netty.core.NettyServerChannelEventListener;
 import com.creolophus.im.netty.core.RequestProcessor;
+import com.creolophus.im.protocol.coder.MessageCoder;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import org.slf4j.Logger;
@@ -41,14 +41,14 @@ public class NettyServerInstance extends AbstractNettyServer {
     }
 
     @Override
-    public void start() {
-        heartbeatSchedule.heartbeat();
-        super.start();
+    public void shutdown() {
+        this.shutdown();
     }
 
     @Override
-    public void shutdown() {
-        this.shutdown();
+    public void start() {
+        heartbeatSchedule.heartbeat();
+        super.start();
     }
 
 }

@@ -3,7 +3,7 @@ package com.creolophus.im.netty.core;
 import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.netty.utils.SessionUtil;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

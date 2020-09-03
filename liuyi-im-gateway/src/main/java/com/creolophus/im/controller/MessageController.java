@@ -1,8 +1,8 @@
 package com.creolophus.im.controller;
 
 import com.creolophus.im.common.base.BaseController;
+import com.creolophus.im.protocol.type.PushMessageMsg;
 import com.creolophus.im.service.UserClientService;
-import com.creolophus.im.type.PushMessageMsg;
 import com.creolophus.liuyi.common.api.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

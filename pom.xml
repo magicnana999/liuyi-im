@@ -28,6 +28,7 @@
         <module>liuyi-im-demo-javaclient</module>
     </modules>
 
+
     <properties>
         <dockerfile-plugin-version>1.4.6</dockerfile-plugin-version>
         <docker-aliyun.registry>registry.cn-beijing.aliyuncs.com/xiasimuou</docker-aliyun.registry>

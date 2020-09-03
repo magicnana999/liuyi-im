@@ -16,7 +16,7 @@
  */
 package com.creolophus.im.netty.core;
 
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import io.netty.channel.Channel;
 
 import java.util.concurrent.CountDownLatch;
@@ -49,15 +49,24 @@ public class ResponseFuture {
         this.request = request;
     }
 
-    public void release() {
-        if (this.once != null) {
-            this.once.release();
-        }
+    public Throwable getCause() {
+        return cause;
     }
 
-    public boolean isTimeout() {
-        long diff = System.currentTimeMillis() - this.beginTimestamp;
-        return diff > this.timeoutMillis;
+    public void setCause(Throwable cause) {
+        this.cause = cause;
+    }
+
+    public String getCommandSeq() {
+        return commandSeq;
+    }
+
+    public BiConsumer<Command, Command> getConsumer() {
+        return consumer;
+    }
+
+    public Channel getProcessChannel() {
+        return processChannel;
     }
 
     public boolean isSendOk(){
@@ -68,17 +77,9 @@ public class ResponseFuture {
         this.sendOk = sendOk;
     }
 
-    public Throwable getCause() {
-        return cause;
-    }
-
-    public void setCause(Throwable cause) {
-        this.cause = cause;
-    }
-
-    public Command waitResponse(final long timeoutMillis) throws InterruptedException {
-        this.countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS);
-        return this.response;
+    public boolean isTimeout() {
+        long diff = System.currentTimeMillis() - this.beginTimestamp;
+        return diff > this.timeoutMillis;
     }
 
     public void putResponse(final Command response) {
@@ -90,15 +91,14 @@ public class ResponseFuture {
         }
     }
 
-    public String getCommandSeq() {
-        return commandSeq;
+    public void release() {
+        if (this.once != null) {
+            this.once.release();
+        }
     }
 
-    public Channel getProcessChannel() {
-        return processChannel;
-    }
-
-    public BiConsumer<Command, Command> getConsumer() {
-        return consumer;
+    public Command waitResponse(final long timeoutMillis) throws InterruptedException {
+        this.countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS);
+        return this.response;
     }
 }

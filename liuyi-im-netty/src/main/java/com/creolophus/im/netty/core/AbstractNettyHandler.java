@@ -3,7 +3,7 @@ package com.creolophus.im.netty.core;
 import com.creolophus.im.netty.exception.NettyCommandException;
 import com.creolophus.im.netty.exception.NettyCommandWithResException;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.DecoderException;

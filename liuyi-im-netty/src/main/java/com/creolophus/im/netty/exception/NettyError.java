@@ -1,6 +1,6 @@
 package com.creolophus.im.netty.exception;
 
-import com.creolophus.im.protocol.Error;
+import com.creolophus.im.protocol.domain.Error;
 import com.creolophus.liuyi.common.api.ApiError;
 
 /**
@@ -9,10 +9,8 @@ import com.creolophus.liuyi.common.api.ApiError;
  */
 public class NettyError extends ApiError implements Error {
 
-     private static int error = 1000;
-
-
     public static final NettyError S_OK = new NettyError(200, "OK");
+     private static int error = 1000;
     public static final NettyError E_ERROR = new NettyError(error++, "服务器内部错误");
     public static final NettyError E_TOO_LARGE = new NettyError(error++, "请求体太大");
     public static final NettyError E_RESPONSE_ERROR = new NettyError(error++,"无法响应");

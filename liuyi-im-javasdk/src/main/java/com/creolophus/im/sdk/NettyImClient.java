@@ -1,7 +1,5 @@
 package com.creolophus.im.sdk;
 
-import com.creolophus.im.coder.MessageCoder;
-import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.AbstractNettyClient;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
@@ -9,12 +7,14 @@ import com.creolophus.im.netty.core.RequestProcessor;
 import com.creolophus.im.netty.exception.NettyCommandException;
 import com.creolophus.im.netty.exception.NettyCommandWithResException;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
-import com.creolophus.im.protocol.Header;
-import com.creolophus.im.type.LoginAck;
-import com.creolophus.im.type.LoginMsg;
-import com.creolophus.im.type.SendMessageMsg;
+import com.creolophus.im.protocol.coder.MessageCoder;
+import com.creolophus.im.protocol.coder.MessageCoderSelector;
+import com.creolophus.im.protocol.domain.Command;
+import com.creolophus.im.protocol.domain.CommandType;
+import com.creolophus.im.protocol.domain.Header;
+import com.creolophus.im.protocol.type.LoginAck;
+import com.creolophus.im.protocol.type.LoginMsg;
+import com.creolophus.im.protocol.type.SendMessageMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,6 +82,12 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
     }
 
     @Override
+    public void start() {
+        abstractNettyClient.start();
+        abstractNettyClient.createChannel();
+    }
+
+    @Override
     public void login(String token, BiConsumer<Command, Command> consumer) {
 
         if(lock.tryLock()) {
@@ -111,22 +117,30 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
     }
 
     @Override
-    public long sendMessage(int messageType, String messageBody, long targetId, BiConsumer<Command, Command> consumer) {
-        Command request = buildSendMessageCommand(messageType, messageBody, targetId);
+    public Object processRequest(Command cmd) {
+
+        Command response = null;
         try {
-            sendCommand(request, (request1, ack) -> {
-                consumer.accept(request1, ack);
-            });
+            Object obj = processRequestInner(cmd);
+            if(obj != null) {
+                response = buildAckCommand(cmd, obj);
+            }
+        } catch (NettyCommandWithResException e) {
+            logger.error(e.getMessage(), e);
+            response = e.getResponse();
+        } catch (NettyCommandException e) {
+            logger.error(e.getMessage(), e);
+            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), e.getNettyError());
         } catch (Throwable e) {
-            throw new RuntimeException("无法发送消息", e);
+            logger.error(e.getMessage(), e);
+            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
         }
-        return 0;
+        return response;
     }
 
     @Override
-    public void start() {
-        abstractNettyClient.start();
-        abstractNettyClient.createChannel();
+    public void verify(Command msg) {
+
     }
 
     private Object processRequestInner(Command command) {
@@ -150,29 +164,15 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
     }
 
     @Override
-    public void verify(Command msg) {
-
-    }
-
-    @Override
-    public Object processRequest(Command cmd) {
-
-        Command response = null;
+    public long sendMessage(int messageType, String messageBody, long targetId, BiConsumer<Command, Command> consumer) {
+        Command request = buildSendMessageCommand(messageType, messageBody, targetId);
         try {
-            Object obj = processRequestInner(cmd);
-            if(obj != null) {
-                response = buildAckCommand(cmd, obj);
-            }
-        } catch (NettyCommandWithResException e) {
-            logger.error(e.getMessage(), e);
-            response = e.getResponse();
-        } catch (NettyCommandException e) {
-            logger.error(e.getMessage(), e);
-            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), e.getNettyError());
+            sendCommand(request, (request1, ack) -> {
+                consumer.accept(request1, ack);
+            });
         } catch (Throwable e) {
-            logger.error(e.getMessage(), e);
-            response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
+            throw new RuntimeException("无法发送消息", e);
         }
-        return response;
+        return 0;
     }
 }

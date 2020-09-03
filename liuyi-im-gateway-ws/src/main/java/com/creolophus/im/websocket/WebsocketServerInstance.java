@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.creolophus.im.netty.core.AbstractWebSocketServer;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import com.creolophus.liuyi.common.api.ApiResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

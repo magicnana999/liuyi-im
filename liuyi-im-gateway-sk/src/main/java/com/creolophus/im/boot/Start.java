@@ -1,10 +1,10 @@
 package com.creolophus.im.boot;
 
-import com.creolophus.im.coder.MessageCoder;
-import com.creolophus.im.coder.MessageCoderSelector;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.netty.NettyServerInstance;
+import com.creolophus.im.protocol.coder.MessageCoder;
+import com.creolophus.im.protocol.coder.MessageCoderSelector;
 import com.creolophus.im.scheduler.HeartbeatSchedule;
 import com.creolophus.liuyi.common.api.WebStart;
 import com.creolophus.liuyi.common.cloud.CustomRequestInterceptor;

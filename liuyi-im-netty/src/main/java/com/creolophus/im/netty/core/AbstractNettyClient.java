@@ -1,15 +1,15 @@
 package com.creolophus.im.netty.core;
 
 import com.alibaba.fastjson.JSON;
-import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.exception.NettyException;
 import com.creolophus.im.netty.exception.NettyTimeoutException;
 import com.creolophus.im.netty.exception.NettyTooMuchRequestException;
 import com.creolophus.im.netty.sleuth.SleuthNettyAdapter;
 import com.creolophus.im.netty.utils.NettyUtil;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.Header;
+import com.creolophus.im.protocol.coder.MessageCoder;
+import com.creolophus.im.protocol.domain.Command;
+import com.creolophus.im.protocol.domain.Header;
 import com.creolophus.liuyi.common.logger.TracerUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -196,30 +196,6 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         super.response(ctx, response);
     }
 
-    @Override
-    public void shutdown() {
-        workerGroup.shutdownGracefully();
-    }
-
-    @Override
-    public void start() {
-        Bootstrap childHandler = bootstrap.group(workerGroup)
-                .channel(useEpoll() ? EpollSocketChannel.class : NioSocketChannel.class)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .option(ChannelOption.SO_KEEPALIVE, false)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                .option(ChannelOption.SO_SNDBUF, nettyClientConfig.getClientSocketSndBufSize())
-                .option(ChannelOption.SO_RCVBUF, nettyClientConfig.getClientSocketRcvBufSize())
-                .handler(new ChannelInitializer<SocketChannel>() { // (4)
-                    @Override
-                    public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(
-                                //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
-                                new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder), new NettyClientHandler());
-                    }
-                });
-    }
-
     public void sendAsync(Command request, long timeoutMillis, BiConsumer<Command,Command> consumer) throws InterruptedException {
         long beginStartTime = System.currentTimeMillis();
         final Channel channel = this.createChannel();
@@ -259,6 +235,30 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             this.closeChannel(channel);
             throw new NettyException("Channel不可用");
         }
+    }
+
+    @Override
+    public void shutdown() {
+        workerGroup.shutdownGracefully();
+    }
+
+    @Override
+    public void start() {
+        Bootstrap childHandler = bootstrap.group(workerGroup)
+                .channel(useEpoll() ? EpollSocketChannel.class : NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, false)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
+                .option(ChannelOption.SO_SNDBUF, nettyClientConfig.getClientSocketSndBufSize())
+                .option(ChannelOption.SO_RCVBUF, nettyClientConfig.getClientSocketRcvBufSize())
+                .handler(new ChannelInitializer<SocketChannel>() { // (4)
+                    @Override
+                    public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(
+                                //new IdleStateHandler(0, 0, nettyServerConfig.getServerChannelMaxIdleTimeSeconds()),
+                                new NettyConnectManageHandler(), new NettyEncoder(messageCoder), new NettyDecoder(messageCoder), new NettyClientHandler());
+                    }
+                });
     }
 
     class NettyClientHandler extends AbstractNettyHandler {

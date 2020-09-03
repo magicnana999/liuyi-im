@@ -2,7 +2,7 @@ package com.creolophus.im.websocket;
 
 import com.creolophus.im.domain.UserSession;
 import com.creolophus.im.netty.core.SessionEventListener;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import com.creolophus.im.service.UserSessionClientService;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,11 @@ public class SessionEventListenerImpl implements SessionEventListener {
     private UserSessionClientService userSessionClientService;
 
     @Override
+    public void onFlush(Session session, Command response) {
+
+    }
+
+    @Override
     public void onOpen(Session session) {
 
     }
@@ -34,11 +39,6 @@ public class SessionEventListenerImpl implements SessionEventListener {
 
     @Override
     public void onMessage(Session session, String message) {
-
-    }
-
-    @Override
-    public void onFlush(Session session, Command response) {
 
     }
 

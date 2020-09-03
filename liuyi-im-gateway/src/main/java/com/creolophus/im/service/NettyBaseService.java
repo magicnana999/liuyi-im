@@ -2,7 +2,7 @@ package com.creolophus.im.service;
 
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.netty.core.ContextProcessor;
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 import io.netty.channel.Channel;
 
 import javax.annotation.Resource;

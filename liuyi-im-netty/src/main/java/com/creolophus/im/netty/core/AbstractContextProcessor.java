@@ -3,8 +3,8 @@ package com.creolophus.im.netty.core;
 import com.creolophus.im.common.api.LiuYiApiContextValidator;
 import com.creolophus.im.netty.exception.NettyCommandWithResException;
 import com.creolophus.im.netty.exception.NettyError;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.protocol.domain.Command;
+import com.creolophus.im.protocol.domain.CommandType;
 import com.creolophus.liuyi.common.api.MdcUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,6 +17,27 @@ public abstract class AbstractContextProcessor extends LiuYiApiContextValidator 
     protected void throwError(String commandSequence,int commandType,NettyError remoteError) {
         Command response = Command.newAck(commandSequence, commandType, remoteError);
         throw new NettyCommandWithResException(response);
+    }
+
+    @Override
+    public void validateAfterVerify(Command request) {
+
+        if(request.getAuth()==null){
+            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 Auth"));
+        }
+
+        if(StringUtils.isBlank(request.getAuth().getAppKey())) {
+            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 AppKey"));
+        }
+
+        if(request.getAuth().getUserId()==null || request.getAuth().getUserId()==0){
+            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 UserID"));
+        }
+
+        setUserId(request.getAuth().getUserId());
+        setToken(request.getToken());
+        setAppKey(request.getAuth().getAppKey());
+        MdcUtil.setExt(""+request.getAuth().getUserId());
     }
 
     @Override
@@ -40,26 +61,5 @@ public abstract class AbstractContextProcessor extends LiuYiApiContextValidator 
         if(StringUtils.isBlank(command.getToken())){
             throwError(command.getHeader().getSeq(),command.getHeader().getType(),NettyError.E_REQUEST_VALIDATE_ERROR.format("没有 Token"));
         }
-    }
-
-    @Override
-    public void validateAfterVerify(Command request) {
-
-        if(request.getAuth()==null){
-            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 Auth"));
-        }
-
-        if(StringUtils.isBlank(request.getAuth().getAppKey())) {
-            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 AppKey"));
-        }
-
-        if(request.getAuth().getUserId()==null || request.getAuth().getUserId()==0){
-            throwError(request.getHeader().getSeq(),request.getHeader().getType(),NettyError.E_REQUEST_AUTH_ERROR.format("没有 UserID"));
-        }
-
-        setUserId(request.getAuth().getUserId());
-        setToken(request.getToken());
-        setAppKey(request.getAuth().getAppKey());
-        MdcUtil.setExt(""+request.getAuth().getUserId());
     }
 }

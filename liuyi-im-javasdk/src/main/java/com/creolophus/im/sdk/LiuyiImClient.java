@@ -1,6 +1,6 @@
 package com.creolophus.im.sdk;
 
-import com.creolophus.im.protocol.Command;
+import com.creolophus.im.protocol.domain.Command;
 
 import java.util.function.BiConsumer;
 

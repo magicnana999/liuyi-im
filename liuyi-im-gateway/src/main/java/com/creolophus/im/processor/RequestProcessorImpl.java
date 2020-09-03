@@ -1,16 +1,16 @@
 package com.creolophus.im.processor;
 
-import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.core.RequestProcessor;
-import com.creolophus.im.protocol.Auth;
-import com.creolophus.im.protocol.Command;
-import com.creolophus.im.protocol.CommandType;
+import com.creolophus.im.protocol.coder.MessageCoder;
+import com.creolophus.im.protocol.domain.Auth;
+import com.creolophus.im.protocol.domain.Command;
+import com.creolophus.im.protocol.domain.CommandType;
+import com.creolophus.im.protocol.type.LoginMsg;
+import com.creolophus.im.protocol.type.PushMessageAck;
+import com.creolophus.im.protocol.type.SendMessageMsg;
 import com.creolophus.im.service.AuthService;
 import com.creolophus.im.service.MessageService;
 import com.creolophus.im.service.UserClientService;
-import com.creolophus.im.type.LoginMsg;
-import com.creolophus.im.type.PushMessageAck;
-import com.creolophus.im.type.SendMessageMsg;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -35,12 +35,6 @@ public class RequestProcessorImpl implements RequestProcessor {
     private AuthService authService;
 
     @Override
-    public void verify(Command request) {
-        Auth auth = authService.verify(request.getToken());
-        request.setAuth(auth);
-    }
-
-    @Override
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
             case LOGIN:
@@ -53,5 +47,11 @@ public class RequestProcessorImpl implements RequestProcessor {
                 break;
         }
         return null;
+    }
+
+    @Override
+    public void verify(Command request) {
+        Auth auth = authService.verify(request.getToken());
+        request.setAuth(auth);
     }
 }

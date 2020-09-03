@@ -22,10 +22,6 @@ public class IdExampleService extends BaseService {
         return atomicGenerator.nextId();
     }
 
-    public Long nextMessageId(Long receiverId) {
-        return atomicGenerator.nextId();
-    }
-
     public Long nextUserId() {
         return snowFlakeGenerator.nextId();
     }

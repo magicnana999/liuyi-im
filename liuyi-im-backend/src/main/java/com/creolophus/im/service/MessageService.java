@@ -5,7 +5,7 @@ import com.creolophus.im.common.entity.Message;
 import com.creolophus.im.dao.MessageDao;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
-import com.creolophus.liuyi.common.shutdown.Shutdown;
+import com.creolophus.liuyi.common.thread.Stopable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2019/10/21 下午5:12
  */
 @Service
-public class MessageService extends BaseService implements Shutdown {
+public class MessageService extends BaseService implements Stopable {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 

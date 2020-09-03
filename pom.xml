@@ -22,6 +22,7 @@
         <module>liuyi-im-backend</module>
         <module>liuyi-im-gateway</module>
         <module>liuyi-im-gateway-sk</module>
+        <module>liuyi-im-gateway-ws</module>
         <module>liuyi-im-id</module>
         <module>liuyi-im-protocol</module>
         <module>liuyi-im-javasdk</module>

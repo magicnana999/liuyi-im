@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>liuyi-im</artifactId>
         <groupId>com.creolophus</groupId>
-        <version>1.0.0</version>
+        <version>0.9.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>liuyi-im-common</artifactId>
-    <version>1.0.0</version>
+    <version>0.9.1</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.creolophus</groupId>
+            <groupId>com.github.magicnana999</groupId>
             <artifactId>liuyi-ms</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 
@@ -69,9 +69,8 @@
 
     <repositories>
         <repository>
-            <id>github</id>
-            <name>GitHub Magicnana999 Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/magicnana999/liuyi-ms</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 </project>

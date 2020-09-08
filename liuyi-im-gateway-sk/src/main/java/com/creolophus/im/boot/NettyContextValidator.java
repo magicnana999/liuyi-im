@@ -1,18 +1,15 @@
 package com.creolophus.im.boot;
 
 import com.alibaba.fastjson.JSON;
-import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.netty.core.AbstractContextProcessor;
 import com.creolophus.im.netty.core.ContextProcessor;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.liuyi.common.api.ApiContext;
-import com.creolophus.liuyi.common.api.GlobalSetting;
 import com.creolophus.liuyi.common.api.MdcUtil;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import javax.websocket.Session;
 
 /**
@@ -27,12 +24,6 @@ public class NettyContextValidator extends AbstractContextProcessor implements C
     private static final String RESPONSE = "RESPONSE";
 
     private static final Logger logger = LoggerFactory.getLogger(NettyContextValidator.class);
-
-    @Resource
-    private GlobalSetting globalSetting;
-
-    @Resource
-    private MessageCoder messageCoder;
 
     public NettyContextValidator() {
     }

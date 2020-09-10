@@ -268,6 +268,8 @@ public class TestCommand {
     public void testObjectID() {
         ObjectID objectID = new ObjectID();
         JUnitPrint.info(objectID.nextId().length() + "");
+
+
     }
 
 }

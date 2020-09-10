@@ -32,12 +32,12 @@ public class UserStorage extends BaseStorage {
     }
 
     private String getUserInstanceKey(Long userId) {
-        Objects.requireNonNull(userId,"userId 为空,无法生成 User Key");
+        Objects.requireNonNull(userId, "userId 为空,无法生成 User Key");
         return USER_INSTANCE + userId;
     }
 
     private String getUserInstanceLockKey(Long userId) {
-        Objects.requireNonNull(userId,"userId 为空,无法生成 UserInstanceLock Key");
+        Objects.requireNonNull(userId, "userId 为空,无法生成 UserInstanceLock Key");
         return USER_INSTANCE_LOCK + userId;
     }
 
@@ -47,7 +47,7 @@ public class UserStorage extends BaseStorage {
     }
 
     public String setUserInstance(User user) {
-        if(user==null) return null;
+        if(user == null) return null;
         String ret = redisClient.set(getUserInstanceKey(user.getUserId()), JSON.toJSONString(user));
         redisClient.expire(getUserInstanceKey(user.getUserId()), USER_INSTANCE_EXPIRE);
         return ret;

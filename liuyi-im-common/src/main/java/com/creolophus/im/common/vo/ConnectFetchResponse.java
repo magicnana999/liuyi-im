@@ -14,19 +14,19 @@ public class ConnectFetchResponse extends AbstractEntity {
     private Long unread;
     private List<ConnectConversationsResponse> conversations = new ArrayList<>();
 
-    public Long getUnread() {
-        return unread;
-    }
-
-    public void setUnread(Long unread) {
-        this.unread = unread;
-    }
-
     public List<ConnectConversationsResponse> getConversations() {
         return conversations;
     }
 
     public void setConversations(List<ConnectConversationsResponse> conversations) {
         this.conversations = conversations;
+    }
+
+    public Long getUnread() {
+        return unread;
+    }
+
+    public void setUnread(Long unread) {
+        this.unread = unread;
     }
 }

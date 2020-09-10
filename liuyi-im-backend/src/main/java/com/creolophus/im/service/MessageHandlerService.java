@@ -38,8 +38,8 @@ public class MessageHandlerService extends BaseService {
     @Entry
     public Long asyncMessage() {
         List<String> list = messageStorage.popAsyncMessage();
-        if(list!=null && list.size()==2){
-            Message message = JSON.parseObject(list.get(1),Message.class);
+        if(list != null && list.size() == 2) {
+            Message message = JSON.parseObject(list.get(1), Message.class);
             if(logger.isDebugEnabled()) {
                 logger.debug("同步消息 {}", message.getMessageId());
             }
@@ -60,9 +60,9 @@ public class MessageHandlerService extends BaseService {
         return "0";
     }
 
-    private Long saveMessage(Message message){
-        messageDao.insert(message,false);
-        return message==null?0L:message.getMessageId();
+    private Long saveMessage(Message message) {
+        messageDao.insert(message, false);
+        return message == null ? 0L : message.getMessageId();
     }
 
 }

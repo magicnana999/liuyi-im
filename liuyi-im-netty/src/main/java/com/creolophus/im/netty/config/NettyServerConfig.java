@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 /**
  * 朝辞白帝彩云间 千行代码一日还
  * 两岸领导啼不住 地铁已到回龙观
- *
  * @author magicnana
  * @date 2019/9/18 上午10:37
  */
@@ -28,51 +27,74 @@ public class NettyServerConfig implements Cloneable {
 
     private int frameMaxLength = 128 * 1024;
 
-    public int getListenPort() {
-        return listenPort;
+    public int getFrameMaxLength() {
+        return frameMaxLength;
     }
-    public void setListenPort(int listenPort) {
-        this.listenPort = listenPort;
+
+    public void setFrameMaxLength(int frameMaxLength) {
+        this.frameMaxLength = frameMaxLength;
     }
 
     public String getListenIp() {
         return listenIp;
     }
+
     public void setListenIp(String listenIp) {
         this.listenIp = listenIp;
     }
 
-    public int getServerSelectorThreads() {
-        return serverSelectorThreads;
+    public int getListenPort() {
+        return listenPort;
     }
-    public void setServerSelectorThreads(int serverSelectorThreads) {
-        this.serverSelectorThreads = serverSelectorThreads;
+
+    public void setListenPort(int listenPort) {
+        this.listenPort = listenPort;
     }
 
     public int getServerChannelMaxIdleTimeSeconds() {
         return serverChannelMaxIdleTimeSeconds;
     }
+
     public void setServerChannelMaxIdleTimeSeconds(int serverChannelMaxIdleTimeSeconds) {
         this.serverChannelMaxIdleTimeSeconds = serverChannelMaxIdleTimeSeconds;
     }
 
-    public int getServerSocketSndBufSize() {
-        return serverSocketSndBufSize;
+    public long getServerPushTimeoutMillions() {
+        return serverPushTimeoutMillions;
     }
-    public void setServerSocketSndBufSize(int serverSocketSndBufSize) {
-        this.serverSocketSndBufSize = serverSocketSndBufSize;
+
+    public void setServerPushTimeoutMillions(long serverPushTimeoutMillions) {
+        this.serverPushTimeoutMillions = serverPushTimeoutMillions;
+    }
+
+    public int getServerSelectorThreads() {
+        return serverSelectorThreads;
+    }
+
+    public void setServerSelectorThreads(int serverSelectorThreads) {
+        this.serverSelectorThreads = serverSelectorThreads;
     }
 
     public int getServerSocketRcvBufSize() {
         return serverSocketRcvBufSize;
     }
+
     public void setServerSocketRcvBufSize(int serverSocketRcvBufSize) {
         this.serverSocketRcvBufSize = serverSocketRcvBufSize;
+    }
+
+    public int getServerSocketSndBufSize() {
+        return serverSocketSndBufSize;
+    }
+
+    public void setServerSocketSndBufSize(int serverSocketSndBufSize) {
+        this.serverSocketSndBufSize = serverSocketSndBufSize;
     }
 
     public boolean isServerPooledByteBufAllocatorEnable() {
         return serverPooledByteBufAllocatorEnable;
     }
+
     public void setServerPooledByteBufAllocatorEnable(boolean serverPooledByteBufAllocatorEnable) {
         this.serverPooledByteBufAllocatorEnable = serverPooledByteBufAllocatorEnable;
     }
@@ -80,21 +102,8 @@ public class NettyServerConfig implements Cloneable {
     public boolean isUseEpollNativeSelector() {
         return useEpollNativeSelector;
     }
+
     public void setUseEpollNativeSelector(boolean useEpollNativeSelector) {
         this.useEpollNativeSelector = useEpollNativeSelector;
-    }
-
-    public long getServerPushTimeoutMillions() {
-        return serverPushTimeoutMillions;
-    }
-    public void setServerPushTimeoutMillions(long serverPushTimeoutMillions) {
-        this.serverPushTimeoutMillions = serverPushTimeoutMillions;
-    }
-
-    public int getFrameMaxLength() {
-        return frameMaxLength;
-    }
-    public void setFrameMaxLength(int frameMaxLength) {
-        this.frameMaxLength = frameMaxLength;
     }
 }

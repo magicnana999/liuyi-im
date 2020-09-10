@@ -1,8 +1,8 @@
 package com.creolophus.im.controller;
 
-import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.storage.IncrementIdStorage;
+import com.creolophus.liuyi.common.api.ApiResult;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -60,7 +60,7 @@ public class UserSessionClientService extends UserClientService {
         return userTable.get(userId);
     }
 
-    public UserSession getUserClient(String sessionId){
+    public UserSession getUserClient(String sessionId) {
         return sessionTable.get(sessionId);
     }
 
@@ -74,14 +74,14 @@ public class UserSessionClientService extends UserClientService {
 
     private void insertUserTable(UserSession client) {
         UserSession origin = userTable.putIfAbsent(client.getUserId(), client);
-        if(origin != null && origin.getSession()!=null) {
+        if(origin != null && origin.getSession() != null) {
             try {
                 origin.getSession().close();
                 if(logger.isDebugEnabled()) {
                     logger.debug("channel has been closed {}", origin.getSessionId());
                 }
             } catch (IOException e) {
-                throw new RuntimeException("此用户已存在 UserSession,并且无法关闭"+ client.getUserId() +" "+client.getSessionId());
+                throw new RuntimeException("此用户已存在 UserSession,并且无法关闭" + client.getUserId() + " " + client.getSessionId());
             }
         }
     }
@@ -94,7 +94,7 @@ public class UserSessionClientService extends UserClientService {
         client.setAppKey(getAppKey());
         client.setSocketType(UserChannel.SocketType.SOCKET.getValue());
         registerUserClient(client);
-        backendFeign.registerUserClient("127.0.0.1",33008,client.getUserId());
+        backendFeign.registerUserClient("127.0.0.1", 33008, client.getUserId());
 
         LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
@@ -104,11 +104,11 @@ public class UserSessionClientService extends UserClientService {
     }
 
     @Override
-    public void pushMessage(Long receiverId, Command response){
+    public void pushMessage(Long receiverId, Command response) {
         if(response != null) {
             try {
                 UserSession uc = getUserClient(receiverId);
-                if(uc!=null && uc.getSession()!=null){
+                if(uc != null && uc.getSession() != null) {
                     uc.getSession().getBasicRemote().sendText(JSON.toJSONString(response));
                 }
             } catch (Throwable e) {

@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  * @author magicnana
  * @date 2020/8/18 5:37 PM
  */
-public class JacksonCoder  implements MessageCoder{
+public class JacksonCoder implements MessageCoder {
     @Override
     public <T> T decode(Object body, Class<T> clazz) {
         return JacksonUtil.toJava(body, clazz);

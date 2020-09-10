@@ -1,8 +1,7 @@
 package com.creolophus.im.type;
 
 /**
- * server -> client
- *
+ * 登录 Ack
  * @author magicnana
  * @date 2020-01-11
  */

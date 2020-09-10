@@ -17,6 +17,14 @@ public class ConnectFetchRequest extends AbstractEntity {
     private Long currentId;
     private List<ConnectConversationsRequest> conversations = new ArrayList();
 
+    public List<ConnectConversationsRequest> getConversations() {
+        return conversations;
+    }
+
+    public void setConversations(List<ConnectConversationsRequest> conversations) {
+        this.conversations = conversations;
+    }
+
     public Long getCurrentId() {
         return currentId;
     }
@@ -39,13 +47,5 @@ public class ConnectFetchRequest extends AbstractEntity {
 
     public void setSdkVersion(String sdkVersion) {
         this.sdkVersion = sdkVersion;
-    }
-
-    public List<ConnectConversationsRequest> getConversations() {
-        return conversations;
-    }
-
-    public void setConversations(List<ConnectConversationsRequest> conversations) {
-        this.conversations = conversations;
     }
 }

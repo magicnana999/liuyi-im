@@ -12,16 +12,17 @@ import javax.annotation.Resource;
  */
 public class BaseController extends AbstractController {
 
+    @Resource
+    private LiuYiApiContextValidator liuYiApiContextValidator;
+
+    protected String currentAppKey() {
+        return liuYiApiContextValidator.getAppKeyByContext();
+    }
+
     protected String currentToken() {
         return ApiContext.getContext().getToken();
     }
 
-    protected Long currentUserId(){ return ApiContext.getContext().getUserId();}
-
-    @Resource
-    private LiuYiApiContextValidator liuYiApiContextValidator;
-    protected String currentAppKey(){
-        return liuYiApiContextValidator.getAppKeyByContext();
-    }
+    protected Long currentUserId() { return ApiContext.getContext().getUserId();}
 
 }

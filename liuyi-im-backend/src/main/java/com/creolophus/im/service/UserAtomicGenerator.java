@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class UserAtomicGenerator {
 
-    private static final ConcurrentHashMap<Long,AtomicLong> table = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Long, AtomicLong> table = new ConcurrentHashMap<>();
 
-    public Long next(Long userId){
+    public Long next(Long userId) {
         AtomicLong al = table.get(userId);
-        if(al == null){
-            synchronized (String.valueOf(userId).intern()){
+        if(al == null) {
+            synchronized (String.valueOf(userId).intern()) {
                 al = new AtomicLong(100);
                 table.put(userId, al);
             }

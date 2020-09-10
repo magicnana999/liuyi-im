@@ -10,11 +10,10 @@ public class StartClient {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                MyClientWindow frame=new MyClientWindow();
+                MyClientWindow frame = new MyClientWindow();
                 frame.setVisible(true);
 //                    ConnectionManager.getChatManager().setWindow(frame);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         });
     }

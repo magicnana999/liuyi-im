@@ -56,7 +56,7 @@ public class GroupStorage extends BaseStorage {
         if(list == null || list.size() == 0) return 0L;
         String key = getGroupMembersKey(groupId);
         long affected = 0;
-        for(GroupMember gm : list){
+        for (GroupMember gm : list) {
             affected += redisClient.rpush(key, String.valueOf(gm.getUserId()));
         }
         redisClient.expire(key, GROUP_MEMBERS_EXPIRE);
@@ -84,7 +84,7 @@ public class GroupStorage extends BaseStorage {
         String key = getGroupMembersKey(groupId);
 
         long affected = 0;
-        for(Long gm : list){
+        for (Long gm : list) {
             affected += redisClient.rpush(key, String.valueOf(gm));
         }
         redisClient.expire(key, GROUP_MEMBERS_EXPIRE);

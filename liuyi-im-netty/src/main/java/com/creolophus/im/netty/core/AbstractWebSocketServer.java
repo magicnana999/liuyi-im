@@ -56,7 +56,7 @@ public abstract class AbstractWebSocketServer {
         } catch (Throwable e) {
             logger.error(e.getMessage(), e);
             response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
-        }finally {
+        } finally {
             return response(session, response);
         }
     }
@@ -80,14 +80,14 @@ public abstract class AbstractWebSocketServer {
                 .size() > 0 ? applicationContext.getBean(SessionEventListener.class) : null;
     }
 
-    public void verify(Session session,Command command){
+    public void verify(Session session, Command command) {
         if(scheduledFuture != null) {
             scheduledFuture.cancel(true);
         }
         requestProcessor.verify(command);
     }
 
-    class IdleSessionManager implements Runnable{
+    class IdleSessionManager implements Runnable {
 
         private Session session;
 
@@ -101,7 +101,7 @@ public abstract class AbstractWebSocketServer {
                 session.close();
                 logger.info("{} has been closed", SessionUtil.getSessionId(session));
             } catch (Throwable e) {
-                logger.info("{} close session error",SessionUtil.getSessionId(session),e);
+                logger.info("{} close session error", SessionUtil.getSessionId(session), e);
             }
         }
     }

@@ -29,14 +29,14 @@ public class GatewayService extends BaseService {
     @Resource
     private RestTemplate restTemplate;
 
-    public void findGetewayListAndCheck(){
+    public void findGetewayListAndCheck() {
         Set<String> set = gatewayStorage.getGatewayList();
-        for(String ipAndPort : set){
+        for (String ipAndPort : set) {
             GatewayAddr addr = new GatewayAddr(ipAndPort);
-            if(!validateGateway(addr)){
-                unregisterGateway(addr.getIp(),addr.getPort());
+            if(!validateGateway(addr)) {
+                unregisterGateway(addr.getIp(), addr.getPort());
                 logger.info("网关下线 {}", ipAndPort);
-            }else{
+            } else {
                 gatewayStorage.registerGateway(addr.getIp(), addr.getPort());
                 logger.info("网关上线 {}", ipAndPort);
             }
@@ -52,16 +52,16 @@ public class GatewayService extends BaseService {
     }
 
     private boolean validateGateway(GatewayAddr gw) {
-        String url = "http://"+gw.getIp()+":"+gw.getPort()+"/actuator/health";
-        try{
+        String url = "http://" + gw.getIp() + ":" + gw.getPort() + "/actuator/health";
+        try {
             ResponseEntity<ValidateGatewayVo> response = restTemplate.getForEntity(url, ValidateGatewayVo.class);
-            if(response!=null && response.getStatusCode().value()== HttpStatus.OK.value()){
+            if(response != null && response.getStatusCode().value() == HttpStatus.OK.value()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (Throwable e){
-            logger.error(e.getMessage(),e);
+        } catch (Throwable e) {
+            logger.error(e.getMessage(), e);
             return false;
         }
     }

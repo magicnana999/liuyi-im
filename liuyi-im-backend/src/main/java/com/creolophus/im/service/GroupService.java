@@ -1,12 +1,12 @@
 package com.creolophus.im.service;
 
+import com.creolophus.im.common.base.BaseService;
+import com.creolophus.im.common.entity.Group;
+import com.creolophus.im.common.entity.GroupMember;
 import com.creolophus.im.common.entity.User;
 import com.creolophus.im.dao.GroupDao;
 import com.creolophus.im.dao.GroupMemberDao;
 import com.creolophus.im.storage.GroupStorage;
-import com.creolophus.im.common.base.BaseService;
-import com.creolophus.im.common.entity.Group;
-import com.creolophus.im.common.entity.GroupMember;
 import com.creolophus.liuyi.common.exception.ApiException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2019/10/21 下午5:12
  */
 @Service
-public class GroupService extends BaseService{
+public class GroupService extends BaseService {
 
     @Resource
     private IdExampleService idExampleService;
@@ -64,56 +64,56 @@ public class GroupService extends BaseService{
         }
 
         groupDao.insert(group, false);
-        groupMemberDao.insertBatch(members,false);
+        groupMemberDao.insertBatch(members, false);
 
         return group;
 
     }
 
-    private String[] splitTargetIds(String targetIds){
-        if(StringUtils.isBlank(targetIds)){
-            throw new ApiException("targetIds 参数不能为空");
-        }
-
-        if(!targetIds.contains(",")){
-            return new String[]{targetIds};
-        }
-
-        return targetIds.split(",");
-    }
-
-    private String getDefaultGroupName(Long userId,String targetIds){
-        if(!targetIds.contains(",")){
-            return null;
-        }
-
-        User user = userService.findUserByUserId(userId);
-        if(user==null){
-            throw new ApiException("没有此用户"+userId);
-        }
-
-        String[] targetIdArray = splitTargetIds(targetIds);
-        User target  = userService.findUserByUserId(Long.valueOf(targetIdArray[0]));
-        if(target == null){
-            throw new ApiException("没有此用户"+userId);
-        }
-        return user.getName()+"、"+target.getName()+"等"+(targetIdArray.length+1)+"人";
-    }
-
     public List<Long> findMembersUserIdByGroupId(Long groupId) {
         List<Long> ret = groupStorage.getGroupMembers(groupId);
-        if(ret == null || ret.size()==0){
-            if(groupStorage.lockGroupMembers(groupId)){
-                try{
+        if(ret == null || ret.size() == 0) {
+            if(groupStorage.lockGroupMembers(groupId)) {
+                try {
                     ret = groupDao.selectMemberUserIdByGroupId(groupId);
-                    if(ret!=null || ret.size()>0){
-                        groupStorage.setGroupMembersWithID(groupId,ret);
+                    if(ret != null || ret.size() > 0) {
+                        groupStorage.setGroupMembersWithID(groupId, ret);
                     }
-                }finally {
+                } finally {
                     groupStorage.unlockGroupMember(groupId);
                 }
             }
         }
         return ret;
+    }
+
+    private String getDefaultGroupName(Long userId, String targetIds) {
+        if(!targetIds.contains(",")) {
+            return null;
+        }
+
+        User user = userService.findUserByUserId(userId);
+        if(user == null) {
+            throw new ApiException("没有此用户" + userId);
+        }
+
+        String[] targetIdArray = splitTargetIds(targetIds);
+        User target = userService.findUserByUserId(Long.valueOf(targetIdArray[0]));
+        if(target == null) {
+            throw new ApiException("没有此用户" + userId);
+        }
+        return user.getName() + "、" + target.getName() + "等" + (targetIdArray.length + 1) + "人";
+    }
+
+    private String[] splitTargetIds(String targetIds) {
+        if(StringUtils.isBlank(targetIds)) {
+            throw new ApiException("targetIds 参数不能为空");
+        }
+
+        if(!targetIds.contains(",")) {
+            return new String[]{targetIds};
+        }
+
+        return targetIds.split(",");
     }
 }

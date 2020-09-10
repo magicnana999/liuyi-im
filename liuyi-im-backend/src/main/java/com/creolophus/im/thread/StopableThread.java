@@ -31,11 +31,11 @@ public class StopableThread extends Thread {
     public static void main(String[] args) throws InterruptedException {
         List<StopableThread> list = new ArrayList();
 
-        for(int j=0;j<2;j++){
+        for (int j = 0; j < 2; j++) {
             list.add(new StopableThread(() -> {
-                for(int i=0;i<5;i++){
+                for (int i = 0; i < 5; i++) {
                     sleep(1);
-                    System.out.println(Thread.currentThread().getName() +" " +i+" doing");
+                    System.out.println(Thread.currentThread().getName() + " " + i + " doing");
                 }
             }));
         }
@@ -74,14 +74,13 @@ public class StopableThread extends Thread {
         }
     }
 
-    public static void sleep(int times){
+    public static void sleep(int times) {
         try {
             TimeUnit.SECONDS.sleep(times);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
 
 
 }

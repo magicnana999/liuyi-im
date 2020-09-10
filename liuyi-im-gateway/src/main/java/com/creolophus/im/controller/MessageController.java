@@ -34,12 +34,12 @@ public class MessageController extends BaseController {
     @RequestMapping(value = "/push", method = RequestMethod.POST)
     public ApiResult pushMessage(
             @RequestParam("messageId") Long messageId,
-            @RequestParam("messageType") Integer messageType,
+            @RequestParam("messageType") Integer messageType, @RequestParam("messageKind") Integer messageKind,
             @RequestParam("messageBody") String messageBody,
             @RequestParam("receiverId") Long receiverId,
             @RequestParam("senderId") Long senderId,
             @RequestParam(value = "groupId", required = false) Long groupId) {
-        PushMessageMsg down = new PushMessageMsg(messageId, messageType, groupId, messageBody, receiverId, senderId);
+        PushMessageMsg down = new PushMessageMsg(messageId, messageType, messageKind, groupId, messageBody, receiverId, senderId);
         Long ret = userClientService.pushMessage(down);
         return new ApiResult(ret);
     }

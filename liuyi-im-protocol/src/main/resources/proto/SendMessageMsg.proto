@@ -13,6 +13,7 @@ option java_outer_classname = "ProtoSendMessageMsg"; // 生成类的类名，注
 **/
 message SendMessageMsg {
     int32 messageType = 1;
-    int64 targetId = 2;
-    string messageBody = 3;
+    int32 messageKind = 2;
+    int64 targetId = 3;
+    string messageBody = 4;
 }

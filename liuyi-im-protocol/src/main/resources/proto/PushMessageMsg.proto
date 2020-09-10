@@ -17,8 +17,9 @@ option java_outer_classname = "ProtoPushMessageMsg"; // 生成类的类名，注
 message PushMessageMsg {
     int64 messageId = 1;
     int32 messageType = 2;
-    int64 groupId = 3;
-    string messageBody = 4;
-    int64 receiverId = 5;
-    int64 senderId = 6;
+    int32 messageKind = 3;
+    int64 groupId = 4;
+    string messageBody = 5;
+    int64 receiverId = 6;
+    int64 senderId = 7;
 }

@@ -19,7 +19,7 @@ public class HeartbeatSchedule {
 
     @Entry
 //    @Scheduled(fixedRate = 1000 * 60)
-    public void heartbeat(){
-        backendFeign.registerGateway("127.0.0.1",33008);
+    public void heartbeat() {
+        backendFeign.registerGateway("127.0.0.1", 33008);
     }
 }

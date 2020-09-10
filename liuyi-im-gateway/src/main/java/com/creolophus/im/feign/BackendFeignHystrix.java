@@ -10,11 +10,6 @@ public class BackendFeignHystrix implements BackendFeign {
 
 
     @Override
-    public UserSecurity verifyToken(String token) {
-        return null;
-    }
-
-    @Override
     public void registerGateway(String ip, Integer port) {
 
     }
@@ -22,6 +17,12 @@ public class BackendFeignHystrix implements BackendFeign {
     @Override
     public void registerUserClient(String gatewayIp, Integer gatewayPort, Long userId) {
 
+    }
+
+    @Override
+    public Long sendMessage(
+            String appKey, Long senderId, Integer messageType, Long targetId, String sendTime, String messageBod) {
+        return null;
     }
 
     @Override
@@ -35,8 +36,7 @@ public class BackendFeignHystrix implements BackendFeign {
     }
 
     @Override
-    public Long sendMessage(
-            String appKey, Long senderId, Integer messageType, Long targetId, String sendTime, String messageBod) {
+    public UserSecurity verifyToken(String token) {
         return null;
     }
 

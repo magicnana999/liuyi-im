@@ -1,39 +1,39 @@
 var liuyiImJsSdkMap = function () {
-        var holder = {};
-        this.put = function(key, value) {
-            holder[key] = value;
+    var holder = {};
+    this.put = function (key, value) {
+        holder[key] = value;
+    }
+    this.size = function () {
+        var count = 0;
+        for (var attr in holder) {
+            count++;
         }
-        this.size = function() {
-            var count = 0;
-            for(var attr in holder) {
-                count++;
-            }
-            return count;
+        return count;
+    }
+    this.get = function (key) {
+        if (holder[key] || holder[key] === 0 || holder[key] === false) {
+            return holder[key]
+        } else {
+            return null;
         }
-        this.get = function(key) {
-            if(holder[key] || holder[key] === 0 || holder[key] === false) {
-                return holder[key]
-            } else {
-                return null;
-            }
+    }
+    this.remove = function (key) {
+        if (holder[key] || holder[key] === 0 || holder[key] === false) {
+            delete holder[key]
         }
-        this.remove = function(key) {
-            if(holder[key] || holder[key] === 0 || holder[key] === false) {
-                delete holder[key]
-            }
+    }
+    //each方法,遍历方法
+    this.each = function (callBack) {
+        for (var attr in holder) {
+            callBack(attr, holder[attr])
         }
-        //each方法,遍历方法
-        this.each = function(callBack) {
-            for(var attr in holder) {
-                callBack(attr, holder[attr])
-            }
-        }
+    }
 
 }
 
 var liuyiImJsSdk = {
     sdk: {
-        deviceLabel: function(){
+        deviceLabel: function () {
             return liuyiImJsSdk.getBrowserName()
         },
         sdkName: "liuyi-im-jssdk",
@@ -46,12 +46,12 @@ var liuyiImJsSdk = {
         receivePush: 106,
     },
 
-    operations : {
-        msg:'提示',
-        loginFail:'登录失败',
+    operations: {
+        msg: '提示',
+        loginFail: '登录失败',
         loginSuccess: '登录成功',
-        receive:'接收消息',
-        sent:'发送消息',
+        receive: '接收消息',
+        sent: '发送消息',
     },
 
     _isDev: true,
@@ -61,29 +61,29 @@ var liuyiImJsSdk = {
         prodHost: "ws://127.0.0.1:33008/liuyi/gateway/ws",
 
         host: function () {
-            console.log(this.devHost,this.prodHost)
+            console.log(this.devHost, this.prodHost)
             return this._isDev ? this.devHost : this.prodHost
         },
     },
     context: {
         userId: 0,
         token: "xx",
-        appKey:"xx",
+        appKey: "xx",
     },
     socket: null,
 
-    init: function (isDev,openCallback,receiveCallback,closeCallback,errorCallback) {
+    init: function (isDev, openCallback, receiveCallback, closeCallback, errorCallback) {
         this._isDev = isDev;
-        if(openCallback){
+        if (openCallback) {
             this.open = openCallback
         }
-        if(receiveCallback){
+        if (receiveCallback) {
             this.receive = receiveCallback
         }
-        if(closeCallback){
+        if (closeCallback) {
             this.close = closeCallback
         }
-        if(errorCallback){
+        if (errorCallback) {
             this.error = errorCallback
         }
         return this
@@ -93,15 +93,15 @@ var liuyiImJsSdk = {
         return this._isDev
     },
 
-    log:function(operation,msg){
-        console.log(operation,msg);
+    log: function (operation, msg) {
+        console.log(operation, msg);
         return this
     },
 
 
     connect: function () {
         if (typeof (WebSocket) == "undefined") {
-            this.log(this.operations.msg,"此浏览器不支持 WebSocket")
+            this.log(this.operations.msg, "此浏览器不支持 WebSocket")
         } else {
             if (this.socket != null) {
                 this.socket.close();
@@ -109,16 +109,16 @@ var liuyiImJsSdk = {
             }
             this.socket = new WebSocket(this.server.host());
             this.socket.onopen = function () {
-                liuyiImJsSdk.log(liuyiImJsSdk.operations.msg,"WebSocket 已打开")
+                liuyiImJsSdk.log(liuyiImJsSdk.operations.msg, "WebSocket 已打开")
                 liuyiImJsSdk.open()
             };
             this.socket.onmessage = function (msg) {
                 var command = JSON.parse(msg.data);
-                liuyiImJsSdk.log(liuyiImJsSdk.operations.receive,msg.data)
+                liuyiImJsSdk.log(liuyiImJsSdk.operations.receive, msg.data)
 
-                if(command.header.code==0){
+                if (command.header.code == 0) {
                     liuyiImJsSdk.receive(command)
-                }else{
+                } else {
                     liuyiImJsSdk.reply(command)
                 }
 
@@ -133,35 +133,35 @@ var liuyiImJsSdk = {
             }
         }
     },
-    map:new liuyiImJsSdkMap(),
-    reply:function(command){
+    map: new liuyiImJsSdkMap(),
+    reply: function (command) {
         var func = this.map.get(command.header.seq)
-        if(func){
+        if (func) {
             this.map.remove(command.header.seq)
             func(command)
         }
     },
 
-    shutdown:function(){
+    shutdown: function () {
         this.socket.close()
         this.socket = null
     },
-    open:function(){
+    open: function () {
     },
-    receive:function(command){
+    receive: function (command) {
 
     },
-    send:function(command,callback){
-        if(callback){
-            this.map.put(command.header.seq,callback)
+    send: function (command, callback) {
+        if (callback) {
+            this.map.put(command.header.seq, callback)
         }
         var str = JSON.stringify(command)
         this.socket.send(str);
-        this.log(this.operations.sent,str)
+        this.log(this.operations.sent, str)
     },
-    close:function(){
+    close: function () {
     },
-    error:function(){
+    error: function () {
     },
 
     getBrowserName: function () {
@@ -184,17 +184,17 @@ var liuyiImJsSdk = {
         }        //IE
     },
 
-    login:function(token){
+    login: function (token) {
         this.context.token = token;
         var that = this;
-        this.send(this.buildCommandOfLogin(),function (command) {
+        this.send(this.buildCommandOfLogin(), function (command) {
             that.context.appKey = command.body.appKey;
             that.context.userId = command.body.userId;
         })
     },
 
-    sendMessage:function(target,messageType,messageBody){
-        this.send(this.buildCommandOfSendMessage(target,messageType,messageBody));
+    sendMessage: function (target, messageType, messageBody) {
+        this.send(this.buildCommandOfSendMessage(target, messageType, messageBody));
     },
 
     newCommandSeq: function (len) {
@@ -224,7 +224,7 @@ var liuyiImJsSdk = {
         }
     },
 
-    buildCommandOfSendMessage: function (target,messageType,messageBody) {
+    buildCommandOfSendMessage: function (target, messageType, messageBody) {
         return {
             body: {
                 messageBody: messageBody,
@@ -255,5 +255,5 @@ var liuyiImJsSdk = {
             token: this.context.token,
         }
     },
-    
+
 }

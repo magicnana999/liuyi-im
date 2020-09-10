@@ -41,14 +41,14 @@ public class NettyServerInstance extends AbstractNettyServer {
     }
 
     @Override
-    public void start() {
-        heartbeatSchedule.heartbeat();
-        super.start();
+    public void shutdown() {
+        this.shutdown();
     }
 
     @Override
-    public void shutdown() {
-        this.shutdown();
+    public void start() {
+        heartbeatSchedule.heartbeat();
+        super.start();
     }
 
 }

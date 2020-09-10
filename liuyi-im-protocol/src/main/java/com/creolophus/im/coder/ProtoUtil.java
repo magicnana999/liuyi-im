@@ -88,6 +88,7 @@ public class ProtoUtil {
             builder.setGroupId(pushMessageMsg.getGroupId());
 
         }
+        builder.setMessageKind(pushMessageMsg.getMessageKind());
         builder.setMessageId(pushMessageMsg.getMessageId());
         builder.setMessageType(pushMessageMsg.getMessageType());
         builder.setReceiverId(pushMessageMsg.getReceiverId());
@@ -97,9 +98,9 @@ public class ProtoUtil {
     }
 
     public static PushMessageMsg toPushMessageMsg(ProtoPushMessageMsg.PushMessageMsg pushMessageMsg) {
-        return new PushMessageMsg(pushMessageMsg.getMessageId(), pushMessageMsg.getMessageType(), pushMessageMsg.getGroupId(),
-                                  pushMessageMsg.getMessageBody(), pushMessageMsg
-                .getReceiverId(), pushMessageMsg.getSenderId());
+        return new PushMessageMsg(pushMessageMsg.getMessageId(), pushMessageMsg.getMessageType(), pushMessageMsg.getMessageKind(),
+                                  pushMessageMsg.getGroupId(), pushMessageMsg
+                .getMessageBody(), pushMessageMsg.getReceiverId(), pushMessageMsg.getSenderId());
     }
 
     public static ProtoSendMessageAck.SendMessageAck toSendMessageAck(SendMessageAck sendMessageAck) {
@@ -111,7 +112,7 @@ public class ProtoUtil {
     }
 
     public static ProtoSendMessageMsg.SendMessageMsg toSendMessageMsg(SendMessageMsg sendMessageMsg) {
-        return ProtoSendMessageMsg.SendMessageMsg.newBuilder()
+        return ProtoSendMessageMsg.SendMessageMsg.newBuilder().setMessageKind(sendMessageMsg.getMessageKind())
                 .setMessageType(sendMessageMsg.getMessageType())
                 .setTargetId(sendMessageMsg.getTargetId())
                 .setMessageBody(sendMessageMsg.getMessageBody())
@@ -119,6 +120,7 @@ public class ProtoUtil {
     }
 
     public static SendMessageMsg toSendMessageMsg(ProtoSendMessageMsg.SendMessageMsg sendMessageMsg) {
-        return new SendMessageMsg(sendMessageMsg.getMessageType(), sendMessageMsg.getTargetId(), sendMessageMsg.getMessageBody());
+        return new SendMessageMsg(sendMessageMsg.getMessageType(), sendMessageMsg.getMessageKind(), sendMessageMsg.getTargetId(),
+                                  sendMessageMsg.getMessageBody());
     }
 }

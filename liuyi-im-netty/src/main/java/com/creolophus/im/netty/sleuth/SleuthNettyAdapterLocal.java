@@ -18,7 +18,6 @@ public class SleuthNettyAdapterLocal extends InheritableThreadLocal<SleuthNettyA
 
     /**
      * 获得当前线程对象
-     *
      * @return
      */
     public static SleuthNettyAdapterLocal getInstance() {

@@ -16,36 +16,21 @@ public class UserSecurity {
     private Long timestamp;
     private String appKey;
     private List<String> roles = new ArrayList();
-    public UserSecurity(){}
 
-    public UserSecurity(User user, String token){
+    public UserSecurity() {}
+
+    public UserSecurity(User user, String token) {
         this.userId = user.getUserId();
         this.timestamp = System.currentTimeMillis();
         this.token = token;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getAppKey() {
+        return appKey;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
     public List<String> getRoles() {
@@ -56,13 +41,28 @@ public class UserSecurity {
         this.roles = roles;
     }
 
-
-    public String getAppKey() {
-        return appKey;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 }

@@ -5,9 +5,7 @@ package com.creolophus.im.coder;
  * @date 2020/9/2 11:11 AM
  */
 public enum MessageCoderSelector {
-    JACKSON("jackson",new JacksonCoder()),
-    GSON("gson",new GsonCoder()),
-    PROTOBUF("protobuf",new ProtoCoder()),
+    JACKSON("jackson", new JacksonCoder()), GSON("gson", new GsonCoder()), PROTOBUF("protobuf", new ProtoCoder()),
     ;
 
 

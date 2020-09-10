@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.creolophus.im.common.util;
 
@@ -21,14 +21,11 @@ public class OkHttpClientUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(OkHttpClientUtil.class);
 
-    private static final OkHttpClient client = new DefaultOkHttpClientFactory(new OkHttpClient.Builder())
-            .createBuilder(false)
+    private static final OkHttpClient client = new DefaultOkHttpClientFactory(new OkHttpClient.Builder()).createBuilder(false)
             .connectTimeout(2000, TimeUnit.MILLISECONDS)
             .readTimeout(5000, TimeUnit.MILLISECONDS)
-            .followRedirects(false)
-            .connectionPool(new DefaultOkHttpClientConnectionPoolFactory().create(200, 15*60L, TimeUnit.SECONDS))
+            .followRedirects(false).connectionPool(new DefaultOkHttpClientConnectionPoolFactory().create(200, 15 * 60L, TimeUnit.SECONDS))
             .build();
-
 
 
 }

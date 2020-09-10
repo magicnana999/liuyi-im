@@ -26,20 +26,12 @@ public class MessageIdSection extends AbstractEntity {
     private Date createTime;
     private Date updateTime;
 
-    public Long getSectionId() {
-        return sectionId;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setSectionId(Long sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public Integer getStep() {
-        return step;
-    }
-
-    public void setStep(Integer step) {
-        this.step = step;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Long getCurrentId() {
@@ -58,12 +50,20 @@ public class MessageIdSection extends AbstractEntity {
         this.maxId = maxId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Long getSectionId() {
+        return sectionId;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setSectionId(Long sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public Integer getStep() {
+        return step;
+    }
+
+    public void setStep(Integer step) {
+        this.step = step;
     }
 
     public Date getUpdateTime() {

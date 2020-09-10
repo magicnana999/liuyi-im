@@ -16,20 +16,22 @@ public class NettyServer {
 
     private volatile Channel CHANNEL = null;
 
+    public static void main(String[] args) throws Exception {
+        new NettyServer().run();
+    }
+
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class) // (3)
                     .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DiscardServerHandler(),new TimeServerHandler());
+                            ch.pipeline().addLast(new DiscardServerHandler(), new TimeServerHandler());
                         }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                    }).option(ChannelOption.SO_BACKLOG, 128)          // (5)
                     .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
             ChannelFuture f = b.bind(39999).sync(); // (7)
@@ -40,18 +42,16 @@ public class NettyServer {
             bossGroup.shutdownGracefully();
         }
     }
-    public static void main(String[] args) throws Exception {
-        new NettyServer().run();
-    }
 
     public class TimeServerHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
             final ByteBuf byteBuf = ctx.alloc().buffer(8);
             byteBuf.writeBytes("你好，欢迎建立长连接".getBytes());
-            ctx.channel().writeAndFlush(byteBuf,ctx.channel().newPromise());
+            ctx.channel().writeAndFlush(byteBuf, ctx.channel().newPromise());
             System.out.println("TimeServerHandler，有新连接");
         }
+
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             cause.printStackTrace();

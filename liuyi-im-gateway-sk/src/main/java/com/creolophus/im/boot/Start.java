@@ -82,6 +82,7 @@ public class Start extends WebStart {
     public MessageCoder messageCoder() {
         return MessageCoderSelector.PROTOBUF.getMessageCoder();
     }
+
     @Bean
     public RequestInterceptor requestInterceptor() {
         final String appKey = "socket_gateway";

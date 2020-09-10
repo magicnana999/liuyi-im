@@ -4,62 +4,9 @@
 package com.creolophus.im.protobuf;
 
 public final class ProtoCommand {
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_creolophus_im_protobuf_Command_descriptor;
-  private static final
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
-  private static final
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable;
-  private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
-
-  static {
-    java.lang.String[] descriptorData = {
-      "\n\rCommand.proto\022\032com.creolophus.im.proto" +
-      "buf\032\031google/protobuf/any.proto\"\272\001\n\007Comma" +
-      "nd\022\r\n\005token\030\001 \001(\t\022:\n\006header\030\002 \001(\0132*.com." +
-      "creolophus.im.protobuf.Command.Header\022\"\n" +
-      "\004body\030\003 \001(\0132\024.google.protobuf.Any\032@\n\006Hea" +
-      "der\022\013\n\003seq\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022\014\n\004code\030\003" +
-      " \001(\005\022\r\n\005error\030\004 \001(\tB*\n\032com.creolophus.im" +
-      ".protobufB\014ProtoCommandb\006proto3"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.google.protobuf.AnyProto.getDescriptor(),
-        }, assigner);
-    internal_static_com_creolophus_im_protobuf_Command_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_creolophus_im_protobuf_Command_descriptor,
-        new java.lang.String[] { "Token", "Header", "Body", });
-    internal_static_com_creolophus_im_protobuf_Command_Header_descriptor =
-      internal_static_com_creolophus_im_protobuf_Command_descriptor.getNestedTypes().get(0);
-    internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_creolophus_im_protobuf_Command_Header_descriptor,
-        new java.lang.String[] { "Seq", "Type", "Code", "Error", });
-    com.google.protobuf.AnyProto.getDescriptor();
-  }
   private ProtoCommand() {}
-
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
+  public static void registerAllExtensions(
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
 
   public static void registerAllExtensions(
@@ -67,39 +14,14 @@ public final class ProtoCommand {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-
-  public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistryLite registry) {
-  }
   public interface CommandOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.creolophus.im.protobuf.Command)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    com.google.protobuf.Any getBody();
-
-    /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    com.google.protobuf.AnyOrBuilder getBodyOrBuilder();
-
-    /**
-     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-     */
-    com.creolophus.im.protobuf.ProtoCommand.Command.Header getHeader();
-
-    /**
-     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-     */
-    com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder getHeaderOrBuilder();
-
-    /**
      * <code>string token = 1;</code>
      */
     java.lang.String getToken();
-
     /**
      * <code>string token = 1;</code>
      */
@@ -107,16 +29,31 @@ public final class ProtoCommand {
         getTokenBytes();
 
     /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    boolean hasBody();
-
-    /**
      * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
      */
     boolean hasHeader();
-  }
+    /**
+     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+     */
+    com.creolophus.im.protobuf.ProtoCommand.Command.Header getHeader();
+    /**
+     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+     */
+    com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder getHeaderOrBuilder();
 
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    boolean hasBody();
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    com.google.protobuf.Any getBody();
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    com.google.protobuf.AnyOrBuilder getBodyOrBuilder();
+  }
   /**
    * Protobuf type {@code com.creolophus.im.protobuf.Command}
    */
@@ -124,64 +61,20 @@ public final class ProtoCommand {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:com.creolophus.im.protobuf.Command)
       CommandOrBuilder {
-    public static final int TOKEN_FIELD_NUMBER = 1;
-    public static final int HEADER_FIELD_NUMBER = 2;
-    public static final int BODY_FIELD_NUMBER = 3;
-  private static final long serialVersionUID = 0L;    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    // @@protoc_insertion_point(class_scope:com.creolophus.im.protobuf.Command)
-    private static final com.creolophus.im.protobuf.ProtoCommand.Command DEFAULT_INSTANCE;
-    private static final com.google.protobuf.Parser<Command>
-        PARSER = new com.google.protobuf.AbstractParser<Command>() {
-      @java.lang.Override
-      public Command parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Command(input, extensionRegistry);
-      }
-    };
-
-    static {
-      DEFAULT_INSTANCE = new com.creolophus.im.protobuf.ProtoCommand.Command();
-    }    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.creolophus.im.protobuf.ProtoCommand.Command.class, com.creolophus.im.protobuf.ProtoCommand.Command.Builder.class);
-    }
-
-    private volatile java.lang.Object token_;
-    private com.creolophus.im.protobuf.ProtoCommand.Command.Header header_;
-    private com.google.protobuf.Any body_;
-    private byte memoizedIsInitialized = -1;
+  private static final long serialVersionUID = 0L;
     // Use Command.newBuilder() to construct.
     private Command(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
     private Command() {
       token_ = "";
-    }    /**
-     * <code>string token = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTokenBytes() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        token_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
     }
 
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
     private Command(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -252,264 +145,27 @@ public final class ProtoCommand {
         makeExtensionsImmutable();
       }
     }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_descriptor;
-    }    /**
-     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-     */
-    public boolean hasHeader() {
-      return header_ != null;
     }
 
-    /**
-     * <code>string token = 1;</code>
-     */
-    public java.lang.String getToken() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        token_ = s;
-        return s;
-      }
-    }    /**
-     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-     */
-    public com.creolophus.im.protobuf.ProtoCommand.Command.Header getHeader() {
-      return header_ == null ? com.creolophus.im.protobuf.ProtoCommand.Command.Header.getDefaultInstance() : header_;
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.creolophus.im.protobuf.ProtoCommand.Command.class, com.creolophus.im.protobuf.ProtoCommand.Command.Builder.class);
     }
 
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }    /**
-     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-     */
-    public com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder getHeaderOrBuilder() {
-      return getHeader();
-    }
-
-    public static Builder newBuilder(com.creolophus.im.protobuf.ProtoCommand.Command prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }    /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    public boolean hasBody() {
-      return body_ != null;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }    /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    public com.google.protobuf.Any getBody() {
-      return body_ == null ? com.google.protobuf.Any.getDefaultInstance() : body_;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }    /**
-     * <code>.google.protobuf.Any body = 3;</code>
-     */
-    public com.google.protobuf.AnyOrBuilder getBodyOrBuilder() {
-      return getBody();
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getTokenBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, token_);
-      }
-      if (header_ != null) {
-        output.writeMessage(2, getHeader());
-      }
-      if (body_ != null) {
-        output.writeMessage(3, getBody());
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getTokenBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, token_);
-      }
-      if (header_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getHeader());
-      }
-      if (body_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getBody());
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.creolophus.im.protobuf.ProtoCommand.Command)) {
-        return super.equals(obj);
-      }
-      com.creolophus.im.protobuf.ProtoCommand.Command other = (com.creolophus.im.protobuf.ProtoCommand.Command) obj;
-
-      if (!getToken()
-          .equals(other.getToken())) return false;
-      if (hasHeader() != other.hasHeader()) return false;
-      if (hasHeader()) {
-        if (!getHeader()
-            .equals(other.getHeader())) return false;
-      }
-      if (hasBody() != other.hasBody()) return false;
-      if (hasBody()) {
-        if (!getBody()
-            .equals(other.getBody())) return false;
-      }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
-      hash = (53 * hash) + getToken().hashCode();
-      if (hasHeader()) {
-        hash = (37 * hash) + HEADER_FIELD_NUMBER;
-        hash = (53 * hash) + getHeader().hashCode();
-      }
-      if (hasBody()) {
-        hash = (37 * hash) + BODY_FIELD_NUMBER;
-        hash = (53 * hash) + getBody().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-
-    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public static com.google.protobuf.Parser<Command> parser() {
-      return PARSER;
-    }
     public interface HeaderOrBuilder extends
         // @@protoc_insertion_point(interface_extends:com.creolophus.im.protobuf.Command.Header)
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>int32 code = 3;</code>
-       */
-      int getCode();
-
-      /**
-       * <code>string error = 4;</code>
-       */
-      java.lang.String getError();
-
-      /**
-       * <code>string error = 4;</code>
-       */
-      com.google.protobuf.ByteString
-          getErrorBytes();
-
-      /**
        * <code>string seq = 1;</code>
        */
       java.lang.String getSeq();
-
       /**
        * <code>string seq = 1;</code>
        */
@@ -520,8 +176,22 @@ public final class ProtoCommand {
        * <code>int32 type = 2;</code>
        */
       int getType();
-    }
 
+      /**
+       * <code>int32 code = 3;</code>
+       */
+      int getCode();
+
+      /**
+       * <code>string error = 4;</code>
+       */
+      java.lang.String getError();
+      /**
+       * <code>string error = 4;</code>
+       */
+      com.google.protobuf.ByteString
+          getErrorBytes();
+    }
     /**
      * Protobuf type {@code com.creolophus.im.protobuf.Command.Header}
      */
@@ -529,71 +199,20 @@ public final class ProtoCommand {
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:com.creolophus.im.protobuf.Command.Header)
         HeaderOrBuilder {
-      public static final int SEQ_FIELD_NUMBER = 1;
-      public static final int TYPE_FIELD_NUMBER = 2;
-      public static final int CODE_FIELD_NUMBER = 3;
-      public static final int ERROR_FIELD_NUMBER = 4;      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
     private static final long serialVersionUID = 0L;
-      // @@protoc_insertion_point(class_scope:com.creolophus.im.protobuf.Command.Header)
-      private static final com.creolophus.im.protobuf.ProtoCommand.Command.Header DEFAULT_INSTANCE;
-      private static final com.google.protobuf.Parser<Header>
-          PARSER = new com.google.protobuf.AbstractParser<Header>() {
-        @java.lang.Override
-        public Header parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Header(input, extensionRegistry);
-        }
-      };      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.creolophus.im.protobuf.ProtoCommand.Command.Header.class, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder.class);
-      }
-
-      static {
-        DEFAULT_INSTANCE = new com.creolophus.im.protobuf.ProtoCommand.Command.Header();
-      }
-
-      private volatile java.lang.Object seq_;
-      private int type_;
-      private int code_;      /**
-       * <code>string seq = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getSeqBytes() {
-        java.lang.Object ref = seq_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b =
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          seq_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      private volatile java.lang.Object error_;
-      private byte memoizedIsInitialized = -1;
       // Use Header.newBuilder() to construct.
       private Header(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
         super(builder);
-      }      /**
-       * <code>int32 type = 2;</code>
-       */
-      public int getType() {
-        return type_;
       }
-
       private Header() {
         seq_ = "";
         error_ = "";
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
       }
       private Header(
           com.google.protobuf.CodedInputStream input,
@@ -655,62 +274,21 @@ public final class ProtoCommand {
           makeExtensionsImmutable();
         }
       }
-
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof com.creolophus.im.protobuf.ProtoCommand.Command.Header)) {
-          return super.equals(obj);
-        }
-        com.creolophus.im.protobuf.ProtoCommand.Command.Header other = (com.creolophus.im.protobuf.ProtoCommand.Command.Header) obj;
-
-        if (!getSeq()
-            .equals(other.getSeq())) return false;
-        if (getType()
-            != other.getType()) return false;
-        if (getCode()
-            != other.getCode()) return false;
-        if (!getError()
-            .equals(other.getError())) return false;
-        if (!unknownFields.equals(other.unknownFields)) return false;
-        return true;
-      }      /**
-       * <code>int32 code = 3;</code>
-       */
-      public int getCode() {
-        return code_;
-      }
-
-      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
       }
 
       @java.lang.Override
-      public com.google.protobuf.Parser<Header> getParserForType() {
-        return PARSER;
-      }      /**
-       * <code>string error = 4;</code>
-       */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          error_ = s;
-          return s;
-        }
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.creolophus.im.protobuf.ProtoCommand.Command.Header.class, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder.class);
       }
 
+      public static final int SEQ_FIELD_NUMBER = 1;
+      private volatile java.lang.Object seq_;
       /**
        * <code>string seq = 1;</code>
        */
@@ -719,20 +297,73 @@ public final class ProtoCommand {
         if (ref instanceof java.lang.String) {
           return (java.lang.String) ref;
         } else {
-          com.google.protobuf.ByteString bs =
+          com.google.protobuf.ByteString bs = 
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           seq_ = s;
           return s;
         }
-      }      /**
+      }
+      /**
+       * <code>string seq = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSeqBytes() {
+        java.lang.Object ref = seq_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          seq_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TYPE_FIELD_NUMBER = 2;
+      private int type_;
+      /**
+       * <code>int32 type = 2;</code>
+       */
+      public int getType() {
+        return type_;
+      }
+
+      public static final int CODE_FIELD_NUMBER = 3;
+      private int code_;
+      /**
+       * <code>int32 code = 3;</code>
+       */
+      public int getCode() {
+        return code_;
+      }
+
+      public static final int ERROR_FIELD_NUMBER = 4;
+      private volatile java.lang.Object error_;
+      /**
+       * <code>string error = 4;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          error_ = s;
+          return s;
+        }
+      }
+      /**
        * <code>string error = 4;</code>
        */
       public com.google.protobuf.ByteString
           getErrorBytes() {
         java.lang.Object ref = error_;
         if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           error_ = b;
@@ -742,13 +373,8 @@ public final class ProtoCommand {
         }
       }
 
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-
-      public static Builder newBuilder(com.creolophus.im.protobuf.ProtoCommand.Command.Header prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }      @java.lang.Override
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
         if (isInitialized == 1) return true;
@@ -759,7 +385,6 @@ public final class ProtoCommand {
       }
 
       @java.lang.Override
-      public Builder newBuilderForType() { return newBuilder(); }      @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
         if (!getSeqBytes().isEmpty()) {
@@ -777,11 +402,7 @@ public final class ProtoCommand {
         unknownFields.writeTo(output);
       }
 
-      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }      @java.lang.Override
+      @java.lang.Override
       public int getSerializedSize() {
         int size = memoizedSize;
         if (size != -1) return size;
@@ -806,19 +427,29 @@ public final class ProtoCommand {
         return size;
       }
 
-      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof com.creolophus.im.protobuf.ProtoCommand.Command.Header)) {
+          return super.equals(obj);
+        }
+        com.creolophus.im.protobuf.ProtoCommand.Command.Header other = (com.creolophus.im.protobuf.ProtoCommand.Command.Header) obj;
+
+        if (!getSeq()
+            .equals(other.getSeq())) return false;
+        if (getType()
+            != other.getType()) return false;
+        if (getCode()
+            != other.getCode()) return false;
+        if (!getError()
+            .equals(other.getError())) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
       }
 
-      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
-          java.nio.ByteBuffer data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }      @java.lang.Override
+      @java.lang.Override
       public int hashCode() {
         if (memoizedHashCode != 0) {
           return memoizedHashCode;
@@ -839,43 +470,42 @@ public final class ProtoCommand {
       }
 
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           java.nio.ByteBuffer data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -883,14 +513,24 @@ public final class ProtoCommand {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
-
+      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-
       public static com.creolophus.im.protobuf.ProtoCommand.Command.Header parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -899,10 +539,26 @@ public final class ProtoCommand {
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
 
-      public static com.google.protobuf.Parser<Header> parser() {
-        return PARSER;
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(com.creolophus.im.protobuf.ProtoCommand.Command.Header prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
       }
 
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
       /**
        * Protobuf type {@code com.creolophus.im.protobuf.Command.Header}
        */
@@ -910,25 +566,35 @@ public final class ProtoCommand {
           com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
           // @@protoc_insertion_point(builder_implements:com.creolophus.im.protobuf.Command.Header)
           com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder {
-        private java.lang.Object seq_ = "";
-        private int type_ ;        @java.lang.Override
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
+        }
+
+        @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
           return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
                   com.creolophus.im.protobuf.ProtoCommand.Command.Header.class, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder.class);
         }
-        private int code_ ;
-        private java.lang.Object error_ = "";
+
         // Construct using com.creolophus.im.protobuf.ProtoCommand.Command.Header.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
+
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
           maybeForceBuilderInitialization();
-        }        @java.lang.Override
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
         public Builder clear() {
           super.clear();
           seq_ = "";
@@ -943,47 +609,26 @@ public final class ProtoCommand {
         }
 
         @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
+        }
+
+        @java.lang.Override
+        public com.creolophus.im.protobuf.ProtoCommand.Command.Header getDefaultInstanceForType() {
+          return com.creolophus.im.protobuf.ProtoCommand.Command.Header.getDefaultInstance();
+        }
+
+        @java.lang.Override
         public com.creolophus.im.protobuf.ProtoCommand.Command.Header build() {
           com.creolophus.im.protobuf.ProtoCommand.Command.Header result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
           return result;
-        }        @java.lang.Override
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
         }
 
-        /**
-         * <code>int32 code = 3;</code>
-         */
-        public Builder clearCode() {
-
-          code_ = 0;
-          onChanged();
-          return this;
-        }
-
-        /**
-         * <code>string error = 4;</code>
-         */
-        public Builder clearError() {
-
-          error_ = getDefaultInstance().getError();
-          onChanged();
-          return this;
-        }
-
-        /**
-         * <code>string seq = 1;</code>
-         */
-        public Builder clearSeq() {
-
-          seq_ = getDefaultInstance().getSeq();
-          onChanged();
-          return this;
-        }        @java.lang.Override
+        @java.lang.Override
         public com.creolophus.im.protobuf.ProtoCommand.Command.Header buildPartial() {
           com.creolophus.im.protobuf.ProtoCommand.Command.Header result = new com.creolophus.im.protobuf.ProtoCommand.Command.Header(this);
           result.seq_ = seq_;
@@ -994,55 +639,38 @@ public final class ProtoCommand {
           return result;
         }
 
-        /**
-         * <code>int32 type = 2;</code>
-         */
-        public Builder clearType() {
-
-          type_ = 0;
-          onChanged();
-          return this;
-        }
-
         @java.lang.Override
         public Builder clone() {
           return super.clone();
-        }        @java.lang.Override
+        }
+        @java.lang.Override
         public Builder setField(
             com.google.protobuf.Descriptors.FieldDescriptor field,
             java.lang.Object value) {
           return super.setField(field, value);
         }
-
         @java.lang.Override
-        public com.creolophus.im.protobuf.ProtoCommand.Command.Header getDefaultInstanceForType() {
-          return com.creolophus.im.protobuf.ProtoCommand.Command.Header.getDefaultInstance();
-        }        @java.lang.Override
         public Builder clearField(
             com.google.protobuf.Descriptors.FieldDescriptor field) {
           return super.clearField(field);
         }
-
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
-        }        @java.lang.Override
+        @java.lang.Override
         public Builder clearOneof(
             com.google.protobuf.Descriptors.OneofDescriptor oneof) {
           return super.clearOneof(oneof);
         }
-
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }        @java.lang.Override
+        @java.lang.Override
         public Builder setRepeatedField(
             com.google.protobuf.Descriptors.FieldDescriptor field,
             int index, java.lang.Object value) {
           return super.setRepeatedField(field, index, value);
         }
-
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.creolophus.im.protobuf.ProtoCommand.Command.Header) {
@@ -1051,11 +679,6 @@ public final class ProtoCommand {
             super.mergeFrom(other);
             return this;
           }
-        }        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
         }
 
         public Builder mergeFrom(com.creolophus.im.protobuf.ProtoCommand.Command.Header other) {
@@ -1078,8 +701,6 @@ public final class ProtoCommand {
           onChanged();
           return this;
         }
-
-
 
         @java.lang.Override
         public final boolean isInitialized() {
@@ -1105,7 +726,7 @@ public final class ProtoCommand {
           return this;
         }
 
-
+        private java.lang.Object seq_ = "";
         /**
          * <code>string seq = 1;</code>
          */
@@ -1128,7 +749,7 @@ public final class ProtoCommand {
             getSeqBytes() {
           java.lang.Object ref = seq_;
           if (ref instanceof String) {
-            com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
             seq_ = b;
@@ -1145,12 +766,20 @@ public final class ProtoCommand {
           if (value == null) {
     throw new NullPointerException();
   }
-
+  
           seq_ = value;
           onChanged();
           return this;
         }
-
+        /**
+         * <code>string seq = 1;</code>
+         */
+        public Builder clearSeq() {
+          
+          seq_ = getDefaultInstance().getSeq();
+          onChanged();
+          return this;
+        }
         /**
          * <code>string seq = 1;</code>
          */
@@ -1160,13 +789,13 @@ public final class ProtoCommand {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-
+          
           seq_ = value;
           onChanged();
           return this;
         }
 
-
+        private int type_ ;
         /**
          * <code>int32 type = 2;</code>
          */
@@ -1177,14 +806,22 @@ public final class ProtoCommand {
          * <code>int32 type = 2;</code>
          */
         public Builder setType(int value) {
-
+          
           type_ = value;
           onChanged();
           return this;
         }
+        /**
+         * <code>int32 type = 2;</code>
+         */
+        public Builder clearType() {
+          
+          type_ = 0;
+          onChanged();
+          return this;
+        }
 
-
-
+        private int code_ ;
         /**
          * <code>int32 code = 3;</code>
          */
@@ -1195,14 +832,22 @@ public final class ProtoCommand {
          * <code>int32 code = 3;</code>
          */
         public Builder setCode(int value) {
-
+          
           code_ = value;
           onChanged();
           return this;
         }
+        /**
+         * <code>int32 code = 3;</code>
+         */
+        public Builder clearCode() {
+          
+          code_ = 0;
+          onChanged();
+          return this;
+        }
 
-
-
+        private java.lang.Object error_ = "";
         /**
          * <code>string error = 4;</code>
          */
@@ -1225,7 +870,7 @@ public final class ProtoCommand {
             getErrorBytes() {
           java.lang.Object ref = error_;
           if (ref instanceof String) {
-            com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
             error_ = b;
@@ -1242,12 +887,20 @@ public final class ProtoCommand {
           if (value == null) {
     throw new NullPointerException();
   }
-
+  
           error_ = value;
           onChanged();
           return this;
         }
-
+        /**
+         * <code>string error = 4;</code>
+         */
+        public Builder clearError() {
+          
+          error_ = getDefaultInstance().getError();
+          onChanged();
+          return this;
+        }
         /**
          * <code>string error = 4;</code>
          */
@@ -1257,7 +910,7 @@ public final class ProtoCommand {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-
+          
           error_ = value;
           onChanged();
           return this;
@@ -1278,34 +931,35 @@ public final class ProtoCommand {
         // @@protoc_insertion_point(builder_scope:com.creolophus.im.protobuf.Command.Header)
       }
 
+      // @@protoc_insertion_point(class_scope:com.creolophus.im.protobuf.Command.Header)
+      private static final com.creolophus.im.protobuf.ProtoCommand.Command.Header DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new com.creolophus.im.protobuf.ProtoCommand.Command.Header();
+      }
 
+      public static com.creolophus.im.protobuf.ProtoCommand.Command.Header getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
 
+      private static final com.google.protobuf.Parser<Header>
+          PARSER = new com.google.protobuf.AbstractParser<Header>() {
+        @java.lang.Override
+        public Header parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Header(input, extensionRegistry);
+        }
+      };
 
-
-      @java.lang.Override
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
+      public static com.google.protobuf.Parser<Header> parser() {
+        return PARSER;
       }
 
       @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
+      public com.google.protobuf.Parser<Header> getParserForType() {
+        return PARSER;
       }
-
-
-
-
-
-
-
-
-
-
-
-
 
       @java.lang.Override
       public com.creolophus.im.protobuf.ProtoCommand.Command.Header getDefaultInstanceForType() {
@@ -1314,6 +968,268 @@ public final class ProtoCommand {
 
     }
 
+    public static final int TOKEN_FIELD_NUMBER = 1;
+    private volatile java.lang.Object token_;
+    /**
+     * <code>string token = 1;</code>
+     */
+    public java.lang.String getToken() {
+      java.lang.Object ref = token_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        token_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string token = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTokenBytes() {
+      java.lang.Object ref = token_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        token_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HEADER_FIELD_NUMBER = 2;
+    private com.creolophus.im.protobuf.ProtoCommand.Command.Header header_;
+    /**
+     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+     */
+    public boolean hasHeader() {
+      return header_ != null;
+    }
+    /**
+     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+     */
+    public com.creolophus.im.protobuf.ProtoCommand.Command.Header getHeader() {
+      return header_ == null ? com.creolophus.im.protobuf.ProtoCommand.Command.Header.getDefaultInstance() : header_;
+    }
+    /**
+     * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+     */
+    public com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder getHeaderOrBuilder() {
+      return getHeader();
+    }
+
+    public static final int BODY_FIELD_NUMBER = 3;
+    private com.google.protobuf.Any body_;
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    public boolean hasBody() {
+      return body_ != null;
+    }
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    public com.google.protobuf.Any getBody() {
+      return body_ == null ? com.google.protobuf.Any.getDefaultInstance() : body_;
+    }
+    /**
+     * <code>.google.protobuf.Any body = 3;</code>
+     */
+    public com.google.protobuf.AnyOrBuilder getBodyOrBuilder() {
+      return getBody();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getTokenBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, token_);
+      }
+      if (header_ != null) {
+        output.writeMessage(2, getHeader());
+      }
+      if (body_ != null) {
+        output.writeMessage(3, getBody());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getTokenBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, token_);
+      }
+      if (header_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getHeader());
+      }
+      if (body_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getBody());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.creolophus.im.protobuf.ProtoCommand.Command)) {
+        return super.equals(obj);
+      }
+      com.creolophus.im.protobuf.ProtoCommand.Command other = (com.creolophus.im.protobuf.ProtoCommand.Command) obj;
+
+      if (!getToken()
+          .equals(other.getToken())) return false;
+      if (hasHeader() != other.hasHeader()) return false;
+      if (hasHeader()) {
+        if (!getHeader()
+            .equals(other.getHeader())) return false;
+      }
+      if (hasBody() != other.hasBody()) return false;
+      if (hasBody()) {
+        if (!getBody()
+            .equals(other.getBody())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
+      hash = (53 * hash) + getToken().hashCode();
+      if (hasHeader()) {
+        hash = (37 * hash) + HEADER_FIELD_NUMBER;
+        hash = (53 * hash) + getHeader().hashCode();
+      }
+      if (hasBody()) {
+        hash = (37 * hash) + BODY_FIELD_NUMBER;
+        hash = (53 * hash) + getBody().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.creolophus.im.protobuf.ProtoCommand.Command parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.creolophus.im.protobuf.ProtoCommand.Command prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     /**
      * Protobuf type {@code com.creolophus.im.protobuf.Command}
      */
@@ -1321,23 +1237,35 @@ public final class ProtoCommand {
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.creolophus.im.protobuf.Command)
         com.creolophus.im.protobuf.ProtoCommand.CommandOrBuilder {
-      private java.lang.Object token_ = "";
-      private com.creolophus.im.protobuf.ProtoCommand.Command.Header header_;      @java.lang.Override
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_descriptor;
+      }
+
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.creolophus.im.protobuf.ProtoCommand.Command.class, com.creolophus.im.protobuf.ProtoCommand.Command.Builder.class);
       }
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder> headerBuilder_;
-      private com.google.protobuf.Any body_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder> bodyBuilder_;
+
       // Construct using com.creolophus.im.protobuf.ProtoCommand.Command.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
-      }      @java.lang.Override
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         token_ = "";
@@ -1357,48 +1285,18 @@ public final class ProtoCommand {
         return this;
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }      @java.lang.Override
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_descriptor;
       }
 
-      /**
-       * <code>.google.protobuf.Any body = 3;</code>
-       */
-      public Builder clearBody() {
-        if (bodyBuilder_ == null) {
-          body_ = null;
-          onChanged();
-        } else {
-          body_ = null;
-          bodyBuilder_ = null;
-        }
-
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public com.creolophus.im.protobuf.ProtoCommand.Command getDefaultInstanceForType() {
         return com.creolophus.im.protobuf.ProtoCommand.Command.getDefaultInstance();
       }
 
-      /**
-       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-       */
-      public Builder clearHeader() {
-        if (headerBuilder_ == null) {
-          header_ = null;
-          onChanged();
-        } else {
-          header_ = null;
-          headerBuilder_ = null;
-        }
-
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public com.creolophus.im.protobuf.ProtoCommand.Command build() {
         com.creolophus.im.protobuf.ProtoCommand.Command result = buildPartial();
         if (!result.isInitialized()) {
@@ -1407,15 +1305,7 @@ public final class ProtoCommand {
         return result;
       }
 
-      /**
-       * <code>string token = 1;</code>
-       */
-      public Builder clearToken() {
-
-        token_ = getDefaultInstance().getToken();
-        onChanged();
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public com.creolophus.im.protobuf.ProtoCommand.Command buildPartial() {
         com.creolophus.im.protobuf.ProtoCommand.Command result = new com.creolophus.im.protobuf.ProtoCommand.Command(this);
         result.token_ = token_;
@@ -1433,113 +1323,39 @@ public final class ProtoCommand {
         return result;
       }
 
-      /**
-       * <code>.google.protobuf.Any body = 3;</code>
-       */
-      public com.google.protobuf.Any.Builder getBodyBuilder() {
-
-        onChanged();
-        return getBodyFieldBuilder().getBuilder();
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder clone() {
         return super.clone();
       }
-
-      /**
-       * <code>.google.protobuf.Any body = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder>
-          getBodyFieldBuilder() {
-        if (bodyBuilder_ == null) {
-          bodyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder>(
-                  getBody(),
-                  getParentForChildren(),
-                  isClean());
-          body_ = null;
-        }
-        return bodyBuilder_;
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
         return super.setField(field, value);
       }
-
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.creolophus.im.protobuf.ProtoCommand.internal_static_com_creolophus_im_protobuf_Command_descriptor;
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return super.clearField(field);
       }
-
-      /**
-       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-       */
-      public com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder getHeaderBuilder() {
-
-        onChanged();
-        return getHeaderFieldBuilder().getBuilder();
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return super.clearOneof(oneof);
       }
-
-      /**
-       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder>
-          getHeaderFieldBuilder() {
-        if (headerBuilder_ == null) {
-          headerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder>(
-                  getHeader(),
-                  getParentForChildren(),
-                  isClean());
-          header_ = null;
-        }
-        return headerBuilder_;
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
         return super.setRepeatedField(field, index, value);
       }
-
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
         return super.addRepeatedField(field, value);
       }
-
-      /**
-       * <code>.google.protobuf.Any body = 3;</code>
-       */
-      public Builder mergeBody(com.google.protobuf.Any value) {
-        if (bodyBuilder_ == null) {
-          if (body_ != null) {
-            body_ =
-              com.google.protobuf.Any.newBuilder(body_).mergeFrom(value).buildPartial();
-          } else {
-            body_ = value;
-          }
-          onChanged();
-        } else {
-          bodyBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.creolophus.im.protobuf.ProtoCommand.Command) {
           return mergeFrom((com.creolophus.im.protobuf.ProtoCommand.Command)other);
@@ -1566,44 +1382,12 @@ public final class ProtoCommand {
         return this;
       }
 
-      /**
-       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-       */
-      public Builder mergeHeader(com.creolophus.im.protobuf.ProtoCommand.Command.Header value) {
-        if (headerBuilder_ == null) {
-          if (header_ != null) {
-            header_ =
-              com.creolophus.im.protobuf.ProtoCommand.Command.Header.newBuilder(header_).mergeFrom(value).buildPartial();
-          } else {
-            header_ = value;
-          }
-          onChanged();
-        } else {
-          headerBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      /**
-       * <code>.google.protobuf.Any body = 3;</code>
-       */
-      public Builder setBody(com.google.protobuf.Any value) {
-        if (bodyBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          body_ = value;
-          onChanged();
-        } else {
-          bodyBuilder_.setMessage(value);
-        }
-
-        return this;
-      }      @java.lang.Override
+      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1622,22 +1406,7 @@ public final class ProtoCommand {
         return this;
       }
 
-      /**
-       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
-       */
-      public Builder setHeader(com.creolophus.im.protobuf.ProtoCommand.Command.Header value) {
-        if (headerBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          header_ = value;
-          onChanged();
-        } else {
-          headerBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
+      private java.lang.Object token_ = "";
       /**
        * <code>string token = 1;</code>
        */
@@ -1660,7 +1429,7 @@ public final class ProtoCommand {
           getTokenBytes() {
         java.lang.Object ref = token_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           token_ = b;
@@ -1677,12 +1446,20 @@ public final class ProtoCommand {
         if (value == null) {
     throw new NullPointerException();
   }
-
+  
         token_ = value;
         onChanged();
         return this;
       }
-
+      /**
+       * <code>string token = 1;</code>
+       */
+      public Builder clearToken() {
+        
+        token_ = getDefaultInstance().getToken();
+        onChanged();
+        return this;
+      }
       /**
        * <code>string token = 1;</code>
        */
@@ -1692,14 +1469,15 @@ public final class ProtoCommand {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-
+        
         token_ = value;
         onChanged();
         return this;
       }
 
-
-
+      private com.creolophus.im.protobuf.ProtoCommand.Command.Header header_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder> headerBuilder_;
       /**
        * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
        */
@@ -1716,7 +1494,22 @@ public final class ProtoCommand {
           return headerBuilder_.getMessage();
         }
       }
+      /**
+       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+       */
+      public Builder setHeader(com.creolophus.im.protobuf.ProtoCommand.Command.Header value) {
+        if (headerBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          header_ = value;
+          onChanged();
+        } else {
+          headerBuilder_.setMessage(value);
+        }
 
+        return this;
+      }
       /**
        * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
        */
@@ -1731,9 +1524,46 @@ public final class ProtoCommand {
 
         return this;
       }
+      /**
+       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+       */
+      public Builder mergeHeader(com.creolophus.im.protobuf.ProtoCommand.Command.Header value) {
+        if (headerBuilder_ == null) {
+          if (header_ != null) {
+            header_ =
+              com.creolophus.im.protobuf.ProtoCommand.Command.Header.newBuilder(header_).mergeFrom(value).buildPartial();
+          } else {
+            header_ = value;
+          }
+          onChanged();
+        } else {
+          headerBuilder_.mergeFrom(value);
+        }
 
+        return this;
+      }
+      /**
+       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+       */
+      public Builder clearHeader() {
+        if (headerBuilder_ == null) {
+          header_ = null;
+          onChanged();
+        } else {
+          header_ = null;
+          headerBuilder_ = null;
+        }
 
-
+        return this;
+      }
+      /**
+       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+       */
+      public com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder getHeaderBuilder() {
+        
+        onChanged();
+        return getHeaderFieldBuilder().getBuilder();
+      }
       /**
        * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
        */
@@ -1745,10 +1575,26 @@ public final class ProtoCommand {
               com.creolophus.im.protobuf.ProtoCommand.Command.Header.getDefaultInstance() : header_;
         }
       }
+      /**
+       * <code>.com.creolophus.im.protobuf.Command.Header header = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder> 
+          getHeaderFieldBuilder() {
+        if (headerBuilder_ == null) {
+          headerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.creolophus.im.protobuf.ProtoCommand.Command.Header, com.creolophus.im.protobuf.ProtoCommand.Command.Header.Builder, com.creolophus.im.protobuf.ProtoCommand.Command.HeaderOrBuilder>(
+                  getHeader(),
+                  getParentForChildren(),
+                  isClean());
+          header_ = null;
+        }
+        return headerBuilder_;
+      }
 
-
-
-
+      private com.google.protobuf.Any body_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder> bodyBuilder_;
       /**
        * <code>.google.protobuf.Any body = 3;</code>
        */
@@ -1765,7 +1611,22 @@ public final class ProtoCommand {
           return bodyBuilder_.getMessage();
         }
       }
+      /**
+       * <code>.google.protobuf.Any body = 3;</code>
+       */
+      public Builder setBody(com.google.protobuf.Any value) {
+        if (bodyBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          bodyBuilder_.setMessage(value);
+        }
 
+        return this;
+      }
       /**
        * <code>.google.protobuf.Any body = 3;</code>
        */
@@ -1780,9 +1641,46 @@ public final class ProtoCommand {
 
         return this;
       }
+      /**
+       * <code>.google.protobuf.Any body = 3;</code>
+       */
+      public Builder mergeBody(com.google.protobuf.Any value) {
+        if (bodyBuilder_ == null) {
+          if (body_ != null) {
+            body_ =
+              com.google.protobuf.Any.newBuilder(body_).mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          bodyBuilder_.mergeFrom(value);
+        }
 
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Any body = 3;</code>
+       */
+      public Builder clearBody() {
+        if (bodyBuilder_ == null) {
+          body_ = null;
+          onChanged();
+        } else {
+          body_ = null;
+          bodyBuilder_ = null;
+        }
 
-
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Any body = 3;</code>
+       */
+      public com.google.protobuf.Any.Builder getBodyBuilder() {
+        
+        onChanged();
+        return getBodyFieldBuilder().getBuilder();
+      }
       /**
        * <code>.google.protobuf.Any body = 3;</code>
        */
@@ -1794,7 +1692,22 @@ public final class ProtoCommand {
               com.google.protobuf.Any.getDefaultInstance() : body_;
         }
       }
-
+      /**
+       * <code>.google.protobuf.Any body = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder> 
+          getBodyFieldBuilder() {
+        if (bodyBuilder_ == null) {
+          bodyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Any, com.google.protobuf.Any.Builder, com.google.protobuf.AnyOrBuilder>(
+                  getBody(),
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        return bodyBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1811,38 +1724,30 @@ public final class ProtoCommand {
       // @@protoc_insertion_point(builder_scope:com.creolophus.im.protobuf.Command)
     }
 
-
-
-
-
-
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-
-
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+    // @@protoc_insertion_point(class_scope:com.creolophus.im.protobuf.Command)
+    private static final com.creolophus.im.protobuf.ProtoCommand.Command DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.creolophus.im.protobuf.ProtoCommand.Command();
     }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
+    public static com.creolophus.im.protobuf.ProtoCommand.Command getDefaultInstance() {
+      return DEFAULT_INSTANCE;
     }
 
+    private static final com.google.protobuf.Parser<Command>
+        PARSER = new com.google.protobuf.AbstractParser<Command>() {
+      @java.lang.Override
+      public Command parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Command(input, extensionRegistry);
+      }
+    };
 
-
-
-
-
-
-
-
-
+    public static com.google.protobuf.Parser<Command> parser() {
+      return PARSER;
+    }
 
     @java.lang.Override
     public com.google.protobuf.Parser<Command> getParserForType() {
@@ -1854,6 +1759,62 @@ public final class ProtoCommand {
       return DEFAULT_INSTANCE;
     }
 
+  }
+
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_creolophus_im_protobuf_Command_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_creolophus_im_protobuf_Command_Header_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable;
+
+  public static com.google.protobuf.Descriptors.FileDescriptor
+      getDescriptor() {
+    return descriptor;
+  }
+  private static  com.google.protobuf.Descriptors.FileDescriptor
+      descriptor;
+  static {
+    java.lang.String[] descriptorData = {
+      "\n\rCommand.proto\022\032com.creolophus.im.proto" +
+      "buf\032\031google/protobuf/any.proto\"\272\001\n\007Comma" +
+      "nd\022\r\n\005token\030\001 \001(\t\022:\n\006header\030\002 \001(\0132*.com." +
+      "creolophus.im.protobuf.Command.Header\022\"\n" +
+      "\004body\030\003 \001(\0132\024.google.protobuf.Any\032@\n\006Hea" +
+      "der\022\013\n\003seq\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022\014\n\004code\030\003" +
+      " \001(\005\022\r\n\005error\030\004 \001(\tB*\n\032com.creolophus.im" +
+      ".protobufB\014ProtoCommandb\006proto3"
+    };
+    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
+    com.google.protobuf.Descriptors.FileDescriptor
+      .internalBuildGeneratedFileFrom(descriptorData,
+        new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.google.protobuf.AnyProto.getDescriptor(),
+        }, assigner);
+    internal_static_com_creolophus_im_protobuf_Command_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_com_creolophus_im_protobuf_Command_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_creolophus_im_protobuf_Command_descriptor,
+        new java.lang.String[] { "Token", "Header", "Body", });
+    internal_static_com_creolophus_im_protobuf_Command_Header_descriptor =
+      internal_static_com_creolophus_im_protobuf_Command_descriptor.getNestedTypes().get(0);
+    internal_static_com_creolophus_im_protobuf_Command_Header_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_creolophus_im_protobuf_Command_Header_descriptor,
+        new java.lang.String[] { "Seq", "Type", "Code", "Error", });
+    com.google.protobuf.AnyProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

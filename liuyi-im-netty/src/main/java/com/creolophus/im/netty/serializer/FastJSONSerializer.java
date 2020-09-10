@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
-//import com.creolophus.liuyi.netty.context.RemoteContext;
 import com.creolophus.im.netty.exception.NettyCommandException;
 import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.protocol.Command;
@@ -14,10 +13,11 @@ import org.slf4j.LoggerFactory;
 import java.nio.charset.Charset;
 import java.util.List;
 
+//import com.creolophus.liuyi.netty.context.RemoteContext;
+
 /**
  * 朝辞白帝彩云间 千行代码一日还
  * 两岸领导啼不住 地铁已到回龙观
- *
  * @author magicnana
  * @date 2019/9/18 下午2:05
  */
@@ -45,9 +45,9 @@ public class FastJSONSerializer implements CommandSerializer {
         }
         final String json = new String(bytes, Charset.forName("UTF-8")).trim();
 //        RemoteContext.getContext().setRequestStr(json);
-        try{
+        try {
             return JSON.parseObject(json, Command.class);
-        }catch(Throwable e){
+        } catch (Throwable e) {
             throw new NettyCommandException(NettyError.E_REQUEST_VALIDATE_ERROR.format(json));
         }
     }
@@ -62,10 +62,8 @@ public class FastJSONSerializer implements CommandSerializer {
     }
 
     @Override
-    public String toString(Command command) {
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Command.class, "header", "body", "token");
-        final String json = JSON.toJSONString(command, filter);
-        return json;
+    public String name() {
+        return "JSON";
     }
 
 //    @Override
@@ -75,7 +73,9 @@ public class FastJSONSerializer implements CommandSerializer {
 //    }
 
     @Override
-    public String name() {
-        return "JSON";
+    public String toString(Command command) {
+        SimplePropertyPreFilter filter = new SimplePropertyPreFilter(Command.class, "header", "body", "token");
+        final String json = JSON.toJSONString(command, filter);
+        return json;
     }
 }

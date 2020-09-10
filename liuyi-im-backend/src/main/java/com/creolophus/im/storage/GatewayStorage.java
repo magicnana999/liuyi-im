@@ -23,20 +23,6 @@ public class GatewayStorage extends BaseStorage {
     @Resource
     private RedisClient redisClient;
 
-    public GatewayAddr getUserClient(Long userId) {
-        Set<String> line = getGatewayList();
-        for(String ipAndPort : line){
-            if(getUserClientExist(ipAndPort,userId)){
-                return new GatewayAddr(ipAndPort);
-            }
-        }
-        return null;
-    }
-
-    public boolean getUserClientExist(String ipAndPort,Long userId){
-        return redisClient.sismember(getUserClientKey(ipAndPort),String.valueOf(userId));
-    }
-
     private String getGatewayKey() {
         return GATEWAY_SET;
     }
@@ -45,13 +31,27 @@ public class GatewayStorage extends BaseStorage {
         return redisClient.smembers(getGatewayKey());
     }
 
-    private String getUserClientKey(String gatewayIp,Integer gatewayPort) {
+    public GatewayAddr getUserClient(Long userId) {
+        Set<String> line = getGatewayList();
+        for (String ipAndPort : line) {
+            if(getUserClientExist(ipAndPort, userId)) {
+                return new GatewayAddr(ipAndPort);
+            }
+        }
+        return null;
+    }
+
+    public boolean getUserClientExist(String ipAndPort, Long userId) {
+        return redisClient.sismember(getUserClientKey(ipAndPort), String.valueOf(userId));
+    }
+
+    private String getUserClientKey(String gatewayIp, Integer gatewayPort) {
         Strings.requireNonBlank(gatewayIp, "gatewayIp 为空,无法生成 UserClientKey");
         Objects.requireNonNull(gatewayPort, "gatewayPort 为空,无法生成 UserClientKey");
         return GATEWAY_CLIENT + ipWithPort(gatewayIp, gatewayPort);
     }
 
-    private String getUserClientKey(String ipAndPort){
+    private String getUserClientKey(String ipAndPort) {
         Strings.requireNonBlank(ipAndPort, "ipAndPort 为空,无法生成 UserClientKey");
         return GATEWAY_CLIENT + ipAndPort;
     }
@@ -70,17 +70,17 @@ public class GatewayStorage extends BaseStorage {
      * @param userId
      * @return affected records
      */
-    public Long registerUserClient(String gatewayIp,Integer gatewayPort,Long userId) {
-        if(userId==null) return 0L;
-        return redisClient.sadd(getUserClientKey(gatewayIp,gatewayPort),String.valueOf(userId));
+    public Long registerUserClient(String gatewayIp, Integer gatewayPort, Long userId) {
+        if(userId == null) return 0L;
+        return redisClient.sadd(getUserClientKey(gatewayIp, gatewayPort), String.valueOf(userId));
     }
 
     public Long unregisterGateway(String ip, Integer socketPort) {
         return redisClient.srem(getGatewayKey(), ipWithPort(ip, socketPort));
     }
 
-    public Long unregisterUserClient(String gatewayIp,Integer gatewayPort,Long userId) {
-        if(userId==null) return 0L;
-        return redisClient.srem(getUserClientKey(gatewayIp,gatewayPort),String.valueOf(userId));
+    public Long unregisterUserClient(String gatewayIp, Integer gatewayPort, Long userId) {
+        if(userId == null) return 0L;
+        return redisClient.srem(getUserClientKey(gatewayIp, gatewayPort), String.valueOf(userId));
     }
 }

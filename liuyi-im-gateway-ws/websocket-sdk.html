@@ -10,12 +10,12 @@
 <script>
 
 
-    function send(target,message){
-        liuyiImJsSdk.sendMessage(target,1,message)
+    function send(target, message) {
+        liuyiImJsSdk.sendMessage(target, 1, message)
     }
 
     function openSocket() {
-        liuyiImJsSdk.init(true,function () {
+        liuyiImJsSdk.init(true, function () {
             liuyiImJsSdk.login($('#user').val())
         }).connect()
     }
@@ -46,15 +46,19 @@
                 <button onclick="shutdownSocket()">关闭Socket</button>
             </td>
         </tr>
-            <td>目标:</td>
-            <td>
-                <select id="target" style="width: 100%">
-                    <option value="100" selected="selected">张无忌</option>
-                    <option value="101">赵敏</option>
-                    <option value="102">周芷若</option>
-                    <option value="103">小昭</option>
-                </select>
-            </td><td><input id="message"/><button onclick="send($('#target').val(),$('#message').val())">发送</button></td></tr>
+        <td>目标:</td>
+        <td>
+            <select id="target" style="width: 100%">
+                <option value="100" selected="selected">张无忌</option>
+                <option value="101">赵敏</option>
+                <option value="102">周芷若</option>
+                <option value="103">小昭</option>
+            </select>
+        </td>
+        <td><input id="message"/>
+            <button onclick="send($('#target').val(),$('#message').val())">发送</button>
+        </td>
+        </tr>
     </table>
 
     </table>

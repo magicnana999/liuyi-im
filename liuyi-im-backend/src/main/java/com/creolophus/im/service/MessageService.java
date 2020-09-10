@@ -3,6 +3,7 @@ package com.creolophus.im.service;
 import com.creolophus.im.common.base.BaseService;
 import com.creolophus.im.common.entity.Message;
 import com.creolophus.im.dao.MessageDao;
+import com.creolophus.im.protocol.MessageType;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
 import com.creolophus.liuyi.common.thread.Stopable;
@@ -47,18 +48,13 @@ public class MessageService extends BaseService implements Stopable {
     }
 
     public List<Message> findMessageList(Long receiverId, Long messageId, Integer pageNo, Integer pageSize) {
-        return messageDao.createLambdaQuery()
-                .andEq(Message::getReceiverId,receiverId)
-                .andGreat(Message::getMessageId,messageId)
-                .asc(Message::getMessageId)
-                .page(pageNo, pageSize).getList();
+        return messageDao.createLambdaQuery().andEq(Message::getReceiverId, receiverId).andGreat(Message::getMessageId, messageId)
+                .asc(Message::getMessageId).page(pageNo, pageSize).getList();
     }
 
-    public List<Message> findUnreadMessageList(Long receiverId,Long messageId) {
-        return messageDao.selectMessageList(receiverId,messageId);
+    public List<Message> findUnreadMessageList(Long receiverId, Long messageId) {
+        return messageDao.selectMessageList(receiverId, messageId);
     }
-
-
 
 
     @PostConstruct
@@ -73,17 +69,18 @@ public class MessageService extends BaseService implements Stopable {
                 t.start();
             }
         }
-        logger.info("所有线程已启动 {}",threads.size());
+        logger.info("所有线程已启动 {}", threads.size());
     }
 
     public Long sendMessage(
-            Long senderId, Long targetId, Integer messageType, String messageBody, Date sendTime,String appKey) {
-        if(messageType == Message.MessageType.SINGLE.getValue()) {
+            Long senderId, Long targetId, Integer messageType, Integer messageKind, String messageBody, Date sendTime, String appKey) {
+        if(messageType == MessageType.SINGLE.value()) {
             Message message = new Message();
             message.setMessageId(idSimpleService.nextMessageId(targetId));
             message.setCreateTime(new Date());
             message.setMessageBody(messageBody);
             message.setMessageType(messageType);
+            message.setMessageKind(messageKind);
             message.setSenderId(senderId);
             message.setSendTime(sendTime);
             message.setReceiverId(targetId);
@@ -100,6 +97,7 @@ public class MessageService extends BaseService implements Stopable {
                 message.setGroupId(targetId);
                 message.setMessageBody(messageBody);
                 message.setMessageType(messageType);
+                message.setMessageKind(messageKind);
                 message.setSenderId(senderId);
                 message.setSendTime(sendTime);
                 message.setReceiverId(member);

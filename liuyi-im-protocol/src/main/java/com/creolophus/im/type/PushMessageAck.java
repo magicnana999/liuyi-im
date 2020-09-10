@@ -2,7 +2,6 @@ package com.creolophus.im.type;
 
 /**
  * Client -> Server
- *
  * @author magicnana
  * @date 2020/1/19 下午5:36
  */

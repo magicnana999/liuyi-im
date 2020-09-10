@@ -26,18 +26,18 @@ public abstract class AbstractNettyHandler extends SimpleChannelInboundHandler<C
 
         Command response = null;
 
-        if(cause!=null && cause instanceof NettyCommandWithResException){
-            NettyCommandWithResException e = (NettyCommandWithResException)cause;
+        if(cause != null && cause instanceof NettyCommandWithResException) {
+            NettyCommandWithResException e = (NettyCommandWithResException) cause;
             response = e.getResponse();
-        } else if(cause!=null && cause instanceof NettyCommandException){
-            NettyCommandException e = (NettyCommandException)cause;
+        } else if(cause != null && cause instanceof NettyCommandException) {
+            NettyCommandException e = (NettyCommandException) cause;
             response = Command.newAck(
 //                        RemoteContext.getContext().getRequest().getOpaque(),
 //                        RemoteContext.getContext().getRequest().getHeader().getCode(),
                     "100", 12, e.getNettyError());
-        } else if(cause!= null && cause instanceof DecoderException){
+        } else if(cause != null && cause instanceof DecoderException) {
             response = Command.newAck("0", 0, NettyError.E_REQUEST_DECODE_FAIL);
-        } else{
+        } else {
             response = Command.newAck(
 //                        RemoteContext.getContext().getRequest().getOpaque(),
 //                        RemoteContext.getContext().getRequest().getHeader().getCode(),

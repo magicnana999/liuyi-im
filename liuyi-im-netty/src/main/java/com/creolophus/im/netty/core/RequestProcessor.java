@@ -8,7 +8,7 @@ import com.creolophus.im.protocol.Command;
  */
 public interface RequestProcessor {
 
-    void verify(Command msg);
-
     Object processRequest(Command msg);
+
+    void verify(Command msg);
 }

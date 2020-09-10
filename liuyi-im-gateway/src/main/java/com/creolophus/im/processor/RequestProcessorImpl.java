@@ -35,12 +35,6 @@ public class RequestProcessorImpl implements RequestProcessor {
     private AuthService authService;
 
     @Override
-    public void verify(Command request) {
-        Auth auth = authService.verify(request.getToken());
-        request.setAuth(auth);
-    }
-
-    @Override
     public Object processRequest(Command request) {
         switch (CommandType.valueOf(request.getHeader().getType())) {
             case LOGIN:
@@ -53,5 +47,11 @@ public class RequestProcessorImpl implements RequestProcessor {
                 break;
         }
         return null;
+    }
+
+    @Override
+    public void verify(Command request) {
+        Auth auth = authService.verify(request.getToken());
+        request.setAuth(auth);
     }
 }

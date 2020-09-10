@@ -3,8 +3,8 @@ package com.creolophus.im.controller;
 import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.common.config.LiuyiSetting;
 import com.creolophus.im.common.entity.Message;
-import com.creolophus.liuyi.common.api.ApiResult;
 import com.creolophus.im.service.MessageService;
+import com.creolophus.liuyi.common.api.ApiResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -30,34 +30,33 @@ public class MessageController extends BaseController {
     @Resource
     private MessageService messageService;
 
-    @RequestMapping(value = "/unread", method = RequestMethod.GET)
-    public ApiResult getUnread(
-            @RequestParam("receiverId") Long receiverId,
-            @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId) {
-        List<Message> list = messageService.findUnreadMessageList(receiverId, messageId);
-        return new ApiResult(list);
-    }
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResult getList(
             @RequestParam("receiverId") Long receiverId,
             @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId,
-            @RequestParam(value = "pageNo",required = false,defaultValue = "1") Integer pageNo,
-            @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer pageSize) {
-        List<Message> list = messageService.findMessageList(receiverId, messageId,pageNo,pageSize);
+            @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+        List<Message> list = messageService.findMessageList(receiverId, messageId, pageNo, pageSize);
         return new ApiResult(list);
     }
 
+    @RequestMapping(value = "/unread", method = RequestMethod.GET)
+    public ApiResult getUnread(
+            @RequestParam("receiverId") Long receiverId, @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId) {
+        List<Message> list = messageService.findUnreadMessageList(receiverId, messageId);
+        return new ApiResult(list);
+    }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ApiResult sendMessage(
             @RequestParam("appKey") String appKey,
             @RequestParam("senderId") Long senderId,
             @RequestParam("messageType") Integer messageType,
+            @RequestParam("messageKind") Integer messageKind,
             @RequestParam("targetId") Long targetId,
             @DateTimeFormat(pattern = LiuyiSetting.MESSAGE_SEND_TIME_PATTERN) @RequestParam("sendTime") Date sendTime,
             @RequestParam("messageBody") String messageBody) {
-        Long messageId = messageService.sendMessage(senderId, targetId, messageType, messageBody, sendTime,appKey);
+        Long messageId = messageService.sendMessage(senderId, targetId, messageType, messageKind, messageBody, sendTime, appKey);
         return new ApiResult(messageId);
     }
 }

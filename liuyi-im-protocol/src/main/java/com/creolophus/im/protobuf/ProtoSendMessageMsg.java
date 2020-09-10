@@ -24,16 +24,21 @@ public final class ProtoSendMessageMsg {
     int getMessageType();
 
     /**
-     * <code>int64 targetId = 2;</code>
+     * <code>int32 messageKind = 2;</code>
+     */
+    int getMessageKind();
+
+    /**
+     * <code>int64 targetId = 3;</code>
      */
     long getTargetId();
 
     /**
-     * <code>string messageBody = 3;</code>
+     * <code>string messageBody = 4;</code>
      */
     java.lang.String getMessageBody();
     /**
-     * <code>string messageBody = 3;</code>
+     * <code>string messageBody = 4;</code>
      */
     com.google.protobuf.ByteString
         getMessageBodyBytes();
@@ -92,10 +97,15 @@ public final class ProtoSendMessageMsg {
             }
             case 16: {
 
+              messageKind_ = input.readInt32();
+              break;
+            }
+            case 24: {
+
               targetId_ = input.readInt64();
               break;
             }
-            case 26: {
+            case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
               messageBody_ = s;
@@ -142,19 +152,28 @@ public final class ProtoSendMessageMsg {
       return messageType_;
     }
 
-    public static final int TARGETID_FIELD_NUMBER = 2;
+    public static final int MESSAGEKIND_FIELD_NUMBER = 2;
+    private int messageKind_;
+    /**
+     * <code>int32 messageKind = 2;</code>
+     */
+    public int getMessageKind() {
+      return messageKind_;
+    }
+
+    public static final int TARGETID_FIELD_NUMBER = 3;
     private long targetId_;
     /**
-     * <code>int64 targetId = 2;</code>
+     * <code>int64 targetId = 3;</code>
      */
     public long getTargetId() {
       return targetId_;
     }
 
-    public static final int MESSAGEBODY_FIELD_NUMBER = 3;
+    public static final int MESSAGEBODY_FIELD_NUMBER = 4;
     private volatile java.lang.Object messageBody_;
     /**
-     * <code>string messageBody = 3;</code>
+     * <code>string messageBody = 4;</code>
      */
     public java.lang.String getMessageBody() {
       java.lang.Object ref = messageBody_;
@@ -169,7 +188,7 @@ public final class ProtoSendMessageMsg {
       }
     }
     /**
-     * <code>string messageBody = 3;</code>
+     * <code>string messageBody = 4;</code>
      */
     public com.google.protobuf.ByteString
         getMessageBodyBytes() {
@@ -202,11 +221,14 @@ public final class ProtoSendMessageMsg {
       if (messageType_ != 0) {
         output.writeInt32(1, messageType_);
       }
+      if (messageKind_ != 0) {
+        output.writeInt32(2, messageKind_);
+      }
       if (targetId_ != 0L) {
-        output.writeInt64(2, targetId_);
+        output.writeInt64(3, targetId_);
       }
       if (!getMessageBodyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, messageBody_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, messageBody_);
       }
       unknownFields.writeTo(output);
     }
@@ -221,12 +243,16 @@ public final class ProtoSendMessageMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, messageType_);
       }
+      if (messageKind_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, messageKind_);
+      }
       if (targetId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, targetId_);
+          .computeInt64Size(3, targetId_);
       }
       if (!getMessageBodyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, messageBody_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, messageBody_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -245,6 +271,8 @@ public final class ProtoSendMessageMsg {
 
       if (getMessageType()
           != other.getMessageType()) return false;
+      if (getMessageKind()
+          != other.getMessageKind()) return false;
       if (getTargetId()
           != other.getTargetId()) return false;
       if (!getMessageBody()
@@ -262,6 +290,8 @@ public final class ProtoSendMessageMsg {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + MESSAGETYPE_FIELD_NUMBER;
       hash = (53 * hash) + getMessageType();
+      hash = (37 * hash) + MESSAGEKIND_FIELD_NUMBER;
+      hash = (53 * hash) + getMessageKind();
       hash = (37 * hash) + TARGETID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTargetId());
@@ -409,6 +439,8 @@ public final class ProtoSendMessageMsg {
         super.clear();
         messageType_ = 0;
 
+        messageKind_ = 0;
+
         targetId_ = 0L;
 
         messageBody_ = "";
@@ -440,6 +472,7 @@ public final class ProtoSendMessageMsg {
       public com.creolophus.im.protobuf.ProtoSendMessageMsg.SendMessageMsg buildPartial() {
         com.creolophus.im.protobuf.ProtoSendMessageMsg.SendMessageMsg result = new com.creolophus.im.protobuf.ProtoSendMessageMsg.SendMessageMsg(this);
         result.messageType_ = messageType_;
+        result.messageKind_ = messageKind_;
         result.targetId_ = targetId_;
         result.messageBody_ = messageBody_;
         onBuilt();
@@ -492,6 +525,9 @@ public final class ProtoSendMessageMsg {
         if (other == com.creolophus.im.protobuf.ProtoSendMessageMsg.SendMessageMsg.getDefaultInstance()) return this;
         if (other.getMessageType() != 0) {
           setMessageType(other.getMessageType());
+        }
+        if (other.getMessageKind() != 0) {
+          setMessageKind(other.getMessageKind());
         }
         if (other.getTargetId() != 0L) {
           setTargetId(other.getTargetId());
@@ -555,15 +591,41 @@ public final class ProtoSendMessageMsg {
         return this;
       }
 
+      private int messageKind_ ;
+      /**
+       * <code>int32 messageKind = 2;</code>
+       */
+      public int getMessageKind() {
+        return messageKind_;
+      }
+      /**
+       * <code>int32 messageKind = 2;</code>
+       */
+      public Builder setMessageKind(int value) {
+        
+        messageKind_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 messageKind = 2;</code>
+       */
+      public Builder clearMessageKind() {
+        
+        messageKind_ = 0;
+        onChanged();
+        return this;
+      }
+
       private long targetId_ ;
       /**
-       * <code>int64 targetId = 2;</code>
+       * <code>int64 targetId = 3;</code>
        */
       public long getTargetId() {
         return targetId_;
       }
       /**
-       * <code>int64 targetId = 2;</code>
+       * <code>int64 targetId = 3;</code>
        */
       public Builder setTargetId(long value) {
         
@@ -572,7 +634,7 @@ public final class ProtoSendMessageMsg {
         return this;
       }
       /**
-       * <code>int64 targetId = 2;</code>
+       * <code>int64 targetId = 3;</code>
        */
       public Builder clearTargetId() {
         
@@ -583,7 +645,7 @@ public final class ProtoSendMessageMsg {
 
       private java.lang.Object messageBody_ = "";
       /**
-       * <code>string messageBody = 3;</code>
+       * <code>string messageBody = 4;</code>
        */
       public java.lang.String getMessageBody() {
         java.lang.Object ref = messageBody_;
@@ -598,7 +660,7 @@ public final class ProtoSendMessageMsg {
         }
       }
       /**
-       * <code>string messageBody = 3;</code>
+       * <code>string messageBody = 4;</code>
        */
       public com.google.protobuf.ByteString
           getMessageBodyBytes() {
@@ -614,7 +676,7 @@ public final class ProtoSendMessageMsg {
         }
       }
       /**
-       * <code>string messageBody = 3;</code>
+       * <code>string messageBody = 4;</code>
        */
       public Builder setMessageBody(
           java.lang.String value) {
@@ -627,7 +689,7 @@ public final class ProtoSendMessageMsg {
         return this;
       }
       /**
-       * <code>string messageBody = 3;</code>
+       * <code>string messageBody = 4;</code>
        */
       public Builder clearMessageBody() {
         
@@ -636,7 +698,7 @@ public final class ProtoSendMessageMsg {
         return this;
       }
       /**
-       * <code>string messageBody = 3;</code>
+       * <code>string messageBody = 4;</code>
        */
       public Builder setMessageBodyBytes(
           com.google.protobuf.ByteString value) {
@@ -717,10 +779,11 @@ public final class ProtoSendMessageMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\024SendMessageMsg.proto\022\032com.creolophus.i" +
-      "m.protobuf\"L\n\016SendMessageMsg\022\023\n\013messageT" +
-      "ype\030\001 \001(\005\022\020\n\010targetId\030\002 \001(\003\022\023\n\013messageBo" +
-      "dy\030\003 \001(\tB1\n\032com.creolophus.im.protobufB\023" +
-      "ProtoSendMessageMsgb\006proto3"
+      "m.protobuf\"a\n\016SendMessageMsg\022\023\n\013messageT" +
+      "ype\030\001 \001(\005\022\023\n\013messageKind\030\002 \001(\005\022\020\n\010target" +
+      "Id\030\003 \001(\003\022\023\n\013messageBody\030\004 \001(\tB1\n\032com.cre" +
+      "olophus.im.protobufB\023ProtoSendMessageMsg" +
+      "b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -739,7 +802,7 @@ public final class ProtoSendMessageMsg {
     internal_static_com_creolophus_im_protobuf_SendMessageMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_creolophus_im_protobuf_SendMessageMsg_descriptor,
-        new java.lang.String[] { "MessageType", "TargetId", "MessageBody", });
+        new java.lang.String[] { "MessageType", "MessageKind", "TargetId", "MessageBody", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

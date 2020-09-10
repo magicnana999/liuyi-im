@@ -27,7 +27,7 @@ public class SessionEventListenerImpl implements SessionEventListener {
     @Override
     public void onClose(Session session) {
         UserSession uc = userSessionClientService.getUserClient(UserSession.getSessionId(session));
-        if(uc!=null){
+        if(uc != null) {
             userSessionClientService.unregisterUserClient(uc);
         }
     }

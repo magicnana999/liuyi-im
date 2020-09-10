@@ -15,7 +15,6 @@ public interface SectionUserDao extends BaseMapper<MessageIdSectionUser> {
     /**
      * 如果表或者 where 筛选后结果集为空,则 count 返回 0 <br>
      * 如果表或者 where 筛选后结果集为空并且有 group by,则 count 返回 NULL<br>
-     *
      * @param sectionId
      * @return
      */

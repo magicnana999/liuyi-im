@@ -22,7 +22,9 @@ public class MessageStorage extends BaseStorage {
     private RedisClient redisClient;
 
     public Long asyncMessage(Message message) {
-        if(message == null) return 0L;
+        if(message == null) {
+            return 0L;
+        }
         return redisClient.rpush(getMessageListKey(), JSON.toJSONString(message));
     }
 

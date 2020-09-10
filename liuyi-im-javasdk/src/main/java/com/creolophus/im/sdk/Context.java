@@ -10,6 +10,13 @@ public class Context {
     private String appKey;
     private long userId;
 
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
 
     public String getToken() {
         return token;
@@ -17,14 +24,6 @@ public class Context {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getAppKey() {
-        return appKey;
-    }
-
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
     }
 
     public long getUserId() {

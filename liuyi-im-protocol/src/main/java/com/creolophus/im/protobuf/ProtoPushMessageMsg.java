@@ -29,27 +29,32 @@ public final class ProtoPushMessageMsg {
     int getMessageType();
 
     /**
-     * <code>int64 groupId = 3;</code>
+     * <code>int32 messageKind = 3;</code>
+     */
+    int getMessageKind();
+
+    /**
+     * <code>int64 groupId = 4;</code>
      */
     long getGroupId();
 
     /**
-     * <code>string messageBody = 4;</code>
+     * <code>string messageBody = 5;</code>
      */
     java.lang.String getMessageBody();
     /**
-     * <code>string messageBody = 4;</code>
+     * <code>string messageBody = 5;</code>
      */
     com.google.protobuf.ByteString
         getMessageBodyBytes();
 
     /**
-     * <code>int64 receiverId = 5;</code>
+     * <code>int64 receiverId = 6;</code>
      */
     long getReceiverId();
 
     /**
-     * <code>int64 senderId = 6;</code>
+     * <code>int64 senderId = 7;</code>
      */
     long getSenderId();
   }
@@ -115,21 +120,26 @@ public final class ProtoPushMessageMsg {
             }
             case 24: {
 
+              messageKind_ = input.readInt32();
+              break;
+            }
+            case 32: {
+
               groupId_ = input.readInt64();
               break;
             }
-            case 34: {
+            case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
               messageBody_ = s;
               break;
             }
-            case 40: {
+            case 48: {
 
               receiverId_ = input.readInt64();
               break;
             }
-            case 48: {
+            case 56: {
 
               senderId_ = input.readInt64();
               break;
@@ -184,19 +194,28 @@ public final class ProtoPushMessageMsg {
       return messageType_;
     }
 
-    public static final int GROUPID_FIELD_NUMBER = 3;
+    public static final int MESSAGEKIND_FIELD_NUMBER = 3;
+    private int messageKind_;
+    /**
+     * <code>int32 messageKind = 3;</code>
+     */
+    public int getMessageKind() {
+      return messageKind_;
+    }
+
+    public static final int GROUPID_FIELD_NUMBER = 4;
     private long groupId_;
     /**
-     * <code>int64 groupId = 3;</code>
+     * <code>int64 groupId = 4;</code>
      */
     public long getGroupId() {
       return groupId_;
     }
 
-    public static final int MESSAGEBODY_FIELD_NUMBER = 4;
+    public static final int MESSAGEBODY_FIELD_NUMBER = 5;
     private volatile java.lang.Object messageBody_;
     /**
-     * <code>string messageBody = 4;</code>
+     * <code>string messageBody = 5;</code>
      */
     public java.lang.String getMessageBody() {
       java.lang.Object ref = messageBody_;
@@ -211,7 +230,7 @@ public final class ProtoPushMessageMsg {
       }
     }
     /**
-     * <code>string messageBody = 4;</code>
+     * <code>string messageBody = 5;</code>
      */
     public com.google.protobuf.ByteString
         getMessageBodyBytes() {
@@ -227,19 +246,19 @@ public final class ProtoPushMessageMsg {
       }
     }
 
-    public static final int RECEIVERID_FIELD_NUMBER = 5;
+    public static final int RECEIVERID_FIELD_NUMBER = 6;
     private long receiverId_;
     /**
-     * <code>int64 receiverId = 5;</code>
+     * <code>int64 receiverId = 6;</code>
      */
     public long getReceiverId() {
       return receiverId_;
     }
 
-    public static final int SENDERID_FIELD_NUMBER = 6;
+    public static final int SENDERID_FIELD_NUMBER = 7;
     private long senderId_;
     /**
-     * <code>int64 senderId = 6;</code>
+     * <code>int64 senderId = 7;</code>
      */
     public long getSenderId() {
       return senderId_;
@@ -265,17 +284,20 @@ public final class ProtoPushMessageMsg {
       if (messageType_ != 0) {
         output.writeInt32(2, messageType_);
       }
+      if (messageKind_ != 0) {
+        output.writeInt32(3, messageKind_);
+      }
       if (groupId_ != 0L) {
-        output.writeInt64(3, groupId_);
+        output.writeInt64(4, groupId_);
       }
       if (!getMessageBodyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, messageBody_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, messageBody_);
       }
       if (receiverId_ != 0L) {
-        output.writeInt64(5, receiverId_);
+        output.writeInt64(6, receiverId_);
       }
       if (senderId_ != 0L) {
-        output.writeInt64(6, senderId_);
+        output.writeInt64(7, senderId_);
       }
       unknownFields.writeTo(output);
     }
@@ -294,20 +316,24 @@ public final class ProtoPushMessageMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, messageType_);
       }
+      if (messageKind_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, messageKind_);
+      }
       if (groupId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, groupId_);
+          .computeInt64Size(4, groupId_);
       }
       if (!getMessageBodyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, messageBody_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, messageBody_);
       }
       if (receiverId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, receiverId_);
+          .computeInt64Size(6, receiverId_);
       }
       if (senderId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(6, senderId_);
+          .computeInt64Size(7, senderId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -328,6 +354,8 @@ public final class ProtoPushMessageMsg {
           != other.getMessageId()) return false;
       if (getMessageType()
           != other.getMessageType()) return false;
+      if (getMessageKind()
+          != other.getMessageKind()) return false;
       if (getGroupId()
           != other.getGroupId()) return false;
       if (!getMessageBody()
@@ -352,6 +380,8 @@ public final class ProtoPushMessageMsg {
           getMessageId());
       hash = (37 * hash) + MESSAGETYPE_FIELD_NUMBER;
       hash = (53 * hash) + getMessageType();
+      hash = (37 * hash) + MESSAGEKIND_FIELD_NUMBER;
+      hash = (53 * hash) + getMessageKind();
       hash = (37 * hash) + GROUPID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getGroupId());
@@ -510,6 +540,8 @@ public final class ProtoPushMessageMsg {
 
         messageType_ = 0;
 
+        messageKind_ = 0;
+
         groupId_ = 0L;
 
         messageBody_ = "";
@@ -546,6 +578,7 @@ public final class ProtoPushMessageMsg {
         com.creolophus.im.protobuf.ProtoPushMessageMsg.PushMessageMsg result = new com.creolophus.im.protobuf.ProtoPushMessageMsg.PushMessageMsg(this);
         result.messageId_ = messageId_;
         result.messageType_ = messageType_;
+        result.messageKind_ = messageKind_;
         result.groupId_ = groupId_;
         result.messageBody_ = messageBody_;
         result.receiverId_ = receiverId_;
@@ -603,6 +636,9 @@ public final class ProtoPushMessageMsg {
         }
         if (other.getMessageType() != 0) {
           setMessageType(other.getMessageType());
+        }
+        if (other.getMessageKind() != 0) {
+          setMessageKind(other.getMessageKind());
         }
         if (other.getGroupId() != 0L) {
           setGroupId(other.getGroupId());
@@ -698,15 +734,41 @@ public final class ProtoPushMessageMsg {
         return this;
       }
 
+      private int messageKind_ ;
+      /**
+       * <code>int32 messageKind = 3;</code>
+       */
+      public int getMessageKind() {
+        return messageKind_;
+      }
+      /**
+       * <code>int32 messageKind = 3;</code>
+       */
+      public Builder setMessageKind(int value) {
+        
+        messageKind_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 messageKind = 3;</code>
+       */
+      public Builder clearMessageKind() {
+        
+        messageKind_ = 0;
+        onChanged();
+        return this;
+      }
+
       private long groupId_ ;
       /**
-       * <code>int64 groupId = 3;</code>
+       * <code>int64 groupId = 4;</code>
        */
       public long getGroupId() {
         return groupId_;
       }
       /**
-       * <code>int64 groupId = 3;</code>
+       * <code>int64 groupId = 4;</code>
        */
       public Builder setGroupId(long value) {
         
@@ -715,7 +777,7 @@ public final class ProtoPushMessageMsg {
         return this;
       }
       /**
-       * <code>int64 groupId = 3;</code>
+       * <code>int64 groupId = 4;</code>
        */
       public Builder clearGroupId() {
         
@@ -726,7 +788,7 @@ public final class ProtoPushMessageMsg {
 
       private java.lang.Object messageBody_ = "";
       /**
-       * <code>string messageBody = 4;</code>
+       * <code>string messageBody = 5;</code>
        */
       public java.lang.String getMessageBody() {
         java.lang.Object ref = messageBody_;
@@ -741,7 +803,7 @@ public final class ProtoPushMessageMsg {
         }
       }
       /**
-       * <code>string messageBody = 4;</code>
+       * <code>string messageBody = 5;</code>
        */
       public com.google.protobuf.ByteString
           getMessageBodyBytes() {
@@ -757,7 +819,7 @@ public final class ProtoPushMessageMsg {
         }
       }
       /**
-       * <code>string messageBody = 4;</code>
+       * <code>string messageBody = 5;</code>
        */
       public Builder setMessageBody(
           java.lang.String value) {
@@ -770,7 +832,7 @@ public final class ProtoPushMessageMsg {
         return this;
       }
       /**
-       * <code>string messageBody = 4;</code>
+       * <code>string messageBody = 5;</code>
        */
       public Builder clearMessageBody() {
         
@@ -779,7 +841,7 @@ public final class ProtoPushMessageMsg {
         return this;
       }
       /**
-       * <code>string messageBody = 4;</code>
+       * <code>string messageBody = 5;</code>
        */
       public Builder setMessageBodyBytes(
           com.google.protobuf.ByteString value) {
@@ -795,13 +857,13 @@ public final class ProtoPushMessageMsg {
 
       private long receiverId_ ;
       /**
-       * <code>int64 receiverId = 5;</code>
+       * <code>int64 receiverId = 6;</code>
        */
       public long getReceiverId() {
         return receiverId_;
       }
       /**
-       * <code>int64 receiverId = 5;</code>
+       * <code>int64 receiverId = 6;</code>
        */
       public Builder setReceiverId(long value) {
         
@@ -810,7 +872,7 @@ public final class ProtoPushMessageMsg {
         return this;
       }
       /**
-       * <code>int64 receiverId = 5;</code>
+       * <code>int64 receiverId = 6;</code>
        */
       public Builder clearReceiverId() {
         
@@ -821,13 +883,13 @@ public final class ProtoPushMessageMsg {
 
       private long senderId_ ;
       /**
-       * <code>int64 senderId = 6;</code>
+       * <code>int64 senderId = 7;</code>
        */
       public long getSenderId() {
         return senderId_;
       }
       /**
-       * <code>int64 senderId = 6;</code>
+       * <code>int64 senderId = 7;</code>
        */
       public Builder setSenderId(long value) {
         
@@ -836,7 +898,7 @@ public final class ProtoPushMessageMsg {
         return this;
       }
       /**
-       * <code>int64 senderId = 6;</code>
+       * <code>int64 senderId = 7;</code>
        */
       public Builder clearSenderId() {
         
@@ -912,12 +974,12 @@ public final class ProtoPushMessageMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\024PushMessageMsg.proto\022\032com.creolophus.i" +
-      "m.protobuf\"\204\001\n\016PushMessageMsg\022\021\n\tmessage" +
-      "Id\030\001 \001(\003\022\023\n\013messageType\030\002 \001(\005\022\017\n\007groupId" +
-      "\030\003 \001(\003\022\023\n\013messageBody\030\004 \001(\t\022\022\n\nreceiverI" +
-      "d\030\005 \001(\003\022\020\n\010senderId\030\006 \001(\003B1\n\032com.creolop" +
-      "hus.im.protobufB\023ProtoPushMessageMsgb\006pr" +
-      "oto3"
+      "m.protobuf\"\231\001\n\016PushMessageMsg\022\021\n\tmessage" +
+      "Id\030\001 \001(\003\022\023\n\013messageType\030\002 \001(\005\022\023\n\013message" +
+      "Kind\030\003 \001(\005\022\017\n\007groupId\030\004 \001(\003\022\023\n\013messageBo" +
+      "dy\030\005 \001(\t\022\022\n\nreceiverId\030\006 \001(\003\022\020\n\010senderId" +
+      "\030\007 \001(\003B1\n\032com.creolophus.im.protobufB\023Pr" +
+      "otoPushMessageMsgb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -936,7 +998,7 @@ public final class ProtoPushMessageMsg {
     internal_static_com_creolophus_im_protobuf_PushMessageMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_creolophus_im_protobuf_PushMessageMsg_descriptor,
-        new java.lang.String[] { "MessageId", "MessageType", "GroupId", "MessageBody", "ReceiverId", "SenderId", });
+        new java.lang.String[] { "MessageId", "MessageType", "MessageKind", "GroupId", "MessageBody", "ReceiverId", "SenderId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

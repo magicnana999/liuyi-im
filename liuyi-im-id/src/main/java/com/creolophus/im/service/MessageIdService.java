@@ -24,16 +24,16 @@ public class MessageIdService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(MessageIdService.class);
 
     private static final int SECTION_CAPACITY = 10000;
-//    private static final int SECTION_CAPACITY = 2;
+    //    private static final int SECTION_CAPACITY = 2;
     private static final Long SECTION_ID_OFFSET = 1000000000L;
 
     private static final int SECTION_STEP = 10000;
-//    private static final int SECTION_STEP = 10;
+    //    private static final int SECTION_STEP = 10;
     private static final Long MESSAGE_ID_OFFSET = 0L;
     private static final Long MESSAGE_ID_PEAKED = 9999999999999999L;
 
 
-    private static final long batch =  SECTION_STEP>400?100:SECTION_STEP/4;
+    private static final long batch = SECTION_STEP > 400 ? 100 : SECTION_STEP / 4;
 
     @Resource
     private MessageIdStorage messageIdStorage;
@@ -171,8 +171,8 @@ public class MessageIdService extends BaseService {
 
     private Long makeSureSectionAllowAfterIncr(Long sectionId, long batch) {
 
-        if(batch>SECTION_STEP){
-            throw new RuntimeException("batch不能大于"+SECTION_STEP);
+        if(batch > SECTION_STEP) {
+            throw new RuntimeException("batch不能大于" + SECTION_STEP);
         }
 
         makeSureSectionInRedis(sectionId);
@@ -180,7 +180,7 @@ public class MessageIdService extends BaseService {
         MessageIdSection messageIdSection = messageIdStorage.getSection(sectionId);
         if(currentId > messageIdSection.getMaxId()) {
             messageIdStorage.delSection(sectionId);
-            return makeSureSectionAllowAfterIncr(sectionId,batch);
+            return makeSureSectionAllowAfterIncr(sectionId, batch);
         }
         return currentId;
     }
@@ -196,7 +196,7 @@ public class MessageIdService extends BaseService {
                     } else {
                         Long originMaxId = messageIdSection.getMaxId();
                         messageIdSection.setCurrentId(messageIdSection.getMaxId());
-                        messageIdSection.setMaxId(messageIdSection.getMaxId()+ messageIdSection.getStep());
+                        messageIdSection.setMaxId(messageIdSection.getMaxId() + messageIdSection.getStep());
                         updateSectionCurrentAndMax(sectionId, messageIdSection.getCurrentId(), originMaxId);
                         messageIdStorage.setSectionHash(messageIdSection);
                         return messageIdSection.getCurrentId();
@@ -204,10 +204,10 @@ public class MessageIdService extends BaseService {
                 } finally {
                     messageIdStorage.unlockSetSection(sectionId);
                 }
-            }else{
+            } else {
                 return makeSureSectionInRedis(sectionId);
             }
-        }else{
+        } else {
             return currentId;
         }
     }
@@ -222,7 +222,7 @@ public class MessageIdService extends BaseService {
     }
 
     private void updateSectionCurrentAndMax(Long sectionId, Long currentId, Long originMaxId) {
-        sectionDao.updateCurrentAndMax(currentId,sectionId,originMaxId);
+        sectionDao.updateCurrentAndMax(currentId, sectionId, originMaxId);
     }
 
 }

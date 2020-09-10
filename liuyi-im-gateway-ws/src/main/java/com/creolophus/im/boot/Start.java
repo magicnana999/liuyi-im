@@ -36,7 +36,7 @@ public class Start extends WebStart {
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
     @Bean
-    public CommandSerializer commandSerializer(){
+    public CommandSerializer commandSerializer() {
         return new FastJSONSerializer();
     }
 
@@ -76,10 +76,9 @@ public class Start extends WebStart {
     }
 
     @Bean
-    public WebSocketContextValidator webSocketContextValidator(){
+    public WebSocketContextValidator webSocketContextValidator() {
         return new WebSocketContextValidator();
     }
-
 
 
 }

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 暂未使用
- *
  * @author magicnana
  * @date 2019/12/20 下午1:51
  */
@@ -60,19 +59,19 @@ public class LiuYiApiContextValidator extends ApiContextValidator {
         }
     }
 
+    @Override
+    public void initContext(HttpServletRequest request) {
+        super.initContext(request);
+        if(request != null) {
+            initAppKeyIfExist(request);
+        }
+    }
+
     public void setAppKeyByMdc(String appKey) {
         MDC.put(GlobalSetting.MDC_EXT, getExtByContext());
     }
 
     public void validateAppKey(HttpServletRequest request) {
         initAppKey_(request, true);
-    }
-
-    @Override
-    public void initContext(HttpServletRequest request) {
-        super.initContext(request);
-        if(request!=null){
-            initAppKeyIfExist(request);
-        }
     }
 }

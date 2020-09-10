@@ -19,7 +19,7 @@ public class MessageIdServiceTest extends BaseTest {
     public MessageIdService messageIdService;
 
     @Test
-    public void createSectionUserIfNotExistTest(){
+    public void createSectionUserIfNotExistTest() {
         messageIdService.createSectionUserIfNotExist(1L);
         messageIdService.createSectionUserIfNotExist(2L);
         messageIdService.createSectionUserIfNotExist(3L);
@@ -35,43 +35,43 @@ public class MessageIdServiceTest extends BaseTest {
     }
 
     @Test
-    public void nextIdTest(){
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
-        System.out.println(messageIdService.nextId((long)101));
+    public void nextIdTest() {
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
+        System.out.println(messageIdService.nextId((long) 101));
 
-        System.out.println(messageIdService.nextId((long)102));
-        System.out.println(messageIdService.nextId((long)102));
-        System.out.println(messageIdService.nextId((long)102));
-        System.out.println(messageIdService.nextId((long)102));
-        System.out.println(messageIdService.nextId((long)102));
+        System.out.println(messageIdService.nextId((long) 102));
+        System.out.println(messageIdService.nextId((long) 102));
+        System.out.println(messageIdService.nextId((long) 102));
+        System.out.println(messageIdService.nextId((long) 102));
+        System.out.println(messageIdService.nextId((long) 102));
 
-        System.out.println(messageIdService.nextId((long)103));
-        System.out.println(messageIdService.nextId((long)103));
-        System.out.println(messageIdService.nextId((long)103));
-        System.out.println(messageIdService.nextId((long)103));
-        System.out.println(messageIdService.nextId((long)103));
-        System.out.println(messageIdService.nextId((long)103));
+        System.out.println(messageIdService.nextId((long) 103));
+        System.out.println(messageIdService.nextId((long) 103));
+        System.out.println(messageIdService.nextId((long) 103));
+        System.out.println(messageIdService.nextId((long) 103));
+        System.out.println(messageIdService.nextId((long) 103));
+        System.out.println(messageIdService.nextId((long) 103));
     }
 
     @Test
-    public void nextIdTest2(){
-        System.out.println(messageIdService.nextId((long)104));
-        System.out.println(messageIdService.nextId((long)105));
-        System.out.println(messageIdService.nextId((long)106));
-        System.out.println(messageIdService.nextId((long)107));
-        System.out.println(messageIdService.nextId((long)108));
-        System.out.println(messageIdService.nextId((long)109));
-        System.out.println(messageIdService.nextId((long)110));
-        System.out.println(messageIdService.nextId((long)111));
+    public void nextIdTest2() {
+        System.out.println(messageIdService.nextId((long) 104));
+        System.out.println(messageIdService.nextId((long) 105));
+        System.out.println(messageIdService.nextId((long) 106));
+        System.out.println(messageIdService.nextId((long) 107));
+        System.out.println(messageIdService.nextId((long) 108));
+        System.out.println(messageIdService.nextId((long) 109));
+        System.out.println(messageIdService.nextId((long) 110));
+        System.out.println(messageIdService.nextId((long) 111));
     }
 
 }

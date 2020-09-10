@@ -60,9 +60,11 @@ public class AbstractNettyClient extends AbstractNettyInstance {
     public AbstractNettyClient(
             NettyClientConfig nettyClientConfig,
             TracerUtil tracerUtil,
-            RequestProcessor requestProcessor, NettyClientChannelEventListener nettyClientChannelEventListener, MessageCoder messageCoder) {
+            RequestProcessor requestProcessor,
+            NettyClientChannelEventListener nettyClientChannelEventListener,
+            MessageCoder messageCoder) {
 
-        this.nettyClientConfig= nettyClientConfig;
+        this.nettyClientConfig = nettyClientConfig;
         this.tracerUtil = tracerUtil;
         this.requestProcessor = requestProcessor;
         this.nettyClientChannelEventListener = nettyClientChannelEventListener;
@@ -81,18 +83,22 @@ public class AbstractNettyClient extends AbstractNettyInstance {
     }
 
     public Channel createChannel() {
-        if (channel==null) {
+        if(channel == null) {
             ChannelFuture channelFuture = this.bootstrap.connect(NettyUtil.string2SocketAddress(nettyClientConfig.getNettyAddress()));
             this.channel = channelFuture.channel();
         }
         return channel;
     }
 
-    private void invokeAsyncImpl(final Channel channel, final Command request, final long timeoutMillis, final BiConsumer<Command,Command> consumer) throws InterruptedException {
+    private void invokeAsyncImpl(
+            final Channel channel,
+            final Command request,
+            final long timeoutMillis,
+            final BiConsumer<Command, Command> consumer) throws InterruptedException {
         long beginStartTime = System.currentTimeMillis();
         final String commandSeq = request.getHeader().getSeq();
         boolean acquired = this.semaphoreAsync.tryAcquire(timeoutMillis, TimeUnit.MILLISECONDS);
-        if (acquired) {
+        if(acquired) {
             final SemaphoreReleaseOnlyOnce once = new SemaphoreReleaseOnlyOnce(this.semaphoreAsync);
             long costTime = System.currentTimeMillis() - beginStartTime;
             //TODO..
@@ -101,39 +107,40 @@ public class AbstractNettyClient extends AbstractNettyInstance {
 //                throw new NettyTimeoutException("invokeAsync call timeout");
 //            }
 
-            final ResponseFuture responseFuture = new ResponseFuture(channel, commandSeq, timeoutMillis - costTime, consumer, once,request);
+            final ResponseFuture responseFuture = new ResponseFuture(channel, commandSeq, timeoutMillis - costTime, consumer, once, request);
             this.responseTable.put(commandSeq, responseFuture);
             channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
-                if (f.isSuccess()) {
+                if(f.isSuccess()) {
                     responseFuture.setSendOk(true);
                     if(logger.isDebugEnabled()) {
                         logger.debug("发送命令 {}", JSON.toJSONString(request));
                     }
                     return;
                 }
-                requestFail(commandSeq,f.cause());
+                requestFail(commandSeq, f.cause());
             });
         } else {
-                throw new NettyTooMuchRequestException("invokeAsyncImpl invoke too much length:"+semaphoreAsync.getQueueLength()+",available:"+semaphoreAsync.availablePermits());
+            throw new NettyTooMuchRequestException("invokeAsyncImpl invoke too much length:" + semaphoreAsync.getQueueLength() + ",available:" + semaphoreAsync.availablePermits());
         }
     }
 
-    private void invokeOnewayImpl(final Channel channel, final Command request, final long timeoutMillis) throws InterruptedException{
+    private void invokeOnewayImpl(final Channel channel, final Command request, final long timeoutMillis) throws InterruptedException {
         boolean acquired = this.semaphoreOneway.tryAcquire(timeoutMillis, TimeUnit.MILLISECONDS);
-        if (acquired) {
+        if(acquired) {
             final SemaphoreReleaseOnlyOnce once = new SemaphoreReleaseOnlyOnce(this.semaphoreOneway);
-                channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
-                    once.release();
-                    if(f.isSuccess()) {
-                        if(logger.isDebugEnabled()) {
-                            logger.debug("发送命令 {}", JSON.toJSONString(request));
-                        }
-                    } else {
-                        requestFail(request.getHeader().getSeq(),f.cause());
+            channel.writeAndFlush(request).addListener((ChannelFutureListener) f -> {
+                once.release();
+                if(f.isSuccess()) {
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("发送命令 {}", JSON.toJSONString(request));
                     }
-                });
+                } else {
+                    requestFail(request.getHeader().getSeq(), f.cause());
+                }
+            });
         } else {
-            throw new NettyTooMuchRequestException("invokeAsyncImpl invoke too much length:"+semaphoreOneway.getQueueLength()+",available:"+semaphoreOneway.availablePermits());
+            throw new NettyTooMuchRequestException("invokeAsyncImpl invoke too much length:" + semaphoreOneway.getQueueLength() + ",available:" + semaphoreOneway
+                    .availablePermits());
         }
     }
 
@@ -220,24 +227,24 @@ public class AbstractNettyClient extends AbstractNettyInstance {
                 });
     }
 
-    public void sendAsync(Command request, long timeoutMillis, BiConsumer<Command,Command> consumer) throws InterruptedException {
+    public void sendAsync(Command request, long timeoutMillis, BiConsumer<Command, Command> consumer) throws InterruptedException {
         long beginStartTime = System.currentTimeMillis();
         final Channel channel = this.createChannel();
-        if (channel != null && channel.isActive()) {
-                long costTime = System.currentTimeMillis() - beginStartTime;
+        if(channel != null && channel.isActive()) {
+            long costTime = System.currentTimeMillis() - beginStartTime;
 //                if (timeoutMillis < costTime) {
 //                    throw new NettyTimeoutException("invokeAsync call timeout");
 //                }
-                this.invokeAsyncImpl(channel, request, timeoutMillis - costTime, consumer);
+            this.invokeAsyncImpl(channel, request, timeoutMillis - costTime, consumer);
         } else {
             this.closeChannel(channel);
             throw new NettyException("channel could not be used");
         }
     }
 
-    public void sendOneway(Command request, long timeoutMillis) throws InterruptedException{
+    public void sendOneway(Command request, long timeoutMillis) throws InterruptedException {
         final Channel channel = this.createChannel();
-        if (channel != null && channel.isActive()) {
+        if(channel != null && channel.isActive()) {
             this.invokeOnewayImpl(channel, request, timeoutMillis);
         } else {
             this.closeChannel(channel);
@@ -278,7 +285,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
         protected void channelRead0(ChannelHandlerContext ctx, Command msg) {
             if(msg.getHeader().getCode() == Header.MSG) {
                 processRequestCommand(ctx, msg);
-            }else{
+            } else {
                 processResponseCommand(ctx, msg);
             }
         }
@@ -294,7 +301,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             return command;
         }
 
-        protected void processRequestCommand(ChannelHandlerContext ctx,Command command){
+        protected void processRequestCommand(ChannelHandlerContext ctx, Command command) {
             Command response = handleRequest(command);
             response(ctx, response);
         }
@@ -303,7 +310,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
 
             final String commandSeq = command.getHeader().getSeq();
             final ResponseFuture responseFuture = responseTable.get(commandSeq);
-            if (responseFuture != null) {
+            if(responseFuture != null) {
                 responseTable.remove(commandSeq);
                 responseFuture.putResponse(command);
                 responseFuture.release();
@@ -324,32 +331,32 @@ public class AbstractNettyClient extends AbstractNettyInstance {
 
         @Override
         public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) throws Exception {
-            SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientConnect");
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientConnect");
             super.connect(ctx, remoteAddress, localAddress, promise);
-            logger.info("{}",ctx.channel());
-            if(nettyClientChannelEventListener !=null){
-                nettyClientChannelEventListener.onConnect(ctx,remoteAddress,localAddress,promise);
+            logger.info("{}", ctx.channel());
+            if(nettyClientChannelEventListener != null) {
+                nettyClientChannelEventListener.onConnect(ctx, remoteAddress, localAddress, promise);
             }
         }
 
         @Override
         public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-            SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientDisConnect");
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientDisConnect");
             closeChannel(ctx.channel());
             super.disconnect(ctx, promise);
-            logger.info("{}",ctx.channel());
-            if(nettyClientChannelEventListener !=null){
-                nettyClientChannelEventListener.onDisconnect(ctx,promise);
+            logger.info("{}", ctx.channel());
+            if(nettyClientChannelEventListener != null) {
+                nettyClientChannelEventListener.onDisconnect(ctx, promise);
             }
         }
 
         @Override
         public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
 
-            SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientClose");
-            logger.info("{}",ctx.channel());
-            if(nettyClientChannelEventListener !=null){
-                nettyClientChannelEventListener.onClose(ctx,promise);
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientClose");
+            logger.info("{}", ctx.channel());
+            if(nettyClientChannelEventListener != null) {
+                nettyClientChannelEventListener.onClose(ctx, promise);
             }
         }
 
@@ -361,7 +368,7 @@ public class AbstractNettyClient extends AbstractNettyInstance {
 
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-            SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientEventTriggered");
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientEventTriggered");
             if(logger.isDebugEnabled()) {
                 logger.debug("{} {}", ctx.channel(), evt);
             }
@@ -374,17 +381,17 @@ public class AbstractNettyClient extends AbstractNettyInstance {
             }
 
             ctx.fireUserEventTriggered(evt);
-            if(nettyClientChannelEventListener!=null){
-                nettyClientChannelEventListener.onUserEventTriggered(ctx,evt);
+            if(nettyClientChannelEventListener != null) {
+                nettyClientChannelEventListener.onUserEventTriggered(ctx, evt);
             }
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-            SleuthNettyAdapter.getInstance().begin(tracerUtil,"NettyClientExceptionCaught");
+            SleuthNettyAdapter.getInstance().begin(tracerUtil, "NettyClientExceptionCaught");
             ctx.fireExceptionCaught(cause);
-            if(nettyClientChannelEventListener !=null){
-                nettyClientChannelEventListener.onExceptionCaught(ctx,cause);
+            if(nettyClientChannelEventListener != null) {
+                nettyClientChannelEventListener.onExceptionCaught(ctx, cause);
             }
         }
     }

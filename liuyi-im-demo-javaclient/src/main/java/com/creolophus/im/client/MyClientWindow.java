@@ -32,7 +32,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     private static UserTest.狗男女 currentUser;
     private JPanel contentPane;
     private JTextArea txt;
-//    private JTextField txtip;
+    //    private JTextField txtip;
     private JTextField txtSend;
 
     private JComboBox<UserTest.狗男女> currentUserBox;
@@ -74,7 +74,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
             @Override
             public void mouseClicked(MouseEvent e) {
 //                ConnectionManager.getChatManager().connect(txtip.getText());
-                currentUser = (UserTest.狗男女)currentUserBox.getSelectedItem();
+                currentUser = (UserTest.狗男女) currentUserBox.getSelectedItem();
 
 //                liuyiImClient = ImClientFactory.getSocketImClient(new Configration(),MyClientWindow.this);
                 liuyiImClient.login(currentUser.token, new BiConsumer<Command, Command>() {
@@ -117,33 +117,36 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
         });
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
 
-        gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(
-                Alignment.TRAILING,
-                gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(gl_contentPane.createSequentialGroup()
-                                .addComponent(txtSend, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(Alignment.LEADING,
-                                gl_contentPane.createSequentialGroup()
-                                        .addComponent(currentUserBox, GroupLayout.PREFERRED_SIZE, 294,
-                                                GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                        .addComponent(btnConnect, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
-                        .addComponent(txt, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)).addContainerGap()));
+        gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                                                  .addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+                                                          .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                                                                            .addGroup(gl_contentPane.createSequentialGroup()
+                                                                                              .addComponent(txtSend, GroupLayout.DEFAULT_SIZE, 325,
+                                                                                                            Short.MAX_VALUE)
+                                                                                              .addPreferredGap(ComponentPlacement.RELATED)
+                                                                                              .addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 109,
+                                                                                                            GroupLayout.PREFERRED_SIZE))
+                                                                            .addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+                                                                                    .addComponent(currentUserBox, GroupLayout.PREFERRED_SIZE, 294,
+                                                                                                  GroupLayout.PREFERRED_SIZE)
+                                                                                    .addPreferredGap(ComponentPlacement.RELATED)
+                                                                                    .addComponent(btnConnect, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                                                                            .addComponent(txt, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+                                                          .addContainerGap()));
 
         gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_contentPane.createSequentialGroup()
-                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(currentUserBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnConnect))
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addComponent(txt, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addComponent(btnSend)
-                                .addComponent(txtSend, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                        GroupLayout.PREFERRED_SIZE))));
+                                                .addGroup(gl_contentPane.createSequentialGroup()
+                                                                  .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                                                                                    .addComponent(currentUserBox, GroupLayout.PREFERRED_SIZE,
+                                                                                                  GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                    .addComponent(btnConnect))
+                                                                  .addPreferredGap(ComponentPlacement.RELATED)
+                                                                  .addComponent(txt, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                                                                  .addPreferredGap(ComponentPlacement.RELATED)
+                                                                  .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                                                                                    .addComponent(btnSend)
+                                                                                    .addComponent(txtSend, GroupLayout.PREFERRED_SIZE,
+                                                                                                  GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))));
 
         contentPane.setLayout(gl_contentPane);
     }
@@ -161,10 +164,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     @Override
     public void onConnect(
-            ChannelHandlerContext ctx,
-            SocketAddress remoteAddress,
-            SocketAddress localAddress,
-            ChannelPromise promise) {
+            ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) {
 
     }
 
@@ -185,7 +185,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
     @Override
     public PushMessageAck receivePushMessage(Command command) {
-        System.out.println("收到推送"+ JSON.toJSONString(command));
+        System.out.println("收到推送" + JSON.toJSONString(command));
         PushMessageMsg pushMessageMsg = messageCoderSelector.getMessageCoder().decode(command.getBody(), PushMessageMsg.class);
         UserTest.狗男女 target = UserTest.valueOf(pushMessageMsg.getSenderId());
         appendText(target.toString() + ": " + pushMessageMsg.getMessageBody());
@@ -198,8 +198,8 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
     }
 
 
-    public void sendMessage(){
-        UserTest.狗男女 target = (UserTest.狗男女)currentUserBox.getSelectedItem();
+    public void sendMessage() {
+        UserTest.狗男女 target = (UserTest.狗男女) currentUserBox.getSelectedItem();
 
         liuyiImClient.sendMessage(1, txtSend.getText(), target.userId, new BiConsumer<Command, Command>() {
             @Override

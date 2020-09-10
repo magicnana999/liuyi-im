@@ -86,28 +86,26 @@ public class ProtoCoder implements MessageCoder {
     }
 
     public ProtoCommand.Command toCommand(Command command) {
-        if(command == null){
+        if(command == null) {
             throw new NullPointerException();
         }
 
         ProtoCommand.Command.Builder builder = ProtoCommand.Command.newBuilder();
-        if(command.getHeader()!=null){
+        if(command.getHeader() != null) {
             Header header = command.getHeader();
             ProtoCommand.Command.Header.Builder headerBuilder = ProtoCommand.Command.Header.newBuilder();
-            headerBuilder.setCode(header.getCode()).
-                    setType(header.getType())
-                    .setSeq(header.getSeq());
-            if(StringUtils.isNotBlank(header.getError())){
+            headerBuilder.setCode(header.getCode()).setType(header.getType()).setSeq(header.getSeq());
+            if(StringUtils.isNotBlank(header.getError())) {
                 headerBuilder.setError(header.getError());
             }
             builder.setHeader(headerBuilder);
         }
 
-        if(StringUtils.isNotBlank(command.getToken())){
+        if(StringUtils.isNotBlank(command.getToken())) {
             builder.setToken(command.getToken());
         }
 
-        if(null != command.getBody()){
+        if(null != command.getBody()) {
             builder.setBody(Any.pack(this.encode(command.getBody())));
         }
 

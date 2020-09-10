@@ -2,6 +2,7 @@ package com.creolophus.im.sdk;
 
 import com.creolophus.im.coder.MessageCoder;
 import com.creolophus.im.coder.MessageCoderSelector;
+import com.creolophus.im.internal.MessageText;
 import com.creolophus.im.netty.config.NettyClientConfig;
 import com.creolophus.im.netty.core.AbstractNettyClient;
 import com.creolophus.im.netty.core.NettyClientChannelEventListener;
@@ -12,6 +13,7 @@ import com.creolophus.im.netty.exception.NettyError;
 import com.creolophus.im.protocol.Command;
 import com.creolophus.im.protocol.CommandType;
 import com.creolophus.im.protocol.Header;
+import com.creolophus.im.protocol.MessageKind;
 import com.creolophus.im.type.LoginAck;
 import com.creolophus.im.type.LoginMsg;
 import com.creolophus.im.type.SendMessageMsg;
@@ -69,7 +71,8 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
 
     private Command buildSendMessageCommand(int messageType, String messageBody, long targetId) {
         SendMessageMsg input = new SendMessageMsg();
-        input.setMessageBody(messageBody);
+        input.setMessageKind(MessageKind.TEXT.value());
+        input.setMessageBody(new MessageText(messageBody));
         input.setMessageType(messageType);
         input.setTargetId(targetId);
         Command command = Command.newMsg(CommandType.SEND_MESSAGE.value(), input).withToken(context.getToken());
@@ -129,31 +132,6 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
         abstractNettyClient.createChannel();
     }
 
-    private Object processRequestInner(Command command) {
-        if(command.getHeader().getCode() == Header.MSG) {
-            switch (CommandType.valueOf(command.getHeader().getType())) {
-                case PUSH_MESSAGE:
-                    return messageReceiver.receivePushMessage(command);
-                default:
-                    return null;
-            }
-        }
-        return null;
-    }
-
-    private void sendCommand(Command request, BiConsumer<Command, Command> consumer) {
-        try {
-            abstractNettyClient.sendAsync(request, 100, consumer);
-        } catch (Throwable e) {
-            throw new RuntimeException("无法发送消息", e);
-        }
-    }
-
-    @Override
-    public void verify(Command msg) {
-
-    }
-
     @Override
     public Object processRequest(Command cmd) {
 
@@ -174,5 +152,30 @@ public class NettyImClient implements LiuyiImClient, RequestProcessor {
             response = Command.newAck(cmd.getHeader().getSeq(), cmd.getHeader().getType(), NettyError.E_ERROR);
         }
         return response;
+    }
+
+    @Override
+    public void verify(Command msg) {
+
+    }
+
+    private Object processRequestInner(Command command) {
+        if(command.getHeader().getCode() == Header.MSG) {
+            switch (CommandType.valueOf(command.getHeader().getType())) {
+                case PUSH_MESSAGE:
+                    return messageReceiver.receivePushMessage(command);
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+    private void sendCommand(Command request, BiConsumer<Command, Command> consumer) {
+        try {
+            abstractNettyClient.sendAsync(request, 100, consumer);
+        } catch (Throwable e) {
+            throw new RuntimeException("无法发送消息", e);
+        }
     }
 }

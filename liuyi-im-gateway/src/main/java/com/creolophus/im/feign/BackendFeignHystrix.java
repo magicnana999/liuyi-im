@@ -20,8 +20,7 @@ public class BackendFeignHystrix implements BackendFeign {
     }
 
     @Override
-    public Long sendMessage(
-            String appKey, Long senderId, Integer messageType, Long targetId, String sendTime, String messageBod) {
+    public Long sendMessage(String appKey, Long senderId, Integer messageType, Integer messageKind, Long targetId, String sendTime, String messageBod) {
         return null;
     }
 

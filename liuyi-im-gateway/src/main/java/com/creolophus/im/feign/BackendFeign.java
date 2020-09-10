@@ -25,7 +25,7 @@ public interface BackendFeign {
     Long sendMessage(
             @RequestParam("appKey") String appKey,
             @RequestParam("senderId") Long senderId,
-            @RequestParam("messageType") Integer messageType,
+            @RequestParam("messageType") Integer messageType, @RequestParam("messageKind") Integer messageKind,
             @RequestParam("targetId") Long targetId,
             @RequestParam("sendTime") String sendTime,
             @RequestParam("messageBody") String messageBod);

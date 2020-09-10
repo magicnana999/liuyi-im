@@ -39,7 +39,8 @@ public class MessageService {
     public SendMessageAck sendMessage(SendMessageMsg m) {
         SimpleDateFormat format = new SimpleDateFormat(LiuyiSetting.MESSAGE_SEND_TIME_PATTERN);
         String sendTime = format.format(new Date());
-        Long messageId = backendFeign.sendMessage(getAppKey(), getUserId(), m.getMessageType(), m.getTargetId(), sendTime, m.getMessageBody());
+        Long messageId = backendFeign.sendMessage(getAppKey(), getUserId(), m.getMessageType(), m.getMessageKind(), m.getTargetId(), sendTime,
+                                                  m.getMessageBody());
         logger.info("消息发送 完成 {} -> {}.{}", getUserId(), m.getTargetId(), messageId);
         return new SendMessageAck(messageId);
     }

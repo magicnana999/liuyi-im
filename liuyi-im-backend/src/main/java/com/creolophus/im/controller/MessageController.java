@@ -34,9 +34,13 @@ public class MessageController extends BaseController {
     public ApiResult getList(
             @RequestParam("receiverId") Long receiverId,
             @RequestParam(value = "messageId", required = false, defaultValue = "0") Long messageId,
+            @RequestParam(value = "groupId", required = false) Long groupId,
+            @RequestParam(value = "senderId", required = false) Long senderId,
+            @RequestParam(value = "messageType", required = false) Integer messageType,
+            @RequestParam(value = "messageKind", required = false) Integer messageKind,
             @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
-        List<Message> list = messageService.findMessageList(receiverId, messageId, pageNo, pageSize);
+        List<Message> list = messageService.findMessageList(receiverId, messageId, groupId, senderId, messageType, messageKind, pageNo, pageSize);
         return new ApiResult(list);
     }
 

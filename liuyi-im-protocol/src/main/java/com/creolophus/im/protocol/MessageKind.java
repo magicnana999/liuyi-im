@@ -5,7 +5,7 @@ package com.creolophus.im.protocol;
  * @date 2020/8/19 4:33 PM
  */
 public enum MessageKind {
-    CUSTOM(0), TEXT(1), URL(2), IMAGE(3), AUDIO(4), VIDEO(5),
+    TEXT(1), URL(2), IMAGE(3), AUDIO(4), VIDEO(5),
     ;
 
     int value;

@@ -7,6 +7,7 @@ import com.creolophus.im.protocol.MessageType;
 import com.creolophus.im.storage.MessageStorage;
 import com.creolophus.im.thread.StopableThread;
 import com.creolophus.liuyi.common.thread.Stopable;
+import org.beetl.sql.core.query.LambdaQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,9 +48,34 @@ public class MessageService extends BaseService implements Stopable {
         return messageStorage.asyncMessage(message);
     }
 
-    public List<Message> findMessageList(Long receiverId, Long messageId, Integer pageNo, Integer pageSize) {
-        return messageDao.createLambdaQuery().andEq(Message::getReceiverId, receiverId).andGreat(Message::getMessageId, messageId)
-                .asc(Message::getMessageId).page(pageNo, pageSize).getList();
+    public List<Message> findMessageList(
+            Long receiverId, Long messageId, Long groupId, Long senderId, Integer messageType, Integer messageKind, Integer pageNo, Integer pageSize) {
+        LambdaQuery<Message> query = messageDao.createLambdaQuery();
+        if(receiverId != null) {
+            query.andEq(Message::getReceiverId, receiverId);
+        }
+
+        if(messageId != null) {
+            query.andGreat(Message::getMessageId, messageId);
+        }
+
+        if(groupId != null) {
+            query.andEq(Message::getGroupId, groupId);
+        }
+
+        if(senderId != null) {
+            query.andEq(Message::getSenderId, senderId);
+        }
+
+        if(messageType != null) {
+            query.andEq(Message::getMessageType, messageType);
+        }
+
+        if(messageKind != null) {
+            query.andEq(Message::getMessageKind, messageKind);
+        }
+
+        return query.asc(Message::getMessageId).page(pageNo, pageSize).getList();
     }
 
     public List<Message> findUnreadMessageList(Long receiverId, Long messageId) {

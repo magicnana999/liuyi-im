@@ -46,9 +46,6 @@ spec:
         - name: application-k8s
           mountPath: /config/application-k8s.yaml
           subPath: path/to/application-k8s.yaml
-        - name: application-rocketmq
-          mountPath: /config/application-rocketmq.yaml
-          subPath: path/to/application-rocketmq.yaml
 
 
       volumes:
@@ -77,13 +74,6 @@ spec:
             items:
             - key: application-k8s.yaml
               path: path/to/application-k8s.yaml
-        - name: application-rocketmq
-          configMap:
-            name: liuyi-im-config
-            defaultMode: 0777
-            items:
-            - key: application-rocketmq.yaml
-              path: path/to/application-rocketmq.yaml
 
 
 ---

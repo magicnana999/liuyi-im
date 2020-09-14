@@ -29,3 +29,5 @@ rebel.xml
 **/resources/dev/
 **/resources/prod/
 liuyi-im-config-prod.yaml
+liuyi-im-backend/liuyi-im-backend.yaml
+liuyi-im-gateway-sk/liuyi-im-gateway-sk.yaml

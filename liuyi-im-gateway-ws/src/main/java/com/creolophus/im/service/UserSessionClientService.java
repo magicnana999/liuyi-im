@@ -1,6 +1,7 @@
 package com.creolophus.im.service;
 
 import com.alibaba.fastjson.JSON;
+import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.domain.UserSession;
@@ -26,8 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserSessionClientService extends UserClientService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserSessionClientService.class);
-
-
     private static final ConcurrentHashMap<Long/*userId*/, UserSession> userTable = new ConcurrentHashMap();
     private static final ConcurrentHashMap<String/*channelId*/, UserSession> sessionTable = new ConcurrentHashMap();
     @Resource
@@ -35,6 +34,9 @@ public class UserSessionClientService extends UserClientService {
 
     @Resource
     private ContextProcessor contextProcessor;
+
+    @Resource
+    private GatewayConfig gatewayConfig;
 
     protected String getAppKey() {
         return contextProcessor.getAppKey();
@@ -94,7 +96,7 @@ public class UserSessionClientService extends UserClientService {
         client.setAppKey(getAppKey());
         client.setSocketType(UserChannel.SocketType.SOCKET.getValue());
         registerUserClient(client);
-        backendFeign.registerUserClient("127.0.0.1", 33008, client.getUserId());
+        backendFeign.registerUserClient(gatewayConfig.getListenIp(), gatewayConfig.getListenPort(), client.getUserId());
 
         LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
@@ -135,7 +137,7 @@ public class UserSessionClientService extends UserClientService {
     }
 
     public void unregisterUserClient(UserSession client) {
-        backendFeign.unregisterUserClient("127.0.0.1", 33008, client.getUserId());
+        backendFeign.unregisterUserClient(gatewayConfig.getListenIp(), gatewayConfig.getListenPort(), client.getUserId());
         removeUserTable(client);
         removeSessionTable(client);
     }

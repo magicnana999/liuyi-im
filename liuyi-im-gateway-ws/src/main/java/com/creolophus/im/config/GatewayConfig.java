@@ -12,17 +12,10 @@ import org.springframework.stereotype.Component;
 public class GatewayConfig extends NettyServerConfig {
 
 
-    @Value("${server.socketPort}")
+    @Value("${server.port}")
     private int port;
 
-    @Value("${server.port}")
-    private int httpPort;
-
     private String POD_IP = System.getenv("POD_IP");
-
-    public int getHttpPort() {
-        return httpPort;
-    }
 
     @Override
     public String getListenIp() {

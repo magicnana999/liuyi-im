@@ -1,5 +1,6 @@
 package com.creolophus.im.service;
 
+import com.creolophus.im.config.GatewayConfig;
 import com.creolophus.im.domain.UserChannel;
 import com.creolophus.im.domain.UserClient;
 import com.creolophus.im.feign.BackendFeign;
@@ -31,11 +32,14 @@ public class UserChannelClientService extends UserClientService {
     private static final ConcurrentHashMap<Long/*userId*/, UserChannel> userTable = new ConcurrentHashMap();
     private static final ConcurrentHashMap<String/*channelId*/, UserChannel> channelTable = new ConcurrentHashMap();
 
-    @Resource
-    private BackendFeign backendFeign;
 
     @Resource
+    private BackendFeign backendFeign;
+    @Resource
     private ContextProcessor contextProcessor;
+
+    @Resource
+    private GatewayConfig gatewayConfig;
 
     private String getAppKey() {
         return contextProcessor.getAppKey();
@@ -84,7 +88,7 @@ public class UserChannelClientService extends UserClientService {
         client.setAppKey(getAppKey());
         client.setSocketType(UserChannel.SocketType.SOCKET.getValue());
         registerUserClient(client);
-        backendFeign.registerUserClient("127.0.0.1", 33010, client.getUserId());
+        backendFeign.registerUserClient(gatewayConfig.getListenIp(), gatewayConfig.getHttpPort(), client.getUserId());
 
         LoginAck ret = new LoginAck();
         ret.setAppKey(getAppKey());
@@ -128,7 +132,7 @@ public class UserChannelClientService extends UserClientService {
     }
 
     public void unregisterUserClient(UserChannel client) {
-        backendFeign.unregisterUserClient("127.0.0.1", 33010, client.getUserId());
+        backendFeign.unregisterUserClient(gatewayConfig.getListenIp(), gatewayConfig.getHttpPort(), client.getUserId());
         removeUserTable(client);
         removeChannelTable(client);
         logger.info("用户断开 完成 {}.{}", client.getAppKey(), client.getUserId());

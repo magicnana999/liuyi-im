@@ -32,6 +32,6 @@ public class NettyClientConfig implements Cloneable {
     }
 
     public String getNettyAddress() {
-        return "127.0.0.1:33009";
+        return "im.697835.com:30081";
     }
 }

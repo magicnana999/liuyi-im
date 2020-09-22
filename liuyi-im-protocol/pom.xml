@@ -5,7 +5,7 @@
     <parent>
         <artifactId>liuyi-im</artifactId>
         <groupId>com.creolophus</groupId>
-        <version>0.9.2-SNAPSHOT</version>
+        <version>0.9.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,9 +21,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.creolophus</groupId>
+            <groupId>com.github.magicnana999.liuyi-common</groupId>
             <artifactId>liuyi-common-json</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
@@ -103,4 +103,11 @@
 
     </build>
 
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

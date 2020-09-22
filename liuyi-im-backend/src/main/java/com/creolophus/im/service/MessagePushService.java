@@ -40,7 +40,7 @@ public class MessagePushService extends BaseService {
     }
 
     public <T> T push(String gatewayIp, int gatewayPort, Message message) {
-        String url = "http://" + gatewayIp + ":" + gatewayPort + "/liuyi/gateway/message/push";
+        String url = "http://" + gatewayIp + ":" + gatewayPort + "/liuyiim/gateway/message/push";
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap();
         parameters.add("messageId", message.getMessageId());
         parameters.add("messageType", message.getMessageType());

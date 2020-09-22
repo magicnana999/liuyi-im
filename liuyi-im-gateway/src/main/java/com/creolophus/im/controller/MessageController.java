@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/gateway/message", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/gateway/message", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class MessageController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);

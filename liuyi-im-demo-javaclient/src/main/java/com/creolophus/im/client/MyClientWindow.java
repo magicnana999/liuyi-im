@@ -103,7 +103,7 @@ public class MyClientWindow extends JFrame implements NettyClientChannelEventLis
 
 
         txtSend = new JTextField();
-        txtSend.setText("hello");
+        txtSend.setText("连接前要加入 IP 白名单,否则无法连接");
         txtSend.setColumns(10);
 
         JButton btnSend = new JButton("send");

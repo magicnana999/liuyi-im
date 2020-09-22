@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/backend/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/backend/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class GroupController extends BaseController {
 
     @Resource

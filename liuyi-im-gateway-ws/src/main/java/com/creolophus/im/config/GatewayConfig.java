@@ -1,6 +1,7 @@
 package com.creolophus.im.config;
 
 import com.creolophus.im.netty.config.NettyServerConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class GatewayConfig extends NettyServerConfig {
     @Value("${server.port}")
     private int port;
 
-    private String POD_IP = System.getenv("POD_IP");
+    private String POD_IP = StringUtils.isBlank(System.getenv("POD_IP")) ? "127.0.0.1" : System.getenv("POD_IP");
 
     @Override
     public String getListenIp() {

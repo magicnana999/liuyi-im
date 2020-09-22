@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/backend/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/backend/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserController extends BaseController {
 
     @Resource

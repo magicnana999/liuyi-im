@@ -18,7 +18,7 @@ import javax.websocket.server.ServerEndpoint;
  * @author magicnana
  * @date 2020/7/8 下午8:17
  */
-@ServerEndpoint("/liuyi/gateway/ws")
+@ServerEndpoint("/liuyiim/gateway/ws")
 @Component
 public class WebsocketServerInstance extends AbstractWebSocketServer {
 

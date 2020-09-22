@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/backend/auth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/backend/auth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AuthController extends BaseController {
 
     @Resource

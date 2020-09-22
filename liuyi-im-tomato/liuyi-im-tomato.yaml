@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liuyi-im-tomato
+  labels:
+    app: liuyi-im-tomato
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: liuyi-im-tomato
+  template:
+    metadata:
+      labels:
+        app: liuyi-im-tomato
+    spec:
+      hostAliases:
+      - hostnames:
+        - "s5"
+        ip: "172.17.62.202"
+      imagePullSecrets:
+      - name: liuyi-regsitry-outer
+      containers:
+      - name: liuyi-im-tomato
+        image: registry.cn-beijing.aliyuncs.com/xiasimuou/liuyi-im-tomato:0.9.3-SNAPSHOT
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 33012
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 33012
+          hostPort: 33012
+
+        volumeMounts:
+        - name: logs-mount
+          mountPath: /var/log/liuyi/liuyi-im-tomato
+        - name: application-mysql
+          mountPath: /config/application-mysql.yaml
+          subPath: path/to/application-mysql.yaml
+        - name: application-redis
+          mountPath: /config/application-redis.yaml
+          subPath: path/to/application-redis.yaml
+        - name: application-k8s
+          mountPath: /config/application-k8s.yaml
+          subPath: path/to/application-k8s.yaml
+
+
+      volumes:
+        - name: logs-mount
+          nfs:
+            path: /app/log/
+            server: 172.17.62.202
+        - name: application-mysql
+          configMap:
+            name: liuyi-im-config
+            defaultMode: 0777
+            items:
+            - key: application-mysql.yaml
+              path: path/to/application-mysql.yaml
+        - name: application-redis
+          configMap:
+            name: liuyi-im-config
+            defaultMode: 0777
+            items:
+            - key: application-redis.yaml
+              path: path/to/application-redis.yaml
+        - name: application-k8s
+          configMap:
+            name: liuyi-im-config
+            defaultMode: 0777
+            items:
+            - key: application-k8s.yaml
+              path: path/to/application-k8s.yaml
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: liuyi-im-tomato
+  labels:
+    app: liuyi-im-tomato
+spec:
+  type: ClusterIP
+  ports:
+  - port: 33012
+    targetPort: 33012
+    protocol: TCP
+  selector:
+    app: liuyi-im-tomato
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: liuyi-im-tomato
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: s5
+    http:
+      paths:
+      - path: /liuyiim/tomato
+        backend:
+          serviceName: liuyi-im-tomato
+          servicePort: 33012

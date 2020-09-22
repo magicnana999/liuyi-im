@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "liuyi-im-backend", url = "${k8s.liuyi-im-backend}", fallback = BackendFeignHystrix.class)
 public interface BackendFeign {
 
-    @RequestMapping(value = "/liuyi/backend/gateway/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/liuyiim/backend/gateway/register", method = RequestMethod.POST)
     void registerGateway(
             @RequestParam(value = "ip") String ip, @RequestParam(value = "port") Integer port);
 
-    @RequestMapping(value = "/liuyi/backend/user_client/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/liuyiim/backend/user_client/register", method = RequestMethod.POST)
     void registerUserClient(
             @RequestParam("gatewayIp") String gatewayIp, @RequestParam("gatewayPort") Integer gatewayPort, @RequestParam("userId") Long userId);
 
-    @RequestMapping(value = "/liuyi/backend/message/send", method = RequestMethod.POST)
+    @RequestMapping(value = "/liuyiim/backend/message/send", method = RequestMethod.POST)
     Long sendMessage(
             @RequestParam("appKey") String appKey,
             @RequestParam("senderId") Long senderId,
@@ -30,14 +30,14 @@ public interface BackendFeign {
             @RequestParam("sendTime") String sendTime,
             @RequestParam("messageBody") String messageBod);
 
-    @RequestMapping(value = "/liuyi/backend/gateway/unregister", method = RequestMethod.POST)
+    @RequestMapping(value = "/liuyiim/backend/gateway/unregister", method = RequestMethod.POST)
     void unregisterGateway(
             @RequestParam(value = "ip") String ip, @RequestParam(value = "port") Integer port);
 
-    @RequestMapping(value = "/liuyi/backend/user_client/unregister", method = RequestMethod.POST)
+    @RequestMapping(value = "/liuyiim/backend/user_client/unregister", method = RequestMethod.POST)
     void unregisterUserClient(
             @RequestParam("gatewayIp") String gatewayIp, @RequestParam("gatewayPort") Integer gatewayPort, @RequestParam("userId") Long userId);
 
-    @RequestMapping(value = "/liuyi/backend/auth/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/liuyiim/backend/auth/verify", method = RequestMethod.GET)
     UserSecurity verifyToken(@RequestParam(value = "token") String token);
 }

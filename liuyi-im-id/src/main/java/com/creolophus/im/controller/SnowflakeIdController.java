@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/id/snowflake_id", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/id/snowflake_id", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SnowflakeIdController extends BaseController {
 
     private static final ConcurrentHashMap<Long/**workerID**/, OriginalSnowflakeID> snowflakeIdTable = new ConcurrentHashMap<>();

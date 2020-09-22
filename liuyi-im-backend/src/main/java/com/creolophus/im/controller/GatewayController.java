@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @Valid
 @RestController
-@RequestMapping(value = "/liuyi/backend/gateway", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/backend/gateway", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class GatewayController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayController.class);

@@ -24,7 +24,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyi/backend/message", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/backend/message", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class MessageController extends BaseController {
 
     @Resource

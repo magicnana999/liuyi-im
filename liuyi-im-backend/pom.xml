@@ -5,7 +5,7 @@
     <parent>
         <artifactId>liuyi-im</artifactId>
         <groupId>com.creolophus</groupId>
-        <version>0.9.2-SNAPSHOT</version>
+        <version>0.9.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>com.creolophus</groupId>
             <artifactId>liuyi-im-protocol</artifactId>
-            <version>0.9.2-SNAPSHOT</version>
+            <version>0.9.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.creolophus</groupId>
             <artifactId>liuyi-im-common</artifactId>
-            <version>0.9.2-SNAPSHOT</version>
+            <version>0.9.3-SNAPSHOT</version>
 
             <exclusions>
 
@@ -54,7 +54,7 @@
                 <executions>
                     <execution>
                         <id>default</id>
-                        <phase>install</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>

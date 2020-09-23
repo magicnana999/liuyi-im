@@ -23,6 +23,9 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/liuyiim/tomato/auth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AuthController extends BaseController {
 
+
+    //    @Autowired
+//    private WebApplicationContext applicationContext;
     @Resource
     private AuthService authService;
 
@@ -56,6 +59,22 @@ public class AuthController extends BaseController {
         String code = authService.getRegCode(phone);
         return new ApiResult(code);
     }
+
+//    @PostConstruct
+//    public void urls() {
+//        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+//        // 获取url与类和方法的对应信息
+//        Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
+//        for (RequestMappingInfo info : map.keySet()) {
+//            // 获取url的Set集合，一个方法可能对应多个url
+//            Set<String> patterns = info.getPatternsCondition().getPatterns();
+//            for (String url : patterns) {
+//                // 把结果存入静态变量中程序运行一次次方法之后就不用再次请求次方法
+//                System.out.println(url);
+//            }
+//        }
+//
+//    }
 
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public ApiResult verifyToken(

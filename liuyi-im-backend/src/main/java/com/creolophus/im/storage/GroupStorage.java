@@ -38,7 +38,7 @@ public class GroupStorage extends BaseStorage {
     }
 
     private String getGroupMembersKey(Long groupId) {
-        Objects.requireNonNull(groupId, "groupId 为空,无法生成 Group Key");
+        Objects.requireNonNull(groupId, "groupId 为空,无法生成 GroupDefine Key");
         return GROUP_MEMBERS + groupId;
     }
 

@@ -56,7 +56,7 @@ public class AuthService extends BaseService {
         return MD5Util.md5Hex("" + userId + System.currentTimeMillis() + Thread.currentThread() + RandomUtils.nextLong(0, 99999));
     }
 
-    public TomatoUser createUser(String name, String portrait, String phone,String password) {
+    public TomatoUser createUser(String name, String portrait, String phone) {
         TomatoUser tomatoUser = new TomatoUser();
         tomatoUser.setPhone(phone);
         tomatoUser.setState(TomatoUser.State.ENABLE.getValue());
@@ -64,7 +64,6 @@ public class AuthService extends BaseService {
         tomatoUser.setCreateTime(new Date());
         tomatoUser.setName(name);
         tomatoUser.setPortrait(portrait);
-        tomatoUser.setPassword(password);
         return tomatoUser;
     }
 
@@ -72,16 +71,29 @@ public class AuthService extends BaseService {
         return authStorage.getCode(phone);
     }
 
-    public UserToken login(String phone, String code) {
+    private boolean isEmpty(UserToken userToken) {
+
+        return (userToken == null || userToken.getUserId() == null || userToken.getUserId() == 0 || userToken.getImId() == null || userToken.getImId() == 0 || StringUtils
+                .isBlank(userToken.getToken()) || StringUtils.isBlank(userToken.getImToken()));
+    }
+
+    public UserToken loginByCode(String phone, String code) {
         checkCode(phone, code);
+        try {
+            return loginByPhone(phone);
+        } finally {
+            authStorage.delCode(phone);
+        }
+    }
+
+    public UserToken loginByPhone(String phone) {
         if(authStorage.lockLogin(phone)) {
             try {
                 TomatoUser tomatoUser = userService.findUserByPhone(phone);
                 if(tomatoUser == null) {
                     throw new ApiException("无此手机号码");
                 }
-                UserToken token = login(tomatoUser);
-                authStorage.delCode(phone);
+                UserToken token = loginImAndTomato(tomatoUser);
                 return token;
             } finally {
                 authStorage.unlockLogin(phone);
@@ -91,14 +103,14 @@ public class AuthService extends BaseService {
         }
     }
 
-    private UserToken login(TomatoUser tomatoUser) {
+    private String loginIm(Long imId) {
+        return backendFeign.login(imId);
+    }
+
+    private UserToken loginImAndTomato(TomatoUser tomatoUser) {
         String imToken = loginIm(tomatoUser.getImId());
         UserToken token = loginTomato(tomatoUser.getUserId(), tomatoUser.getImId(), imToken);
         return token;
-    }
-
-    private String loginIm(Long imId) {
-        return backendFeign.login(imId);
     }
 
     private UserToken loginTomato(Long userId, Long imId, String imToken) {
@@ -115,14 +127,14 @@ public class AuthService extends BaseService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public UserToken register(String phone, String name, String portrait, String password) {
+    public UserToken register(String phone, String name, String portrait) {
         if(authStorage.lockRegister(phone)) {
             try {
-                TomatoUser tomatoUser = createUser(name, portrait, phone, password);
+                TomatoUser tomatoUser = createUser(name, portrait, phone);
                 Long imId = syncUser(tomatoUser);
                 tomatoUser.setImId(imId);
                 tomatoUserDao.insert(tomatoUser);
-                UserToken token = login(tomatoUser);
+                UserToken token = loginImAndTomato(tomatoUser);
                 authStorage.delCode(phone);
                 return token;
             } finally {
@@ -143,7 +155,7 @@ public class AuthService extends BaseService {
             throw new UnauthorizedException("无此 token");
         }
         UserToken user = JSON.parseObject(json, UserToken.class);
-        if(user == null || user.isEmpty()) {
+        if(isEmpty(user)) {
             authStorage.delToken(token);
             throw new UnauthorizedException("非法 token");
         }

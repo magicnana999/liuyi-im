@@ -1,10 +1,10 @@
-package com.creolophus.im.controller;
+package com.creolophus.tomato.controller;
 
-import com.creolophus.im.common.base.BaseController;
 import com.creolophus.im.common.entity.GroupDefine;
 import com.creolophus.im.common.entity.GroupMember;
-import com.creolophus.im.service.GroupService;
 import com.creolophus.liuyi.common.api.ApiResult;
+import com.creolophus.tomato.base.BaseController;
+import com.creolophus.tomato.service.GroupService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,32 +22,32 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping(value = "/liuyiim/backend/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/tomato/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class GroupController extends BaseController {
 
     @Resource
     private GroupService groupService;
 
     @RequestMapping(value = "/append", method = RequestMethod.GET)
-    public ApiResult appendGroupMemberList(
-            @RequestParam("groupId") Long groupId, @RequestParam("targetId") Long targetId) {
-        groupService.appendGroupMember(groupId, targetId);
+    public ApiResult appendGroupMember(
+            @RequestParam("groupId") Long groupId,
+            @RequestParam("memberId") Long memberImId){
+            groupService.appendMember(groupId, memberImId);
         return new ApiResult();
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ApiResult createGroup(
-            @RequestParam("userId") Long userId, @RequestParam("targetIds") String targetIds) {
-        GroupDefine groupDefine = groupService.createGroup(userId, targetIds);
-        return new ApiResult(groupDefine);
+            @RequestParam("targetIds") String targetIds) {
+        GroupDefine group = groupService.createGroup(getImId(), targetIds);
+        return new ApiResult(group);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResult queryGroupList(
-            @RequestParam("userId") Long userId,
             @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
-        List<GroupDefine> groupDefines = groupService.queryGroupList(userId, pageNo, pageSize);
+        List<GroupDefine> groupDefines = groupService.queryGroupList(getImId(), pageNo, pageSize);
         return new ApiResult(groupDefines);
     }
 
@@ -59,6 +59,4 @@ public class GroupController extends BaseController {
         List<GroupMember> list = groupService.queryGroupMemberList(groupId, pageNo, pageSize);
         return new ApiResult(list);
     }
-
-
 }

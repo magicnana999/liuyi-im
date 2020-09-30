@@ -20,12 +20,19 @@ import javax.annotation.Resource;
 
 @Validated
 @RestController
-@RequestMapping(value = "/tomato/server/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/liuyiim/tomato/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
 
+    /**
+     * 如果显示的指定 userId,那么可以查任何人的 TomatoUser 信息,否则从 token 中取得自己的.
+     * 但是这有个权限的问题.解决方式就是隐私信息不要放到 tomatoUser 中,可以另外建立 tomatoUserInfo之类的.
+     * 用于显示任何人的头像,ID,名字,手机号码等信息.
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ApiResult getUserInfo(@RequestParam(value = "userId",required = false) Long userId) {
         TomatoUser tomatoUser = userService.findUserByUserId(userId==null?getUserId():userId);

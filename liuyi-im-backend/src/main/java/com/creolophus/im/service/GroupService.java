@@ -1,7 +1,7 @@
 package com.creolophus.im.service;
 
 import com.creolophus.im.common.base.BaseService;
-import com.creolophus.im.common.entity.Group;
+import com.creolophus.im.common.entity.GroupDefine;
 import com.creolophus.im.common.entity.GroupMember;
 import com.creolophus.im.common.entity.User;
 import com.creolophus.im.dao.GroupDao;
@@ -38,18 +38,35 @@ public class GroupService extends BaseService {
     @Resource
     private GroupStorage groupStorage;
 
-    public Group createGroup(Long userId, String targetIds) {
-        Group group = new Group();
-        group.setCreateTime(new Date());
-        group.setGroupId(idExampleService.nextGroupId(userId));
-        group.setGroupName(getDefaultGroupName(userId, targetIds));
+
+    public void appendGroupMember(Long groupId, Long targetId) {
+        User user = userService.findUserByUserId(targetId);
+        if(user == null) {
+            throw new ApiException("无此用户 " + targetId);
+        }
+        GroupMember temp = new GroupMember();
+        temp.setGroupId(groupId);
+        temp.setUserId(targetId);
+        temp.setMemberName(user.getName());
+        temp.setCreateTime(new Date());
+        groupMemberDao.insert(temp);
+    }
+
+    public GroupDefine createGroup(Long userId, String targetIds) {
+        GroupDefine groupDefine = new GroupDefine();
+        groupDefine.setCreateTime(new Date());
+        groupDefine.setGroupId(idExampleService.nextGroupId(userId));
+        groupDefine.setGroupName(getDefaultGroupName(userId, targetIds));
 
         List<GroupMember> members = new ArrayList<>();
 
+
+        User owner = userService.findUserByUserId(userId);
         GroupMember creator = new GroupMember();
-        creator.setCreateTime(group.getCreateTime());
-        creator.setGroupId(group.getGroupId());
+        creator.setCreateTime(groupDefine.getCreateTime());
+        creator.setGroupId(groupDefine.getGroupId());
         creator.setUserId(userId);
+        creator.setMemberName(owner == null ? null : owner.getName());
         members.add(creator);
 
 
@@ -57,16 +74,17 @@ public class GroupService extends BaseService {
         for (String s : array) {
             User user = userService.findUserByUserId(Long.valueOf(s));
             GroupMember member = new GroupMember();
-            member.setCreateTime(group.getCreateTime());
-            member.setGroupId(group.getGroupId());
+            member.setCreateTime(groupDefine.getCreateTime());
+            member.setGroupId(groupDefine.getGroupId());
             member.setUserId(user.getUserId());
+            member.setMemberName(user.getName());
             members.add(member);
         }
 
-        groupDao.insert(group, false);
+        groupDao.insert(groupDefine, false);
         groupMemberDao.insertBatch(members, false);
 
-        return group;
+        return groupDefine;
 
     }
 
@@ -103,6 +121,14 @@ public class GroupService extends BaseService {
             throw new ApiException("没有此用户" + userId);
         }
         return user.getName() + "、" + target.getName() + "等" + (targetIdArray.length + 1) + "人";
+    }
+
+    public List<GroupDefine> queryGroupList(Long userId, Integer pageNo, Integer pageSize) {
+        return groupDao.queryGroupListByMemberId(userId, (pageNo - 1) * pageSize, pageSize);
+    }
+
+    public List<GroupMember> queryGroupMemberList(Long groupId, Integer pageNo, Integer pageSize) {
+        return groupDao.queryGroupMemberListByGroupId(groupId, (pageNo - 1) * pageSize, pageSize);
     }
 
     private String[] splitTargetIds(String targetIds) {

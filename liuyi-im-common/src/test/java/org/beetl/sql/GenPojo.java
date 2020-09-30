@@ -14,8 +14,8 @@ public class GenPojo {
 
     @Test
     public void gen() {
-        ConnectionSource cs = ConnectionSourceHelper.getSimple("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/liuyi-im?verifyServerCertificate=false" +
-                "&useSSL=false&requireSSL=false", "root", "root");
+        ConnectionSource cs = ConnectionSourceHelper.getSimple("com.mysql.jdbc.Driver", "jdbc:mysql://47.99.173.26:11001/liuyiim?verifyServerCertificate" +
+                "=false&useSSL=false&requireSSL=false", "liuyiim", "@#$%%^&tdtw3224^H");
         SQLLoader loader = new ClasspathLoader("/sql");
         //SQLManager sqlManager = new SQLManager(new MySqlStyle(),loader,cs,new TUnderlinedNameConversion(), new Interceptor[]{new DebugInterceptor()});
         SQLManager sqlManager = new SQLManager(new MySqlStyle(), loader, cs, new UnderlinedNameConversion(), new Interceptor[]{new DebugInterceptor()});
@@ -24,10 +24,11 @@ public class GenPojo {
         // 或者直接生成java文件
         GenConfig config = new GenConfig("entity.btl");
         config.setBaseClass("AbstractEntity");
-        config.setOutputPackage("com.creolophus.liuyi.common.entity");
+        config.setOutputPackage("com.creolophus.im.common.entity");
         config.preferBigDecimal(true);
         try {
-            sqlManager.genPojoCode("app_notify", config.getOutputPackage(), config);
+            sqlManager.genPojoCode("tomato_group", config.getOutputPackage(), config);
+            sqlManager.genPojoCode("tomato_friend", config.getOutputPackage(), config);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

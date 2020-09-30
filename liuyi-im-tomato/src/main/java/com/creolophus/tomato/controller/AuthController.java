@@ -29,12 +29,20 @@ public class AuthController extends BaseController {
     @Resource
     private AuthService authService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login_by_code", method = RequestMethod.POST)
     public ApiResult login(
             @RequestParam("phone") String phone, @RequestParam("code") String code) {
-        UserToken userToken = authService.login(phone, code);
+        UserToken userToken = authService.loginByCode(phone, code);
         return new ApiResult(userToken);
     }
+
+    @RequestMapping(value = "/login_by_phone", method = RequestMethod.POST)
+    public ApiResult login(
+            @RequestParam("phone") String phone) {
+        UserToken userToken = authService.loginByPhone(phone);
+        return new ApiResult(userToken);
+    }
+
 
     @RequestMapping(value = "/code", method = RequestMethod.GET)
     public ApiResult pushCode(
@@ -45,11 +53,8 @@ public class AuthController extends BaseController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult register(
-            @RequestParam("phone") String phone,
-            @RequestParam("name") String name,
-            @RequestParam("portrait") String portrait,
-            @RequestParam("password") String password) {
-        UserToken userToken = authService.register(phone, name, portrait, password);
+            @RequestParam("phone") String phone, @RequestParam("name") String name, @RequestParam("portrait") String portrait) {
+        UserToken userToken = authService.register(phone, name, portrait);
         return new ApiResult(userToken);
     }
 

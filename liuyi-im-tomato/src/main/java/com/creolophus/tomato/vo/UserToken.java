@@ -1,7 +1,5 @@
 package com.creolophus.tomato.vo;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author magicnana
  * @date 2020/9/8 4:27 PM
@@ -53,10 +51,6 @@ public class UserToken {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public boolean isEmpty() {
-        return userId == null || userId == 0 || imId == null || imId == 0 || StringUtils.isBlank(token) || StringUtils.isBlank(imToken);
     }
 
     @Override

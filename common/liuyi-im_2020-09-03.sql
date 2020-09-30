@@ -36,12 +36,12 @@ CREATE TABLE `app` (
 
 
 
-# Dump of table group
+# Dump of table groupDefine
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `groupDefine`;
 
-CREATE TABLE `group` (
+CREATE TABLE `groupDefine` (
   `group_id` bigint(20) NOT NULL COMMENT '会话 ID',
   `group_name` varchar(32) DEFAULT NULL COMMENT '会话 name',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

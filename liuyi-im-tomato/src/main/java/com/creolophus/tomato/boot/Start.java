@@ -88,7 +88,7 @@ public class Start extends WebStart {
             @Override
             public void configure(WebSecurity web) {
                 super.configure(web);
-                web.ignoring().antMatchers("/tomato/server/auth/**");
+                web.ignoring().antMatchers("/liuyiim/tomato/auth/**");
             }
         };
     }

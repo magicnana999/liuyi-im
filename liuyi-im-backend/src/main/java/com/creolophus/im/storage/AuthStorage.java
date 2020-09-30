@@ -31,7 +31,7 @@ public class AuthStorage extends BaseStorage {
     }
 
     private String getTokenKey(String token) {
-        Strings.requireNonBlank(token, "token 为空,无法生成 Group Key");
+        Strings.requireNonBlank(token, "token 为空,无法生成 GroupDefine Key");
         return TOKEN + token;
     }
 

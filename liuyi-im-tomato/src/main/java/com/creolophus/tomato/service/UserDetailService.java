@@ -1,5 +1,7 @@
 package com.creolophus.tomato.service;
 
+import com.creolophus.liuyi.common.api.ApiContextValidator;
+import com.creolophus.tomato.boot.TomatoApiContextValidator;
 import com.creolophus.tomato.vo.UserToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,11 +24,18 @@ public class UserDetailService implements UserDetailsService {
     @Resource
     private AuthService authService;
 
+    @Resource
+    private ApiContextValidator apiContextValidator;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserToken userToken = authService.verifyToken(username);
         if(userToken == null) {
             return null;
+        } else {
+            TomatoApiContextValidator tomatoApiContextValidator = (TomatoApiContextValidator) apiContextValidator;
+            tomatoApiContextValidator.setImId(userToken.getImId());
+            tomatoApiContextValidator.setImToken(userToken.getImToken());
         }
 
         return new UserDetails() {

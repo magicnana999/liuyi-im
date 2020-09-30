@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2020-07-03
  */
 
-public class Group extends AbstractEntity {
+public class GroupDefine extends AbstractEntity {
 
     @ApiModelProperty(notes = "会话 ID")
     @AssignID

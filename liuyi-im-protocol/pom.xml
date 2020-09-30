@@ -20,10 +20,16 @@
             <version>3.5</version>
         </dependency>
 
+        <!--<dependency>-->
+        <!--<groupId>com.github.magicnana999.liuyi-common</groupId>-->
+        <!--<artifactId>liuyi-common-json</artifactId>-->
+        <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.github.magicnana999.liuyi-common</groupId>
+            <groupId>com.creolophus</groupId>
             <artifactId>liuyi-common-json</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
 
         <dependency>

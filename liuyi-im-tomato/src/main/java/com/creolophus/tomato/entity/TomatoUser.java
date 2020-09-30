@@ -20,7 +20,6 @@ public class TomatoUser extends AbstractEntity {
     private Integer state;
     private Long imId;
     private String name;
-    private String password;
     private String phone;
     @ApiModelProperty(notes = "头像")
     private String portrait;
@@ -48,14 +47,6 @@ public class TomatoUser extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {
@@ -97,7 +88,6 @@ public class TomatoUser extends AbstractEntity {
         sb.append(",\"state\":").append(state);
         sb.append(",\"imId\":").append(imId);
         sb.append(",\"name\":\"").append(name).append('\"');
-        sb.append(",\"password\":\"").append("****").append('\"');
         sb.append(",\"phone\":\"").append(phone).append('\"');
         sb.append(",\"portrait\":\"").append(portrait).append('\"');
         sb.append(",\"createTime\":\"").append(createTime).append('\"');

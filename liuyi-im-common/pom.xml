@@ -13,17 +13,17 @@
     <version>0.9.3-SNAPSHOT</version>
 
     <dependencies>
-        <!--<dependency>-->
-        <!--<groupId>com.github.magicnana999</groupId>-->
-        <!--<artifactId>liuyi-ms</artifactId>-->
-        <!--<version>1.0.3</version>-->
-        <!--</dependency>-->
-
         <dependency>
-            <groupId>com.creolophus</groupId>
+            <groupId>com.github.magicnana999</groupId>
             <artifactId>liuyi-ms</artifactId>
             <version>1.0.4</version>
         </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.creolophus</groupId>-->
+        <!--<artifactId>liuyi-ms</artifactId>-->
+        <!--<version>1.0.4</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

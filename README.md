@@ -50,6 +50,7 @@
 
 ### 本人
 * 电邮: magicnana999@gmail.com
+* 微信：magicnana999
 
 
 
